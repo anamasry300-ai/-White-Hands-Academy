@@ -3,38 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucca Academy — تدريب الباريستا</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Esenza Academy — تدريب الباريستا</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --coffee-900: #1A0F0A; --coffee-700: #3E2312; --coffee-500: #6D4C41;
+            --coffee-900: #1A0F0A; --coffee-800: #2A1508; --coffee-700: #3E2312;
+            --coffee-600: #5A3A28; --coffee-500: #6D4C41; --coffee-400: #8B6914;
             --coffee-300: #A67B5B; --cream: #EDE0D4; --foam: #F7F2EB;
-            --gold: #D4A85A; --gold-light: #E8CC8A; --green: #27AE60;
-            --red: #E74C3C; --radius: 12px;
+            --gold: #D4A85A; --gold-light: #E8CC8A; --gold-dark: #B8922E;
+            --green: #27AE60; --red: #E74C3C; --radius: 12px; --radius-lg: 20px;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Tajawal', 'Segoe UI', sans-serif;
-            background: var(--cream); color: var(--coffee-900);
-            min-height: 100vh;
+            background: var(--foam); color: var(--coffee-900);
+            min-height: 100vh; overflow-x: hidden;
         }
         .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+
+        /* ===== Animations ===== */
+        @keyframes fadeIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes scaleIn { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:scale(1); } }
+        @keyframes slideInRight { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.05); } }
+        @keyframes shimmer { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
+        @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+        @keyframes confetti-fall { 0% { transform:translateY(-10px) rotate(0deg); opacity:1; } 100% { transform:translateY(100px) rotate(720deg); opacity:0; } }
+        @keyframes glow { 0%,100% { box-shadow:0 0 5px rgba(212,168,90,0.2); } 50% { box-shadow:0 0 20px rgba(212,168,90,0.4); } }
+        .anim-fade { animation:fadeIn 0.6s ease forwards; }
+        .anim-fade-up { animation:fadeInUp 0.8s ease forwards; }
+        .anim-scale { animation:scaleIn 0.5s ease forwards; }
+        .anim-slide { animation:slideInRight 0.5s ease forwards; }
+        .stagger > * { opacity:0; animation:fadeInUp 0.6s ease forwards; }
+        .stagger > *:nth-child(1) { animation-delay:0.05s; }
+        .stagger > *:nth-child(2) { animation-delay:0.15s; }
+        .stagger > *:nth-child(3) { animation-delay:0.25s; }
+        .stagger > *:nth-child(4) { animation-delay:0.35s; }
+        .stagger > *:nth-child(5) { animation-delay:0.45s; }
 
         /* ===== Auth ===== */
         .auth-screen {
             display:flex; align-items:center; justify-content:center;
             min-height:100vh; padding:20px;
-            background: linear-gradient(135deg, var(--coffee-900) 0%, #2A1508 50%, var(--coffee-700) 100%);
+            background: linear-gradient(135deg, var(--coffee-900) 0%, #2A1508 40%, var(--coffee-700) 70%, #5A3A28 100%);
+            position:relative; overflow:hidden;
+        }
+        .auth-screen::before {
+            content:''; position:absolute; inset:0;
+            background: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80') center/cover no-repeat;
+            opacity:0.08; pointer-events:none;
+        }
+        .auth-screen::after {
+            content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
+            background: radial-gradient(circle at 30% 50%, rgba(212,168,90,0.05) 0%, transparent 50%);
+            pointer-events:none; animation:float 6s ease-in-out infinite;
         }
         .auth-card {
-            background: var(--foam); border-radius: var(--radius);
-            padding:40px; width:100%; max-width:420px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            background: rgba(247,242,235,0.95); backdrop-filter:blur(20px);
+            border-radius: var(--radius-lg); padding:40px; width:100%; max-width:420px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4); position:relative; z-index:1;
+            animation:fadeInUp 0.8s ease;
         }
-        .auth-card .academy-logo {
+        .auth-card .logo-wrap {
             text-align:center; margin-bottom:16px;
         }
-        .auth-card .academy-logo svg { width:80px; height:80px; }
+        .auth-card .logo-wrap svg { width:80px; height:80px; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.1)); animation:float 4s ease-in-out infinite; }
         .auth-card h1 {
             font-family:'Playfair Display',serif; color:var(--coffee-700);
             text-align:center; font-size:1.8rem; margin-bottom:4px;
@@ -48,19 +82,23 @@
             width:100%; padding:12px 16px; margin-bottom:12px;
             border:2px solid var(--cream); border-radius:8px;
             font-family: inherit; font-size:1rem; background: white;
-            transition: border-color 0.2s;
+            transition: all 0.3s;
         }
-        .auth-card input:focus { outline:none; border-color:var(--gold); }
+        .auth-card input:focus { outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,168,90,0.15); }
         .auth-card button {
             width:100%; padding:12px; border:none; border-radius:8px;
             font-family: inherit; font-size:1rem; font-weight:700;
-            cursor:pointer; transition:0.2s;
+            cursor:pointer; transition:0.3s;
         }
-        .btn-gold { background:var(--gold); color:var(--coffee-900); }
-        .btn-gold:hover { opacity:0.9; transform:translateY(-1px); }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color:var(--coffee-900); position:relative; overflow:hidden;
+        }
+        .btn-gold:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(212,168,90,0.4); }
+        .btn-gold:active { transform:translateY(0); }
         .auth-card .switch {
             text-align:center; margin-top:16px; color:var(--coffee-500);
-            cursor:pointer; font-size:0.9rem;
+            cursor:pointer; font-size:0.9rem; transition:0.3s;
         }
         .auth-card .switch:hover { color:var(--gold); }
         .auth-card .error {
@@ -71,14 +109,15 @@
             margin-top:24px; padding-top:16px; border-top:1px solid var(--cream);
             text-align:center; font-size:0.75rem; color:var(--coffee-300);
         }
-        .auth-card .ref-footer a { color:var(--gold); text-decoration:none; }
-        .auth-card .ref-footer a:hover { text-decoration:underline; }
+        .auth-card .ref-footer a { color:var(--gold); text-decoration:none; transition:0.3s; }
+        .auth-card .ref-footer a:hover { color:var(--gold-dark); text-decoration:underline; }
 
         /* ===== Header ===== */
         .app-header {
-            background: var(--coffee-900); padding:16px 24px;
-            display:flex; justify-content:space-between; align-items:center;
+            background: linear-gradient(135deg, var(--coffee-900), var(--coffee-800));
+            padding:16px 24px; display:flex; justify-content:space-between; align-items:center;
             border-bottom:2px solid var(--gold); position:sticky; top:0; z-index:100;
+            box-shadow:0 4px 20px rgba(0,0,0,0.3);
         }
         .app-header .brand {
             display:flex; align-items:center; gap:10px;
@@ -89,101 +128,198 @@
         .app-header .logout-btn {
             background:transparent; border:1px solid var(--gold); color:var(--gold);
             padding:6px 14px; border-radius:6px; cursor:pointer; font-family:inherit;
-            font-size:0.85rem; transition:0.2s;
+            font-size:0.85rem; transition:0.3s;
         }
         .app-header .logout-btn:hover { background:var(--gold); color:var(--coffee-900); }
         .progress-bar-wrap {
             height:4px; background:var(--coffee-700); width:100%;
         }
         .progress-bar-fill {
-            height:100%; background:var(--gold); transition:width 0.5s ease;
-            width:0%;
+            height:100%; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+            background-size:200% 100%; transition:width 0.8s cubic-bezier(0.4,0,0.2,1);
+            width:0%; position:relative;
         }
 
         /* ===== Dashboard ===== */
         .dashboard h3 { margin:24px 0 16px; font-size:1.2rem; color:var(--coffee-700); }
-        .welcome-card {
-            background:white; border-radius:var(--radius); padding:24px;
-            margin-bottom:20px; box-shadow:0 2px 12px rgba(0,0,0,0.06);
+
+        .hero-banner {
+            position:relative; border-radius:var(--radius-lg); overflow:hidden;
+            margin-bottom:24px; min-height:200px;
+            background: linear-gradient(135deg, var(--coffee-900), var(--coffee-700));
+        }
+        .hero-banner img {
+            width:100%; height:100%; object-fit:cover; position:absolute; inset:0;
+            opacity:0.3;
+        }
+        .hero-banner .hero-content {
+            position:relative; z-index:1; padding:40px 32px;
             display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
         }
-        .welcome-card .greeting { font-size:1.2rem; }
-        .welcome-card .greeting strong { color:var(--gold); }
+        .hero-banner .hero-text .greeting {
+            font-size:1.6rem; color:white; font-family:'Playfair Display',serif;
+        }
+        .hero-banner .hero-text .greeting strong { color:var(--gold); }
+        .hero-banner .hero-text .sub { color:var(--coffee-300); font-size:0.95rem; margin-top:8px; }
+        .hero-banner .hero-stat {
+            background:rgba(255,255,255,0.1); backdrop-filter:blur(10px);
+            border-radius:var(--radius); padding:16px 24px; text-align:center;
+            border:1px solid rgba(212,168,90,0.2);
+        }
+        .hero-banner .hero-stat .num { font-size:2rem; font-weight:900; color:var(--gold); }
+        .hero-banner .hero-stat .label { font-size:0.85rem; color:var(--coffee-300); }
+
         .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:24px; }
         .stat-card {
-            background:white; border-radius:var(--radius); padding:16px; text-align:center;
-            box-shadow:0 2px 8px rgba(0,0,0,0.06); transition:0.2s;
+            background:white; border-radius:var(--radius); padding:20px; text-align:center;
+            box-shadow:0 2px 12px rgba(0,0,0,0.06); transition:0.3s;
+            border:1px solid rgba(0,0,0,0.04); position:relative; overflow:hidden;
         }
-        .stat-card:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,0.1); }
+        .stat-card::before {
+            content:''; position:absolute; top:0; left:0; right:0; height:3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            transform:scaleX(0); transform-origin:right; transition:transform 0.5s ease;
+        }
+        .stat-card:hover::before { transform:scaleX(1); }
+        .stat-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,0.1); }
         .stat-card .num { font-size:1.8rem; font-weight:900; color:var(--gold); }
         .stat-card .label { font-size:0.85rem; color:var(--coffee-500); margin-top:4px; }
 
         /* ===== Modules ===== */
         .module-card {
-            background:white; border-radius:var(--radius); padding:20px; margin-bottom:12px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.06);
-            cursor:pointer; transition:0.2s; border-right:4px solid var(--coffee-300);
-            display:flex; justify-content:space-between; align-items:center; gap:16px;
+            background:white; border-radius:var(--radius-lg); margin-bottom:16px;
+            box-shadow:0 2px 12px rgba(0,0,0,0.06); cursor:pointer; transition:0.4s cubic-bezier(0.4,0,0.2,1);
+            border:1px solid rgba(0,0,0,0.04); overflow:hidden;
+            display:flex; align-items:stretch; gap:0;
         }
-        .module-card:hover { transform:translateX(-4px); box-shadow:0 4px 16px rgba(0,0,0,0.1); }
-        .module-card.completed { border-right-color:var(--gold); }
-        .module-card .info { flex:1; }
+        .module-card:hover { transform:translateX(-6px); box-shadow:0 8px 32px rgba(0,0,0,0.12); }
+        .module-card.completed { border-color:var(--gold-light); }
+        .module-card .module-side {
+            width:120px; min-height:140px; flex-shrink:0;
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            position:relative; overflow:hidden;
+        }
+        .module-card .module-side .bg-img {
+            position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.2;
+        }
+        .module-card .module-side .overlay {
+            position:absolute; inset:0;
+            background: linear-gradient(135deg, var(--coffee-700), var(--coffee-500));
+            opacity:0.85;
+        }
+        .module-card .module-side .module-icon {
+            position:relative; z-index:1; font-size:2.4rem;
+            filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        .module-card .module-side .module-num {
+            position:relative; z-index:1; color:rgba(255,255,255,0.6); font-size:0.75rem;
+            margin-top:4px;
+        }
+        .module-card .info { flex:1; padding:20px 20px 20px 24px; }
         .module-card .info h4 { font-size:1.05rem; color:var(--coffee-700); }
         .module-card .info p { font-size:0.85rem; color:var(--coffee-500); margin-top:4px; }
         .module-card .info .lessons-preview {
             display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;
         }
         .module-card .info .lessons-preview .dot {
-            width:8px; height:8px; border-radius:50%;
-            background:var(--cream); transition:0.3s;
+            width:10px; height:10px; border-radius:50%;
+            background:var(--cream); transition:0.3s; border:1px solid transparent;
         }
-        .module-card .info .lessons-preview .dot.done { background:var(--gold); }
+        .module-card .info .lessons-preview .dot.done { background:var(--gold); border-color:var(--gold-dark); }
         .module-card .info .lessons-preview .dot.active { background:var(--coffee-500); }
+        .module-card .badge-wrap { padding:20px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; flex-shrink:0; }
         .module-card .badge {
-            background:var(--cream); padding:6px 12px; border-radius:20px;
+            background:var(--cream); padding:8px 16px; border-radius:20px;
             font-size:0.8rem; color:var(--coffee-500); white-space:nowrap;
+            font-weight:700; transition:0.3s;
         }
-        .module-card .badge.done { background:var(--gold-light); color:var(--coffee-900); font-weight:700; }
-        .module-card .module-icon { font-size:2rem; }
+        .module-card .badge.done { background:linear-gradient(135deg, var(--gold-light), var(--gold)); color:var(--coffee-900); }
+        .module-card .quiz-btn {
+            display:inline-block; padding:4px 12px;
+            background:var(--foam); border:1px solid var(--cream); border-radius:20px;
+            font-size:0.78rem; color:var(--coffee-500); cursor:pointer; transition:0.3s;
+            font-weight:500;
+        }
+        .module-card .quiz-btn:hover { border-color:var(--gold); background:var(--gold-light); transform:scale(1.05); }
+        .module-card .quiz-btn.passed { background:#d4edda; border-color:var(--green); color:var(--green); }
+
+        .love-footer { text-align:center; padding:24px 16px 8px; color:var(--coffee-700); font-size:0.95rem; font-weight:500; }
+        .love-footer p { margin:0; }
+        .cert-cta {
+            text-align:center; margin:24px 0; animation:pulse 2s ease-in-out infinite;
+        }
+        .cert-cta button {
+            padding:16px 48px; border:none; border-radius:var(--radius);
+            font-family:inherit; font-weight:700; cursor:pointer; font-size:1.2rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color:var(--coffee-900); transition:0.3s;
+        }
+        .cert-cta button:hover { transform:translateY(-2px) scale(1.02); box-shadow:0 8px 30px rgba(212,168,90,0.4); }
 
         /* ===== Lesson Screen ===== */
         .lesson-screen {
-            background:white; border-radius:var(--radius); padding:32px;
-            margin:20px 0; box-shadow:0 4px 20px rgba(0,0,0,0.08);
+            background:white; border-radius:var(--radius-lg); overflow:hidden;
+            margin:20px 0; box-shadow:0 8px 40px rgba(0,0,0,0.08);
+            animation:fadeInUp 0.5s ease;
         }
+        .lesson-screen .lesson-hero {
+            position:relative; height:200px; overflow:hidden;
+            background: linear-gradient(135deg, var(--coffee-900), var(--coffee-700));
+        }
+        .lesson-screen .lesson-hero img {
+            width:100%; height:100%; object-fit:cover; opacity:0.25; position:absolute;
+        }
+        .lesson-screen .lesson-hero .hero-overlay {
+            position:absolute; inset:0;
+            background: linear-gradient(transparent 40%, rgba(26,15,10,0.8));
+        }
+        .lesson-screen .lesson-hero .hero-text {
+            position:relative; z-index:1; padding:32px; height:100%;
+            display:flex; flex-direction:column; justify-content:flex-end;
+        }
+        .lesson-screen .lesson-hero .hero-text .breadcrumb {
+            color:var(--coffee-300); font-size:0.85rem; margin-bottom:8px;
+        }
+        .lesson-screen .lesson-hero .hero-text h2 {
+            color:white; font-family:'Playfair Display',serif; font-size:1.6rem;
+        }
+        .lesson-screen .lesson-body-wrap { padding:32px; }
         .lesson-screen .back {
-            display:inline-flex; align-items:center; gap:6px; margin-bottom:20px; color:var(--coffee-500);
-            cursor:pointer; font-size:0.9rem; padding:6px 12px; border-radius:6px; transition:0.2s;
+            display:inline-flex; align-items:center; gap:6px; margin-bottom:20px;
+            color:var(--coffee-500); cursor:pointer; font-size:0.9rem; padding:8px 16px;
+            border-radius:8px; transition:0.3s;
         }
         .lesson-screen .back:hover { background:var(--cream); color:var(--coffee-700); }
-        .lesson-screen .lesson-header {
-            display:flex; align-items:center; gap:16px; margin-bottom:16px; flex-wrap:wrap;
-        }
-        .lesson-screen .lesson-header .lesson-icon {
-            font-size:2.5rem; background:var(--foam); width:60px; height:60px;
-            border-radius:50%; display:flex; align-items:center; justify-content:center;
-        }
-        .lesson-screen .lesson-header h2 { font-family:'Playfair Display',serif; color:var(--coffee-700); font-size:1.4rem; flex:1; }
-        .lesson-screen .meta { color:var(--coffee-300); font-size:0.85rem; margin-bottom:20px; }
         .lesson-screen .content { line-height:1.8; font-size:1rem; color:var(--coffee-900); }
         .lesson-screen .content p { margin-bottom:16px; }
         .lesson-screen .content ul { margin:12px 0 16px 20px; }
         .lesson-screen .content li { margin-bottom:8px; }
         .lesson-screen .content h3 { color:var(--coffee-700); margin:24px 0 12px; font-size:1.15rem; }
+        .lesson-screen .content h4 { color:var(--coffee-700); margin:20px 0 10px; font-size:1.05rem; }
+        .lesson-screen .content .learning-objectives {
+            background: linear-gradient(135deg, var(--cream), var(--foam));
+            padding:20px 24px; border-radius:var(--radius); margin-bottom:20px;
+            border-right:4px solid var(--gold);
+        }
+        .lesson-screen .content .learning-objectives h4 { margin-top:0; margin-bottom:8px; }
         .lesson-screen .content .highlight {
             background:var(--cream); padding:16px 20px; border-radius:8px;
             border-right:4px solid var(--gold); margin:16px 0;
         }
         .lesson-screen .content .img-card {
-            background:var(--foam); border-radius:8px; padding:24px; margin:16px 0;
+            background:var(--foam); border-radius:var(--radius); padding:16px; margin:16px 0;
             text-align:center; border:1px solid var(--cream);
+            transition:0.3s;
         }
-        .lesson-screen .content .img-card svg { max-width:200px; height:auto; }
+        .lesson-screen .content .img-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.06); }
+        .lesson-screen .content .img-card img {
+            max-width:100%; border-radius:8px; display:block; margin:0 auto;
+        }
         .lesson-screen .content .img-card .caption {
             margin-top:8px; font-size:0.85rem; color:var(--coffee-500);
         }
         .lesson-screen .content table {
-            width:100%; border-collapse:collapse; margin:16px 0;
+            width:100%; border-collapse:collapse; margin:16px 0; border-radius:8px; overflow:hidden;
         }
         .lesson-screen .content th, .lesson-screen .content td {
             padding:10px; text-align:right; border:1px solid var(--cream);
@@ -194,21 +330,24 @@
             font-size:0.85rem; border:1px solid var(--cream);
         }
         .lesson-screen .refs strong { color:var(--coffee-700); }
-        .lesson-screen .refs a { color:var(--gold); text-decoration:none; }
-        .lesson-screen .refs a:hover { text-decoration:underline; }
-        .lesson-actions { display:flex; gap:12px; margin-top:24px; flex-wrap:wrap; }
+        .lesson-screen .refs a { color:var(--gold); text-decoration:none; transition:0.3s; }
+        .lesson-screen .refs a:hover { color:var(--gold-dark); text-decoration:underline; }
+        .lesson-actions {
+            display:flex; gap:12px; margin-top:24px; flex-wrap:wrap;
+            padding:20px; background:var(--foam); border-radius:var(--radius);
+        }
         .lesson-actions button, .lesson-actions .btn {
-            padding:10px 24px; border:none; border-radius:8px;
-            font-family:inherit; font-size:0.95rem; font-weight:700; cursor:pointer; transition:0.2s;
+            padding:12px 28px; border:none; border-radius:8px;
+            font-family:inherit; font-size:0.95rem; font-weight:700; cursor:pointer; transition:0.3s;
         }
-        .lesson-actions button:hover { transform:translateY(-1px); }
+        .lesson-actions button:hover { transform:translateY(-2px); }
         .btn-prev { background:var(--cream); color:var(--coffee-700); }
+        .btn-prev:hover { background:var(--coffee-300); color:white; }
         .btn-next { background:var(--gold); color:var(--coffee-900); }
-        .btn-complete {
-            background:var(--green); color:white;
-        }
-        .btn-complete:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
-        .btn-complete:not(:disabled):hover { opacity:0.9; }
+        .btn-next:hover { box-shadow:0 4px 15px rgba(212,168,90,0.4); }
+        .btn-complete { background:var(--green); color:white; }
+        .btn-complete:disabled { opacity:0.4; cursor:not-allowed; transform:none !important; }
+        .btn-complete:not(:disabled):hover { box-shadow:0 4px 15px rgba(39,174,96,0.4); }
 
         /* ===== Quiz ===== */
         .quiz-section {
@@ -216,78 +355,97 @@
             border:2px solid var(--cream);
         }
         .quiz-section h3 { color:var(--coffee-700); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-        .quiz-question {
-            margin-bottom:20px; padding:16px; background:white; border-radius:8px;
+        .quiz-status {
+            display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;
         }
-        .quiz-question .q-text { font-weight:700; margin-bottom:12px; color:var(--coffee-700); }
+        .quiz-status .q-dot {
+            width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+            background:var(--cream); font-size:0.8rem; font-weight:700; color:var(--coffee-500);
+            transition:0.3s; border:2px solid transparent;
+        }
+        .quiz-status .q-dot.current { border-color:var(--gold); background:var(--gold-light); color:var(--coffee-900); }
+        .quiz-status .q-dot.answered { background:var(--gold); color:white; }
+        .quiz-question {
+            margin-bottom:20px; padding:20px; background:white; border-radius:var(--radius);
+            animation:fadeIn 0.3s ease;
+        }
+        .quiz-question .q-text { font-weight:700; margin-bottom:12px; color:var(--coffee-700); font-size:1.05rem; }
         .quiz-option {
-            display:flex; align-items:center; gap:10px; padding:10px 14px;
-            margin-bottom:6px; border-radius:8px; cursor:pointer; transition:0.2s;
+            display:flex; align-items:center; gap:10px; padding:12px 16px;
+            margin-bottom:8px; border-radius:8px; cursor:pointer; transition:0.3s;
             border:2px solid var(--cream); font-size:0.95rem;
         }
-        .quiz-option:hover { border-color:var(--coffee-300); background:var(--foam); }
-        .quiz-option.selected { border-color:var(--gold); background:var(--gold-light); }
-        .quiz-option.correct { border-color:var(--green); background:#d4edda; }
-        .quiz-option.wrong { border-color:var(--red); background:#fde8e8; }
+        .quiz-option:hover { border-color:var(--coffee-300); background:var(--foam); transform:translateX(-4px); }
+        .quiz-option.selected { border-color:var(--gold); background:var(--gold-light); transform:translateX(-4px); }
+        .quiz-option.correct { border-color:var(--green); background:#d4edda; animation:scaleIn 0.3s ease; }
+        .quiz-option.wrong { border-color:var(--red); background:#fde8e8; animation:scaleIn 0.3s ease; }
         .quiz-option .letter {
-            width:24px; height:24px; border-radius:50%; background:var(--cream);
+            width:28px; height:28px; border-radius:50%; background:var(--cream);
             display:flex; align-items:center; justify-content:center;
             font-size:0.8rem; font-weight:700; color:var(--coffee-500); flex-shrink:0;
+            transition:0.3s;
         }
         .quiz-option.selected .letter { background:var(--gold); color:white; }
+        .quiz-option.correct .letter { background:var(--green); color:white; }
+        .quiz-option.wrong .letter { background:var(--red); color:white; }
         .quiz-result {
-            margin-top:16px; padding:16px; border-radius:8px; text-align:center;
-            font-weight:700; display:none;
+            margin-top:16px; padding:20px; border-radius:var(--radius); text-align:center;
+            font-weight:700; display:none; animation:scaleIn 0.5s ease;
         }
         .quiz-result.pass { background:#d4edda; color:var(--green); display:block; }
         .quiz-result.fail { background:#fde8e8; color:var(--red); display:block; }
+        .quiz-result .result-icon { font-size:2rem; margin-bottom:8px; }
+        .quiz-result .result-score { font-size:1.4rem; }
+
+        /* Confetti */
+        .confetti-container { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
+        .confetti { position:absolute; width:8px; height:8px; border-radius:2px; animation:confetti-fall 1.5s ease forwards; }
 
         /* ===== Certificate ===== */
         .certificate {
-            background:white; border:3px double var(--gold); border-radius:16px;
+            background:white; border:3px double var(--gold); border-radius:var(--radius-lg);
             padding:48px 40px; text-align:center; margin:20px 0;
             box-shadow:0 8px 40px rgba(212,168,90,0.15);
-            position:relative;
+            position:relative; animation:scaleIn 0.6s ease;
         }
         .certificate::before {
             content:''; position:absolute; inset:8px; border:1px solid var(--cream);
             border-radius:12px; pointer-events:none;
         }
         .certificate h1 { font-family:'Playfair Display',serif; color:var(--coffee-700); font-size:2rem; }
-        .certificate .seal { font-size:4rem; margin:16px 0; }
+        .certificate .seal { font-size:4rem; margin:16px 0; animation:float 3s ease-in-out infinite; }
         .certificate .name { font-size:1.8rem; color:var(--gold); font-weight:900; margin:12px 0; }
         .certificate .date { color:var(--coffee-500); font-size:0.9rem; }
         .cert-actions { display:flex; gap:12px; justify-content:center; margin-top:24px; flex-wrap:wrap; }
         .cert-actions button {
             padding:12px 32px; border:none; border-radius:8px;
-            font-family:inherit; font-weight:700; cursor:pointer; transition:0.2s;
+            font-family:inherit; font-weight:700; cursor:pointer; transition:0.3s;
         }
-        .cert-actions button:hover { transform:translateY(-1px); }
-
-        /* ===== Quiz Button in Module ===== */
-        .quiz-btn {
-            display:inline-block; margin-top:8px; padding:4px 12px;
-            background:var(--foam); border:1px solid var(--cream); border-radius:20px;
-            font-size:0.8rem; color:var(--coffee-500); cursor:pointer; transition:0.2s;
-        }
-        .quiz-btn:hover { border-color:var(--gold); background:var(--gold-light); }
-        .quiz-btn.passed { background:#d4edda; border-color:var(--green); color:var(--green); }
+        .cert-actions button:hover { transform:translateY(-2px); }
 
         /* ===== Toast ===== */
         .toast {
-            position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
-            background:var(--coffee-900); color:var(--foam); padding:12px 24px;
-            border-radius:8px; font-size:0.9rem; z-index:999;
-            opacity:0; transition:0.3s; pointer-events:none;
+            position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(20px);
+            background:var(--coffee-900); color:var(--foam); padding:14px 28px;
+            border-radius:var(--radius); font-size:0.9rem; z-index:999;
+            opacity:0; transition:0.4s cubic-bezier(0.4,0,0.2,1); pointer-events:none;
+            box-shadow:0 8px 30px rgba(0,0,0,0.3);
         }
-        .toast.show { opacity:1; }
+        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
         @media (max-width:600px) {
             .container { padding:12px; }
-            .auth-card { padding:24px; }
-            .lesson-screen { padding:20px; }
-            .lesson-screen .lesson-header { flex-direction:column; text-align:center; }
-            .welcome-card { flex-direction:column; text-align:center; }
+            .auth-card { padding:24px; margin:12px; }
+            .lesson-screen .lesson-hero { height:140px; }
+            .lesson-screen .lesson-body-wrap { padding:20px; }
+            .module-card { flex-direction:column; }
+            .module-card .module-side { width:100%; min-height:80px; flex-direction:row; padding:12px; }
+            .module-card .module-side .bg-img { opacity:0.1; }
+            .module-card .badge-wrap { flex-direction:row; padding:12px 20px; }
+            .hero-banner .hero-content { padding:24px 20px; flex-direction:column; text-align:center; }
+            .hero-banner .hero-text .greeting { font-size:1.2rem; }
+            .lesson-actions { flex-direction:column; }
+            .lesson-actions button { width:100%; }
         }
     </style>
 </head>
@@ -295,7 +453,8 @@
 
 <!-- ==================== SVG LOGO ==================== -->
 <svg style="display:none;" id="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="50" r="45" fill="#EDE0D4" stroke="#D4A85A" stroke-width="2"/>
+    <defs><linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#D4A85A"/><stop offset="100%" stop-color="#B8922E"/></linearGradient></defs>
+    <circle cx="50" cy="50" r="45" fill="#EDE0D4" stroke="url(#logo-grad)" stroke-width="2"/>
     <path d="M30 60 Q35 35 50 30 Q65 35 70 60" fill="none" stroke="#6D4C41" stroke-width="3" stroke-linecap="round"/>
     <path d="M35 60 Q40 45 50 40 Q60 45 65 60" fill="none" stroke="#3E2312" stroke-width="2" stroke-linecap="round"/>
     <circle cx="50" cy="30" r="5" fill="#D4A85A"/>
@@ -306,16 +465,16 @@
 <!-- ==================== AUTH ==================== -->
 <div id="authScreen" class="auth-screen">
     <div class="auth-card">
-        <div class="academy-logo">
+        <div class="logo-wrap">
             <svg width="80" height="80" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="#EDE0D4" stroke="#D4A85A" stroke-width="2"/>
+                <circle cx="50" cy="50" r="45" fill="#EDE0D4" stroke="url(#logo-grad)" stroke-width="2"/>
                 <path d="M30 60 Q35 35 50 30 Q65 35 70 60" fill="none" stroke="#6D4C41" stroke-width="3" stroke-linecap="round"/>
                 <path d="M35 60 Q40 45 50 40 Q60 45 65 60" fill="none" stroke="#3E2312" stroke-width="2" stroke-linecap="round"/>
                 <circle cx="50" cy="30" r="5" fill="#D4A85A"/>
                 <path d="M40 65 Q45 75 50 78 Q55 75 60 65" fill="none" stroke="#A67B5B" stroke-width="2"/>
             </svg>
         </div>
-        <h1>Lucca Academy</h1>
+        <h1>Esenza Academy</h1>
         <div class="subtitle">تدريب الباريستا — <span>من البداية للاحتراف</span></div>
         <div class="error" id="authError"></div>
         <input type="text" id="authName" placeholder="الاسم بالكامل" style="display:none;">
@@ -342,7 +501,7 @@
                 <path d="M30 60 Q35 35 50 30 Q65 35 70 60" fill="none" stroke="#6D4C41" stroke-width="3" stroke-linecap="round"/>
                 <circle cx="50" cy="30" r="4" fill="#D4A85A"/>
             </svg>
-            Lucca Academy
+            Esenza Academy
         </div>
         <div class="user-info">
             <span id="userDisplay"></span>
@@ -356,30 +515,41 @@
     <div class="container">
         <!-- Dashboard -->
         <div id="dashboard" class="dashboard">
-            <div class="welcome-card">
-                <div class="greeting">☕ صباح القهوة، <strong id="userNameDisplay"></strong>!</div>
-                <div style="font-size:0.9rem;color:var(--coffee-500);">
-                    <span id="statCompletedShort">0</span>/<span id="statTotalShort">0</span> درس مكتمل
+            <div class="hero-banner">
+                <img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=1000&q=80" alt="">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <div class="greeting">☕ صباح القهوة، <strong id="userNameDisplay"></strong>!</div>
+                        <div class="sub">أكاديمية تدريب الباريستا — من البداية إلى الاحتراف</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="num" id="statProgress">0%</div>
+                        <div class="label">تقدم الكورس</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="num" id="statProgress">0%</div>
-                    <div class="label">تقدم الكورس</div>
-                </div>
+            <div class="stats-row stagger">
                 <div class="stat-card">
                     <div class="num" id="statCompleted">0</div>
-                    <div class="label">دروس مكتملة</div>
+                    <div class="label">📚 دروس مكتملة</div>
                 </div>
                 <div class="stat-card">
                     <div class="num" id="statQuizPassed">0</div>
-                    <div class="label">اختبارات ناجحة</div>
+                    <div class="label">✅ اختبارات ناجحة</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num" id="statRemaining">0</div>
+                    <div class="label">📝 دروس متبقية</div>
                 </div>
             </div>
 
-            <h3>📚 مقرر الكورس</h3>
-            <div id="modulesList"></div>
+            <h3 style="display:flex;align-items:center;gap:8px;">📚 مقرر الكورس</h3>
+            <div id="modulesList" class="stagger"></div>
+            <div class="love-footer">
+                <p>☕ نحن نحب القهوة. ونحب أي شخص يحب القهوة. ❤️</p>
+                <p style="font-size:0.8rem;color:var(--coffee-400);margin-top:4px;">Esenza Academy — Professional Barista Training</p>
+            </div>
         </div>
 
         <!-- Lesson View -->
@@ -390,7 +560,7 @@
         <!-- Certificate View -->
         <div id="certView" style="display:none;">
             <div class="certificate">
-                <h1>Lucca Academy</h1>
+                <h1>Esenza Academy</h1>
                 <div class="seal">☕</div>
                 <p style="font-size:1.1rem;color:var(--coffee-500);">يشهد بأن</p>
                 <div class="name" id="certName"></div>
@@ -403,7 +573,7 @@
                 </p>
                 <div class="cert-actions">
                     <button class="btn-gold" onclick="printCert()">🖨️ طباعة الشهادة</button>
-                    <button onclick="backToDashboard()" style="padding:12px 24px;background:transparent;border:2px solid var(--gold);border-radius:8px;font-family:inherit;cursor:pointer;color:var(--gold);font-weight:700;">⬅ الرجوع</button>
+                    <button onclick="backToDashboard()" style="padding:12px 24px;background:transparent;border:2px solid var(--gold);border-radius:8px;font-family:inherit;cursor:pointer;color:var(--gold);font-weight:700;transition:0.3s;">⬅ الرجوع</button>
                 </div>
             </div>
         </div>
@@ -413,451 +583,10 @@
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<script src="academic-content.js"></script>
 <script>
 // ==================== Course Data ====================
-const COURSE = [
-    {
-        id: 'intro',
-        title: 'المقدمة — نشأة القهوة',
-        icon: '🌍',
-        emoji: '🌱',
-        desc: 'تاريخ القهوة، اكتشافها، انتشارها حول العالم',
-        lessons: [
-            {
-                title: 'أسطورة اكتشاف القهوة',
-                icon: '🐐',
-                body: `<p>تعود قصة اكتشاف القهوة إلى القرن التاسع في مرتفعات إثيوبيا. تقول الأسطورة أن الراعي "كالدي" لاحظ أن أغنامه أصبحت نشيطة ومرحة بعد أن أكلت ثماراً حمراء من شجيرة غريبة. جربها بنفسه، وشعر بالنشاط واليقظة، فأخبر الرهبان في الدير القريب، الذين صنعوا منها مشروباً ساعدهم على البقاء مستيقظين أثناء الصلوات الليلية.</p>
-                <div class="img-card">
-                    <svg width="180" height="120" viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="180" height="120" fill="#F7F2EB" rx="8"/>
-                        <circle cx="50" cy="55" r="18" fill="#6D4C41"/>
-                        <circle cx="50" cy="42" r="8" fill="#D4A85A"/>
-                        <path d="M35 55 Q38 60 50 63 Q62 60 65 55" fill="none" stroke="#3E2312" stroke-width="2"/>
-                        <line x1="80" y1="60" x2="100" y2="60" stroke="#C0B0A0" stroke-width="2"/>
-                        <circle cx="120" cy="55" r="15" fill="#A67B5B"/>
-                        <path d="M115 55 L125 40 L135 55" fill="none" stroke="#3E2312" stroke-width="2"/>
-                        <path d="M125 40 L125 30" stroke="#3E2312" stroke-width="2"/>
-                        <text x="90" y="100" text-anchor="middle" font-size="9" fill="#6D4C41">🇪🇹 إثيوبيا — المنشأ</text>
-                    </svg>
-                    <div class="caption">إثيوبيا هي الموطن الأصلي للبن العربي</div>
-                </div>
-                <div class="highlight">
-                <strong>💡 حقيقة:</strong> إثيوبيا هي الموطن الأصلي للبن العربي (Coffea Arabica)، ولا تزال تنتج بعضاً من أفضل أنواع القهوة في العالم.
-                </div>
-                <p>من إثيوبيا، انتقلت القهوة إلى اليمن حيث بدأت زراعتها تجارياً في القرن الخامس عشر. أطلق عليها اسم "القهوة" وهي كلمة عربية تعني "الشراب المنشط".</p>
-                <h3>انتشار القهوة حول العالم</h3>
-                <ul>
-                <li><strong>اليمن (القرن 15):</strong> أول زراعة تجارية — ميناء المخا أصبح مركزاً عالمياً للقهوة</li>
-                <li><strong>تركيا (القرن 16):</strong> أول مقاهي العالم — القهوة التركية أصبحت تراثاً</li>
-                <li><strong>أوروبا (القرن 17):</strong> المقاهي انتشرت في إيطاليا، فرنسا، إنجلترا</li>
-                <li><strong>أمريكا اللاتينية (القرن 18-19):</strong> البرازيل، كولومبيا — أكبر منتجي القهوة اليوم</li>
-                </ul>`
-            },
-            {
-                title: 'أنواع نبات البن',
-                icon: '🌿',
-                body: `<p>يوجد أكثر من 120 نوعاً من نبات البن، ولكن نوعين فقط يسيطران على السوق التجاري:</p>
-                <div class="img-card">
-                    <svg width="280" height="100" viewBox="0 0 280 100" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="130" height="90" fill="#EDE0D4" rx="8" x="5" y="5"/>
-                        <text x="70" y="25" text-anchor="middle" font-size="11" fill="#3E2312" font-weight="bold">Arabica</text>
-                        <circle cx="70" cy="55" r="12" fill="#A67B5B"/>
-                        <circle cx="60" cy="50" r="4" fill="#D4A85A"/>
-                        <circle cx="80" cy="50" r="4" fill="#D4A85A"/>
-                        <circle cx="70" cy="65" r="4" fill="#D4A85A"/>
-                        <text x="70" y="85" text-anchor="middle" font-size="8" fill="#6D4C41">60-70%</text>
-                        <rect width="130" height="90" fill="#F7F2EB" rx="8" x="145" y="5"/>
-                        <text x="210" y="25" text-anchor="middle" font-size="11" fill="#3E2312" font-weight="bold">Robusta</text>
-                        <circle cx="210" cy="55" r="14" fill="#6D4C41"/>
-                        <circle cx="205" cy="52" r="3" fill="#D4A85A"/>
-                        <circle cx="215" cy="52" r="3" fill="#D4A85A"/>
-                        <circle cx="210" cy="65" r="3" fill="#D4A85A"/>
-                        <text x="210" y="85" text-anchor="middle" font-size="8" fill="#6D4C41">30-40%</text>
-                    </svg>
-                    <div class="caption">البن العربي (أرابيكا) مقابل البن الروبوستا</div>
-                </div>
-                <h3>1. البن العربي (Arabica) — ☕ 60-70%</h3>
-                <ul>
-                <li>يُزرع في المرتفعات (600-2000 متر)</li>
-                <li>طعم معقد، حموضة مميزة، حلاوة طبيعية</li>
-                <li>أقل في الكافيين (1.2%)</li>
-                <li>أشهر الأنواع: Typica, Bourbon, Geisha, SL28</li>
-                </ul>
-                <h3>2. البن الروبوستا (Robusta) — ☕ 30-40%</h3>
-                <ul>
-                <li>يُزرع في المنخفضات (0-600 متر)</li>
-                <li>طعم قوي، مر، جسدي ثقيل</li>
-                <li>أعلى في الكافيين (2.2%)</li>
-                <li>يُستخدم غالباً في القهوة سريعة التحضير والإسبريسو التجاري</li>
-                </ul>`
-            },
-            {
-                title: 'حزام القهوة العالمي',
-                icon: '🌏',
-                body: `<p>تُزرع القهوة في منطقة تُعرف باسم "حزام القهوة" — بين مدار السرطان (23.5° شمالاً) ومدار الجدي (23.5° جنوباً).</p>
-                <div class="img-card">
-                    <svg width="320" height="120" viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="320" height="120" fill="#F7F2EB" rx="8"/>
-                        <rect x="20" y="20" width="280" height="80" fill="none" stroke="#D4A85A" stroke-width="2" rx="40"/>
-                        <text x="160" y="55" text-anchor="middle" font-size="9" fill="#3E2312">حزام القهوة (Coffee Belt)</text>
-                        <rect x="40" y="30" width="20" height="60" fill="#6D4C41" opacity="0.3" rx="2"/>
-                        <rect x="80" y="35" width="20" height="50" fill="#6D4C41" opacity="0.3" rx="2"/>
-                        <rect x="120" y="25" width="20" height="70" fill="#6D4C41" opacity="0.3" rx="2"/>
-                        <rect x="160" y="40" width="20" height="40" fill="#6D4C41" opacity="0.3" rx="2"/>
-                        <rect x="200" y="30" width="20" height="60" fill="#6D4C41" opacity="0.3" rx="2"/>
-                        <rect x="240" y="35" width="20" height="50" fill="#6D4C41" opacity="0.3" rx="2"/>
-                        <text x="50" y="105" text-anchor="middle" font-size="7" fill="#6D4C41">أمريكا</text>
-                        <text x="130" y="105" text-anchor="middle" font-size="7" fill="#6D4C41">أفريقيا</text>
-                        <text x="210" y="105" text-anchor="middle" font-size="7" fill="#6D4C41">آسيا</text>
-                    </svg>
-                    <div class="caption">منطقة حزام القهوة العالمية</div>
-                </div>`
-            }
-        ],
-        quiz: [
-            { q: 'ما هو الموطن الأصلي للبن العربي (Coffea Arabica)؟', opts: ['اليمن', 'إثيوبيا', 'البرازيل', 'كولومبيا'], ans: 1 },
-            { q: 'ما هي النسبة المئوية للبن العربي من الإنتاج العالمي؟', opts: ['30-40%', '50-60%', '60-70%', '80-90%'], ans: 2 },
-            { q: 'أين ظهرت أول المقاهي في العالم؟', opts: ['إيطاليا', 'فرنسا', 'تركيا', 'اليمن'], ans: 2 },
-            { q: 'ما معنى كلمة "القهوة" في اللغة العربية؟', opts: ['الشراب الساخن', 'الشراب المنشط', 'البن المطحون', 'المشروب المر'], ans: 1 },
-            { q: 'أي نوع بن يحتوي على كافيين أكثر؟', opts: ['أرابيكا', 'روبوستا', 'ليبيريكا', 'نفس النسبة'], ans: 1 }
-        ]
-    },
-    {
-        id: 'processing',
-        title: 'طرق صناعة البن',
-        icon: '🏭',
-        emoji: '⚙️',
-        desc: 'من الثمرة إلى الكوب — مراحل المعالجة والتحميص والطحن',
-        lessons: [
-            {
-                title: 'مراحل معالجة القهوة',
-                icon: '🌧️',
-                body: `<p>بعد حصاد ثمار القهوة (الكرز)، يجب فصل الحبة عن الثمرة. هناك ثلاث طرق رئيسية:</p>
-                <div class="img-card">
-                    <svg width="300" height="100" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0" y="10" width="95" height="80" fill="#EDE0D4" rx="8"/>
-                        <text x="47" y="30" text-anchor="middle" font-size="9" fill="#3E2312" font-weight="bold">طبيعي</text>
-                        <text x="47" y="42" text-anchor="middle" font-size="7" fill="#6D4C41">☀️ تجفيف</text>
-                        <text x="47" y="54" text-anchor="middle" font-size="7" fill="#6D4C41">بالشمس</text>
-                        <text x="47" y="72" text-anchor="middle" font-size="7" fill="#A67B5B">فاكهي</text>
-                        <rect x="102" y="10" width="95" height="80" fill="#F7F2EB" rx="8"/>
-                        <text x="149" y="30" text-anchor="middle" font-size="9" fill="#3E2312" font-weight="bold">مغسول</text>
-                        <text x="149" y="42" text-anchor="middle" font-size="7" fill="#6D4C41">💧 إزالة</text>
-                        <text x="149" y="54" text-anchor="middle" font-size="7" fill="#6D4C41">الميوسيلاج</text>
-                        <text x="149" y="72" text-anchor="middle" font-size="7" fill="#A67B5B">نظيف</text>
-                        <rect x="204" y="10" width="95" height="80" fill="#EDE0D4" rx="8"/>
-                        <text x="251" y="30" text-anchor="middle" font-size="9" fill="#3E2312" font-weight="bold">عسل</text>
-                        <text x="251" y="42" text-anchor="middle" font-size="7" fill="#6D4C41">🍯 تجفيف</text>
-                        <text x="251" y="54" text-anchor="middle" font-size="7" fill="#6D4C41">ببقايا</text>
-                        <text x="251" y="72" text-anchor="middle" font-size="7" fill="#A67B5B">متوازن</text>
-                    </svg>
-                    <div class="caption">طرق المعالجة: الطبيعي — المغسول — العسل</div>
-                </div>`
-            },
-            {
-                title: 'التحميص — العلم والفن',
-                icon: '🔥',
-                body: `<p>التحميص هو تحويل البن الأخضر إلى بن محمص جاهز. خلال التحميص، تحدث تفاعلات كيميائية أهمها تفاعل ميلارد.</p>
-                <div class="img-card">
-                    <svg width="300" height="100" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="40" cy="50" r="14" fill="#A67B5B"/>
-                        <text x="40" y="54" text-anchor="middle" font-size="7" fill="white">أخضر</text>
-                        <line x1="58" y1="50" x2="78" y2="50" stroke="#C0B0A0" stroke-width="2" stroke-dasharray="4"/>
-                        <circle cx="100" cy="50" r="14" fill="#8B6914"/>
-                        <text x="100" y="54" text-anchor="middle" font-size="7" fill="white">فاتح</text>
-                        <line x1="118" y1="50" x2="138" y2="50" stroke="#C0B0A0" stroke-width="2" stroke-dasharray="4"/>
-                        <circle cx="160" cy="50" r="14" fill="#6D4C41"/>
-                        <text x="160" y="54" text-anchor="middle" font-size="7" fill="white">متوسط</text>
-                        <line x1="178" y1="50" x2="198" y2="50" stroke="#C0B0A0" stroke-width="2" stroke-dasharray="4"/>
-                        <circle cx="220" cy="50" r="14" fill="#2A1508"/>
-                        <text x="220" y="54" text-anchor="middle" font-size="7" fill="white">داكن</text>
-                        <line x1="238" y1="50" x2="258" y2="50" stroke="#C0B0A0" stroke-width="2" stroke-dasharray="4"/>
-                        <circle cx="278" cy="50" r="10" fill="#1A0F0A"/>
-                        <text x="278" y="54" text-anchor="middle" font-size="6" fill="white">حراق</text>
-                    </svg>
-                    <div class="caption">درجات التحميص: من الأخضر إلى الداكن جداً</div>
-                </div>
-                <h3>درجات التحميص:</h3>
-                <ul>
-                <li><strong>فاتح (Light):</strong> يحتفظ بالنكهات الأصلية، حموضة عالية — للقهوة المختصة</li>
-                <li><strong>متوسط (Medium):</strong> توازن بين الحموضة والجسدي — أشهر درجة</li>
-                <li><strong>داكن (Dark):</strong> نكهة دخانية، يخفي النكهات الأصلية</li>
-                </ul>`
-            },
-            {
-                title: 'الطحن — المفتاح المنسي',
-                icon: '⚙️',
-                body: `<p>الطحن يؤثر على سرعة استخراج النكهة. كلما كان الطحن أدق، زادت مساحة السطح وزادت سرعة الاستخراج.</p>
-                <div class="img-card">
-                    <svg width="300" height="100" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="10" y="10" width="70" height="80" fill="#EDE0D4" rx="6"/>
-                        <text x="45" y="30" text-anchor="middle" font-size="8" fill="#3E2312">ناعم</text>
-                        <text x="45" y="42" text-anchor="middle" font-size="6" fill="#6D4C41">إسبريسو</text>
-                        <circle cx="30" cy="60" r="3" fill="#A67B5B"/>
-                        <circle cx="45" cy="63" r="3" fill="#A67B5B"/>
-                        <circle cx="60" cy="58" r="3" fill="#A67B5B"/>
-
-                        <rect x="110" y="10" width="70" height="80" fill="#F7F2EB" rx="6"/>
-                        <text x="145" y="30" text-anchor="middle" font-size="8" fill="#3E2312">متوسط</text>
-                        <text x="145" y="42" text-anchor="middle" font-size="6" fill="#6D4C41">Drip/Pour-over</text>
-                        <circle cx="130" cy="60" r="5" fill="#A67B5B"/>
-                        <circle cx="145" cy="65" r="5" fill="#A67B5B"/>
-                        <circle cx="160" cy="58" r="5" fill="#A67B5B"/>
-
-                        <rect x="210" y="10" width="80" height="80" fill="#EDE0D4" rx="6"/>
-                        <text x="250" y="30" text-anchor="middle" font-size="8" fill="#3E2312">خشن</text>
-                        <text x="250" y="42" text-anchor="middle" font-size="6" fill="#6D4C41">French Press</text>
-                        <circle cx="230" cy="60" r="8" fill="#A67B5B"/>
-                        <circle cx="250" cy="65" r="8" fill="#A67B5B"/>
-                        <circle cx="270" cy="58" r="8" fill="#A67B5B"/>
-                    </svg>
-                    <div class="caption">درجات الطحن حسب طريقة التحضير</div>
-                </div>`
-            }
-        ],
-        quiz: [
-            { q: 'ما هي طريقة المعالجة التي تعطي نكهة فاكهية؟', opts: ['المغسولة', 'الطبيعية', 'بالعسل', 'كلها نفس النتيجة'], ans: 1 },
-            { q: 'ما اسم التفاعل الكيميائي الرئيسي أثناء التحميص؟', opts: ['البناء الضوئي', 'ميلارد', 'الأكسدة', 'التخمر'], ans: 1 },
-            { q: 'أي درجة تحميص مناسبة للقهوة المختصة؟', opts: ['داكن', 'فاتح', 'حراق', 'أي درجة'], ans: 1 },
-            { q: 'كلما زاد وقت التخمير، كلما كان الطحن...', opts: ['أنعم', 'أخشن', 'أثقل', 'أخف'], ans: 1 },
-            { q: 'ما هي درجة الطحن المناسبة للإسبريسو؟', opts: ['خشن', 'متوسط', 'ناعم', 'ناعم جداً'], ans: 2 }
-        ]
-    },
-    {
-        id: 'drinks',
-        title: 'مشروبات القهوة',
-        icon: '☕',
-        emoji: '🍵',
-        desc: 'الإسبريسو، الكابتشينو، اللاتيه، وكل المشروبات الشهيرة',
-        lessons: [
-            {
-                title: 'الإسبريسو — قلب عالم القهوة',
-                icon: '💧',
-                body: `<p>الإسبريسو هو أساس معظم مشروبات القهوة الحديثة. طريقة تحضير إيطالية تعتمد على ضغط الماء الساخن عبر قهوة مطحونة ناعماً.</p>
-                <div class="img-card">
-                    <svg width="120" height="140" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="30" y="20" width="60" height="100" fill="#EDE0D4" rx="4"/>
-                        <rect x="35" y="25" width="50" height="90" fill="#F7F2EB" rx="2"/>
-                        <rect x="35" y="95" width="50" height="15" fill="#6D4C41" rx="2"/>
-                        <rect x="35" y="80" width="50" height="10" fill="#A67B5B" rx="2"/>
-                        <rect x="35" y="70" width="50" height="8" fill="#D4A85A" rx="2"/>
-                        <text x="60" y="65" text-anchor="middle" font-size="7" fill="#3E2312">Crema</text>
-                        <text x="60" y="90" text-anchor="middle" font-size="7" fill="white">Body</text>
-                        <text x="60" y="108" text-anchor="middle" font-size="7" fill="white">Heart</text>
-                        <rect x="40" y="5" width="40" height="18" fill="#3E2312" rx="4"/>
-                        <rect x="55" y="8" width="10" height="12" fill="#D4A85A" rx="5"/>
-                    </svg>
-                    <div class="caption">طبقات الإسبريسو: كريما — جسم — قلب</div>
-                </div>
-                <h3>مكونات الإسبريسو المثالي:</h3>
-                <ul>
-                <li><strong>جرعة:</strong> 18 جرام بن ← 36 جرام إسبريسو (نسبة 1:2)</li>
-                <li><strong>زمن:</strong> 25-30 ثانية</li>
-                <li><strong>ضغط:</strong> 9 بار — درجة حرارة 92-96°C</li>
-                </ul>`
-            },
-            {
-                title: 'المشروبات الكلاسيكية',
-                icon: '📋',
-                body: `<div class="img-card">
-                    <svg width="300" height="80" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="5" y="14" width="20" height="55" fill="#6D4C41" rx="3"/>
-                        <text x="15" y="76" text-anchor="middle" font-size="7" fill="#6D4C41">espresso</text>
-                        <rect x="45" y="20" width="20" height="49" fill="#8B6914" rx="3"/>
-                        <text x="55" y="76" text-anchor="middle" font-size="7" fill="#6D4C41">americano</text>
-                        <rect x="85" y="10" width="22" height="59" fill="#A67B5B" rx="3"/>
-                        <rect x="85" y="10" width="22" height="22" fill="#EDE0D4" rx="3"/>
-                        <text x="96" y="76" text-anchor="middle" font-size="7" fill="#6D4C41">cappuccino</text>
-                        <rect x="125" y="15" width="22" height="54" fill="#A67B5B" rx="3"/>
-                        <rect x="125" y="15" width="22" height="8" fill="#EDE0D4" rx="3"/>
-                        <text x="136" y="76" text-anchor="middle" font-size="7" fill="#6D4C41">latte</text>
-                        <rect x="165" y="18" width="22" height="51" fill="#A67B5B" rx="3"/>
-                        <text x="176" y="76" text-anchor="middle" font-size="7" fill="#6D4C41">flat white</text>
-                        <rect x="205" y="15" width="22" height="54" fill="#A67B5B" rx="3"/>
-                        <rect x="205" y="15" width="22" height="15" fill="#6D4C41" rx="3"/>
-                        <text x="216" y="76" text-anchor="middle" font-size="7" fill="#6D4C41">mocha</text>
-                        <rect x="245" y="22" width="44" height="47" fill="#6D4C41" rx="3"/>
-                        <rect x="245" y="22" width="44" height="8" fill="#EDE0D4" rx="3"/>
-                        <text x="267" y="76" text-anchor="middle" font-size="7" fill="#6D4C41">macchiato</text>
-                    </svg>
-                    <div class="caption">المشروبات الكلاسيكية — كل منها له نسب محددة</div>
-                </div>
-                <h3>النسب القياسية:</h3>
-                <ul>
-                <li><strong>إسبريسو:</strong> 30 مل</li>
-                <li><strong>أمريكانو:</strong> إسبريسو + ماء ساخن (1:3)</li>
-                <li><strong>كابتشينو:</strong> 30 إسبريسو + 60 حليب مبخر + 60 رغوة</li>
-                <li><strong>لاتيه:</strong> 30 إسبريسو + 150 حليب مبخر + رغوة خفيفة</li>
-                <li><strong>فلتو وايت:</strong> 60 إسبريسو + 120 حليب مبخر ناعم</li>
-                <li><strong>موكا:</strong> إسبريسو + شوكولاتة + حليب + كريمة</li>
-                </ul>`
-            },
-            {
-                title: 'تبخير الحليب — فن اللاتيه',
-                icon: '🥛',
-                body: `<p>الميكروفوم (Microfoam) هو سر اللاتيه ارت — حليب حريري ناعم بقوام كريمي.</p>
-                <div class="img-card">
-                    <svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M60 20 L60 100 Q60 115 80 115 L130 115 Q150 115 150 100 L150 20 Z" fill="#F7F2EB" stroke="#C0B0A0" stroke-width="2"/>
-                        <path d="M150 20 L150 15 Q150 5 165 5 L175 5 Q185 5 185 15 L185 25" fill="none" stroke="#6D4C41" stroke-width="3"/>
-                        <path d="M60 35 L150 35" stroke="#E8CC8A" stroke-width="2" opacity="0.5"/>
-                        <path d="M60 55 L150 55" stroke="#E8CC8A" stroke-width="2" opacity="0.5"/>
-                        <path d="M60 75 L150 75" stroke="#E8CC8A" stroke-width="2" opacity="0.5"/>
-                        <text x="105" y="75" text-anchor="middle" font-size="8" fill="#A67B5B">🥛 حليب</text>
-                        <ellipse cx="105" cy="42" rx="35" ry="12" fill="#EDE0D4" opacity="0.8"/>
-                        <text x="105" y="46" text-anchor="middle" font-size="7" fill="#6D4C41">رغوة</text>
-                    </svg>
-                    <div class="caption">الحليب المبخر — الميكروفوم الناعم</div>
-                </div>
-                <h3>الخطوات:</h3>
-                <ul>
-                <li>استخدم حليب بارد جداً (4°C)</li>
-                <li>ضع البخاخ تحت سطح الحليب — افتح بالكامل</li>
-                <li>اسمع صوت التشقق (Stretching) لمدة 2-3 ثواني</li>
-                <li>اخفض الكأس لما تصل درجة 60-65°C — لا تغلي!</li>
-                </ul>`
-            }
-        ],
-        quiz: [
-            { q: 'ما هي نسبة جرعة البن إلى ناتج الإسبريسو المثالية؟', opts: ['1:1', '1:2', '2:1', '1:3'], ans: 1 },
-            { q: 'كم درجة حرارة الحليب المثالية للتبخير؟', opts: ['50-55°C', '60-65°C', '70-75°C', '80-85°C'], ans: 1 },
-            { q: 'أي مشروب يحتوي على أكبر كمية حليب؟', opts: ['إسبريسو', 'كابتشينو', 'لاتيه', 'فلتو وايت'], ans: 2 },
-            { q: 'ما هو ضغط الإسبريسو المثالي؟', opts: ['5 بار', '7 بار', '9 بار', '11 بار'], ans: 2 },
-            { q: 'الطبقة الذهبية على وجه الإسبريسو تسمى...', opts: ['Body', 'Heart', 'Crema', 'Foam'], ans: 2 }
-        ]
-    },
-    {
-        id: 'specialty',
-        title: 'القهوة التجارية vs المختصة',
-        icon: '🏆',
-        emoji: '⭐',
-        desc: 'الفرق بين Specialty Coffee والقهوة العادية — المعايير والتقييم',
-        lessons: [
-            {
-                title: 'ما هي القهوة المختصة؟',
-                icon: '🏅',
-                body: `<p>القهوة المختصة (Specialty Coffee) هي القهوة التي تحصل على <strong>80 نقطة أو أكثر</strong> على مقياس SCA. تمثل فقط <strong>3%</strong> من إنتاج القهوة العالمي.</p>
-                <div class="img-card">
-                    <svg width="300" height="100" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="10" y="20" width="40" height="60" fill="#E74C3C" rx="4"/>
-                        <text x="30" y="95" text-anchor="middle" font-size="8" fill="#6D4C41">تجاري</text>
-                        <text x="30" y="55" text-anchor="middle" font-size="10" fill="white" font-weight="bold">97%</text>
-                        <rect x="70" y="40" width="40" height="40" fill="#D4A85A" rx="4"/>
-                        <text x="90" y="95" text-anchor="middle" font-size="8" fill="#6D4C41">ممتاز</text>
-                        <rect x="130" y="30" width="40" height="50" fill="#A67B5B" rx="4"/>
-                        <text x="150" y="95" text-anchor="middle" font-size="8" fill="#6D4C41">خاص</text>
-                        <rect x="190" y="25" width="50" height="55" fill="#27AE60" rx="4"/>
-                        <text x="215" y="95" text-anchor="middle" font-size="8" fill="#6D4C41">مختصة</text>
-                        <text x="215" y="55" text-anchor="middle" font-size="10" fill="white" font-weight="bold">3%</text>
-                        <line x1="190" y1="10" x2="190" y2="5" stroke="#27AE60" stroke-width="2"/>
-                        <line x1="240" y1="10" x2="240" y2="5" stroke="#27AE60" stroke-width="2"/>
-                        <line x1="190" y1="5" x2="240" y2="5" stroke="#27AE60" stroke-width="2"/>
-                        <text x="215" y="10" text-anchor="middle" font-size="7" fill="#27AE60">80+</text>
-                    </svg>
-                    <div class="caption">3% فقط من إنتاج القهوة العالمي هو Specialty</div>
-                </div>
-                <h3>معايير التقييم SCA (80-100 نقطة):</h3>
-                <ul>
-                <li>الرائحة (Aroma) — النكهة (Flavor) — الحموضة (Acidity)</li>
-                <li>الجسدي (Body) — القوام (Mouthfeel) — الحلاوة (Sweetness)</li>
-                <li>النظافة (Clean Cup) — التوازن (Balance) — الإجمالي (Overall)</li>
-                </ul>`
-            },
-            {
-                title: 'الفرق بين التجارية والمختصة',
-                icon: '⚖️',
-                body: `<table>
-                <tr><th>العنصر</th><th>تجارية</th><th>مختصة</th></tr>
-                <tr><td>النوع</td><td>روبوستا غالباً</td><td>أرابيكا حصراً</td></tr>
-                <tr><td>الارتفاع</td><td>منخفض</td><td>عالٍ (1200+ متر)</td></tr>
-                <tr><td>التحميص</td><td>داكن — يخفي العيوب</td><td>فاتح/متوسط — يظهر النكهات</td></tr>
-                <tr><td>النكهة</td><td>مر، دخاني، موحد</td><td>متنوع (فاكهي، زهري، شوكولاتي)</td></tr>
-                <tr><td>السعر</td><td>رخيص</td><td>غالي — جودة أعلى + إنتاج محدود</td></tr>
-                <tr><td>التعقب</td><td>مش معروف المصدر</td><td>قابل للتتبع (من المزرعة للكوب)</td></tr>
-                </table>`
-            }
-        ],
-        quiz: [
-            { q: 'كم نقطة تحتاج القهوة عشان تكون Specialty على مقياس SCA؟', opts: ['70+', '75+', '80+', '90+'], ans: 2 },
-            { q: 'ما نسبة القهوة المختصة من الإنتاج العالمي؟', opts: ['1%', '3%', '10%', '25%'], ans: 1 },
-            { q: 'أي درجة تحميص تستخدم عادة للقهوة المختصة؟', opts: ['داكن', 'فاتح/متوسط', 'حراق', 'أي درجة'], ans: 1 },
-            { q: 'ما معنى كلمة "Specialty" في سياق القهوة؟', opts: ['غالية الثمن', 'قابلة للتتبع وعالية الجودة', 'مستوردة', 'محضرة بطريقة خاصة'], ans: 1 },
-            { q: 'أي نوع بن يستخدم في القهوة المختصة حصراً؟', opts: ['روبوستا', 'أرابيكا', 'ليبيريكا', 'خليط'], ans: 1 }
-        ]
-    },
-    {
-        id: 'barista',
-        title: 'مهارات الباريستا المحترف',
-        icon: '👨‍🍳',
-        emoji: '🎯',
-        desc: 'التقنيات المتقدمة — التذوق، اللاتيه ارت، صيانة الماكينة',
-        lessons: [
-            {
-                title: 'التذوق الاحترافي — Cupping',
-                icon: '👅',
-                body: `<p>الكَبّنغ (Cupping) هو طريقة تقييم القهوة المعتمدة من SCA. يستخدمها المحمصون والمستوردون لتحديد الجودة.</p>
-                <div class="img-card">
-                    <svg width="280" height="80" viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="30" cy="40" r="18" fill="#EDE0D4" stroke="#A67B5B" stroke-width="2"/>
-                        <circle cx="80" cy="40" r="18" fill="#EDE0D4" stroke="#A67B5B" stroke-width="2"/>
-                        <circle cx="130" cy="40" r="18" fill="#EDE0D4" stroke="#A67B5B" stroke-width="2"/>
-                        <circle cx="180" cy="40" r="18" fill="#EDE0D4" stroke="#A67B5B" stroke-width="2"/>
-                        <circle cx="230" cy="40" r="18" fill="#EDE0D4" stroke="#A67B5B" stroke-width="2"/>
-                        <circle cx="30" cy="35" r="10" fill="#A67B5B"/>
-                        <circle cx="80" cy="37" r="10" fill="#8B6914"/>
-                        <circle cx="130" cy="33" r="10" fill="#6D4C41"/>
-                        <circle cx="180" cy="36" r="10" fill="#D4A85A"/>
-                        <circle cx="230" cy="34" r="10" fill="#A67B5B"/>
-                    </svg>
-                    <div class="caption">الكبنغ — تذوق وتقييم القهوة احترافياً</div>
-                </div>`
-            },
-            {
-                title: 'اللاتيه ارت — فن الرسم بالحليب',
-                icon: '🎨',
-                body: `<p>اللاتيه ارت يحتاج ميكروفوم ناعم وإسبريسو مثالي. الممارسة اليومية هي المفتاح.</p>
-                <div class="img-card">
-                    <svg width="200" height="100" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
-                        <ellipse cx="100" cy="60" rx="70" ry="35" fill="#F7F2EB" stroke="#C0B0A0" stroke-width="2"/>
-                        <path d="M100 55 Q90 45 85 50 Q80 55 90 60" fill="#D4A85A" opacity="0.6"/>
-                        <path d="M100 55 Q110 45 115 50 Q120 55 110 60" fill="#D4A85A" opacity="0.6"/>
-                        <path d="M100 55 L100 70 L110 65 Z" fill="#D4A85A" opacity="0.4"/>
-                        <text x="100" y="95" text-anchor="middle" font-size="8" fill="#6D4C41">❤️ لاتيه ارت — قلب</text>
-                    </svg>
-                    <div class="caption">أبسط شكل: القلب (Heart)</div>
-                </div>`
-            },
-            {
-                title: 'صيانة ماكينة الإسبريسو',
-                icon: '🔧',
-                body: `<p>صيانة يومية = ماكينة تدوم سنين + إسبريسو بجودة ثابتة.</p>
-                <h3>✅ يومياً:</h3>
-                <ul>
-                <li>Backflush بالماء الساخن</li>
-                <li>مسح البخاخ فور الانتهاء</li>
-                <li>تفريغ صينية التنقيط</li>
-                </ul>
-                <h3>📅 أسبوعياً:</h3>
-                <ul>
-                <li>Backflush بمنظف (Puly Caff)</li>
-                <li>نقع أطراف البخاخ</li>
-                </ul>
-                <h3>📆 شهرياً:</h3>
-                <ul>
-                <li>تغيير فلتر المياه</li>
-                <li>إزالة الكلس (Descaling)</li>
-                </ul>`
-            }
-        ],
-        quiz: [
-            { q: 'ما اسم طريقة التذوق الاحترافية للقهوة؟', opts: ['تذوق', 'كبنغ', 'سلورب', 'اختبار'], ans: 1 },
-            { q: 'كم مرة يجب عمل Backflush بمنظف؟', opts: ['يومياً', 'أسبوعياً', 'شهرياً', 'سنوياً'], ans: 1 },
-            { q: 'السر في اللاتيه ارت الناجح هو...', opts: ['بن غالي', 'ميكروفوم ناعم', 'ماكينة غالية', 'حليب كامل الدسم'], ans: 1 },
-            { q: 'أي شكل هو أبسط أشكال اللاتيه ارت؟', opts: ['روزيتا', 'توليب', 'قلب', 'بجعة'], ans: 2 },
-            { q: 'ما درجة الحرارة القصوى للحليب قبل ما يفسد؟', opts: ['55°C', '65°C', '75°C', '85°C'], ans: 1 }
-        ]
-    }
-];
+const COURSE = window.COURSE;
 
 // ==================== Database ====================
 const DB_NAME = 'lucca_academy_db';
@@ -974,6 +703,7 @@ async function handleAuth() {
         errorEl.style.display = 'none';
         document.getElementById('authScreen').style.display = 'none';
         document.getElementById('appScreen').style.display = 'block';
+        document.getElementById('appScreen').style.animation = 'fadeIn 0.5s ease';
         await loadDashboard();
     } catch(e) {
         errorEl.textContent = '⚠️ خطأ: ' + e.message;
@@ -988,6 +718,28 @@ function logout() {
     document.getElementById('authUser').value = '';
     document.getElementById('authPass').value = '';
     document.getElementById('authName').value = '';
+}
+
+// Confetti effect
+function fireConfetti() {
+    const colors = ['#D4A85A', '#E8CC8A', '#27AE60', '#E74C3C', '#3E2312', '#A67B5B'];
+    const container = document.createElement('div');
+    container.className = 'confetti-container';
+    for (let i = 0; i < 40; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + '%';
+        c.style.top = '40%';
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.width = (Math.random() * 6 + 4) + 'px';
+        c.style.height = (Math.random() * 6 + 4) + 'px';
+        c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        c.style.animationDelay = (Math.random() * 0.5) + 's';
+        c.style.animationDuration = (Math.random() * 0.8 + 1) + 's';
+        container.appendChild(c);
+    }
+    document.body.appendChild(container);
+    setTimeout(() => container.remove(), 2500);
 }
 
 // ==================== Dashboard ====================
@@ -1008,8 +760,7 @@ async function loadDashboard() {
     document.getElementById('statProgress').textContent = pct + '%';
     document.getElementById('statCompleted').textContent = completedCount;
     document.getElementById('statQuizPassed').textContent = allQuiz.filter(q => q.passed).length;
-    document.getElementById('statCompletedShort').textContent = completedCount;
-    document.getElementById('statTotalShort').textContent = totalLessons;
+    document.getElementById('statRemaining').textContent = totalLessons - completedCount;
     document.getElementById('globalProgressBar').style.width = pct + '%';
 
     let html = '';
@@ -1021,8 +772,21 @@ async function loadDashboard() {
         const quizPassed = allQuiz.some(q => q.moduleId === mod.id && q.passed);
         if (!modDone) overallCompleted = false;
 
+        const bgImages = [
+            'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=200&q=60',
+            'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=200&q=60',
+            'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=200&q=60',
+            'https://images.unsplash.com/photo-1514432324607-a09d9b4aefda?w=200&q=60',
+            'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=200&q=60'
+        ];
+
         html += `<div class="module-card ${modDone ? 'completed' : ''}" onclick="openLesson(${mi}, 0)">
-            <div class="module-icon">${mod.icon}</div>
+            <div class="module-side">
+                <img class="bg-img" src="${bgImages[mi % bgImages.length]}" alt="" loading="lazy">
+                <div class="overlay"></div>
+                <div class="module-icon">${mod.icon}</div>
+                <div class="module-num">الموديول ${mi+1}</div>
+            </div>
             <div class="info">
                 <h4>${mod.title}</h4>
                 <p>${mod.desc} — ${mod.lessons.length} دروس</p>
@@ -1036,8 +800,10 @@ async function loadDashboard() {
                     ${quizPassed ? '✅' : '📝'} اختبار الموديول
                 </span>
             </div>
-            <div class="badge ${modDone ? 'done' : ''}">
-                ${modDone ? '✅ مكتمل' : `${mod.lessons.filter((_, li) => modProgress.some(p => p.lessonId === `${mod.id}-${li}` && p.completed)).length}/${mod.lessons.length}`}
+            <div class="badge-wrap">
+                <div class="badge ${modDone ? 'done' : ''}">
+                    ${modDone ? '✅ مكتمل' : `${mod.lessons.filter((_, li) => modProgress.some(p => p.lessonId === `${mod.id}-${li}` && p.completed)).length}/${mod.lessons.length}`}
+                </div>
             </div>
         </div>`;
     });
@@ -1047,8 +813,8 @@ async function loadDashboard() {
         const allQuizPassed = COURSE.every(m => allQuiz.some(q => q.moduleId === m.id && q.passed));
         if (allQuizPassed) {
             document.getElementById('modulesList').insertAdjacentHTML('beforeend',
-                `<div style="text-align:center;margin:24px 0;">
-                    <button class="btn-gold" onclick="showCertificate()" style="padding:16px 48px;border:none;border-radius:8px;font-family:inherit;font-weight:700;cursor:pointer;font-size:1.2rem;">🎓 استلام الشهادة</button>
+                `<div class="cert-cta">
+                    <button onclick="showCertificate()">🎓 استلام الشهادة</button>
                 </div>`);
         } else {
             document.getElementById('modulesList').insertAdjacentHTML('beforeend',
@@ -1062,6 +828,14 @@ async function loadDashboard() {
 }
 
 // ==================== Lessons ====================
+const lessonBgImages = [
+    'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80',
+    'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80',
+    'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80',
+    'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&q=80',
+    'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80',
+];
+
 function openLesson(modIdx, lesIdx) {
     const mod = COURSE[modIdx];
     const les = mod.lessons[lesIdx];
@@ -1072,27 +846,32 @@ function openLesson(modIdx, lesIdx) {
     const hasNext = lesIdx < mod.lessons.length - 1;
 
     el.innerHTML = `
-        <div class="back" onclick="backToDashboard()">⬅ الرجوع للوحة</div>
-        <div class="lesson-header">
-            <div class="lesson-icon">${les.icon || '📖'}</div>
-            <h2>${les.title}</h2>
+        <div class="lesson-hero">
+            <img src="${lessonBgImages[modIdx % lessonBgImages.length]}" alt="">
+            <div class="hero-overlay"></div>
+            <div class="hero-text">
+                <div class="breadcrumb">${mod.icon} ${mod.title} — درس ${lesIdx + 1} من ${mod.lessons.length}</div>
+                <h2>${les.title}</h2>
+            </div>
         </div>
-        <div class="meta">${mod.icon} ${mod.title} — درس ${lesIdx + 1} من ${mod.lessons.length}</div>
-        <div class="content">${les.body}</div>
-        <div class="refs">
-            <strong>📚 تعلم أكثر:</strong>
-            <a href="https://sca.coffee" target="_blank">SCA</a> ·
-            <a href="https://baristahustle.com" target="_blank">Barista Hustle</a> ·
-            <a href="https://worldcoffeeresearch.org" target="_blank">World Coffee Research</a> ·
-            <a href="https://coffeecollective.dk" target="_blank">Coffee Collective</a>
-        </div>
-        <div class="lesson-actions">
-            ${hasPrev ? `<button class="btn-prev" onclick="openLesson(${modIdx}, ${lesIdx - 1})">⬅ الدرس السابق</button>` : ''}
-            <button class="btn-complete" id="completeBtn" onclick="completeLesson(${modIdx}, ${lesIdx})" ${isCompleted ? 'disabled' : ''}>
-                ${isCompleted ? '✅ تم الإكمال' : '✔ أكملت هذا الدرس'}
-            </button>
-            ${hasNext ? `<button class="btn-next" onclick="openLesson(${modIdx}, ${lesIdx + 1})">الدرس التالي ⬅</button>` : ''}
-            ${!hasNext ? `<button class="btn-next" onclick="openQuiz(${modIdx})">📝 اختبار الموديول ⬅</button>` : ''}
+        <div class="lesson-body-wrap">
+            <div class="back" onclick="backToDashboard()">⬅ الرجوع للوحة</div>
+            <div class="content">${les.body}</div>
+            <div class="refs">
+                <strong>📚 تعلم أكثر:</strong>
+                <a href="https://sca.coffee" target="_blank">SCA</a> ·
+                <a href="https://baristahustle.com" target="_blank">Barista Hustle</a> ·
+                <a href="https://worldcoffeeresearch.org" target="_blank">World Coffee Research</a> ·
+                <a href="https://coffeecollective.dk" target="_blank">Coffee Collective</a>
+            </div>
+            <div class="lesson-actions">
+                ${hasPrev ? `<button class="btn-prev" onclick="openLesson(${modIdx}, ${lesIdx - 1})">⬅ الدرس السابق</button>` : ''}
+                <button class="btn-complete" id="completeBtn" onclick="completeLesson(${modIdx}, ${lesIdx})" ${isCompleted ? 'disabled' : ''}>
+                    ${isCompleted ? '✅ تم الإكمال' : '✔ أكملت هذا الدرس'}
+                </button>
+                ${hasNext ? `<button class="btn-next" onclick="openLesson(${modIdx}, ${lesIdx + 1})">الدرس التالي ⬅</button>` : ''}
+                ${!hasNext ? `<button class="btn-next" onclick="openQuiz(${modIdx})">📝 اختبار الموديول ⬅</button>` : ''}
+            </div>
         </div>
     `;
 
@@ -1119,6 +898,7 @@ async function completeLesson(modIdx, lesIdx) {
         showToast('✅ تم حفظ التقدم');
         document.getElementById('completeBtn').disabled = true;
         document.getElementById('completeBtn').textContent = '✅ تم الإكمال';
+        fireConfetti();
     } catch(e) { showToast('❌ خطأ في الحفظ'); }
 }
 
@@ -1145,20 +925,27 @@ function openQuiz(modIdx) {
     `).join('');
 
     el.innerHTML = `
-        <div class="back" onclick="backToDashboard()">⬅ الرجوع للوحة</div>
-        <div class="lesson-header">
-            <div class="lesson-icon">📝</div>
-            <h2>اختبار: ${mod.title}</h2>
+        <div class="lesson-hero" style="background:linear-gradient(135deg,var(--coffee-900),var(--coffee-600));height:140px;">
+            <div class="hero-text">
+                <div class="breadcrumb">${mod.icon} ${mod.title}</div>
+                <h2>📝 اختبار الموديول</h2>
+            </div>
         </div>
-        <p style="color:var(--coffee-500);margin-bottom:16px;">اختر الإجابة الصحيحة لكل سؤال. لازم تجيب 4 من 5 عشان تجتاز.</p>
-        ${quizPassed ? `<div style="padding:12px 16px;background:#d4edda;color:var(--green);border-radius:8px;margin-bottom:16px;font-weight:700;">✅ لقد اجتزت هذا الاختبار بنجاح!</div>` : ''}
-        <div class="quiz-section">
-            <h3>${mod.icon} ${mod.title}</h3>
-            ${questionsHtml}
-            <div class="quiz-result" id="quizResult-${modIdx}"></div>
-            <div class="lesson-actions">
-                <button class="btn-gold" onclick="submitQuiz(${modIdx})" ${quizPassed ? 'disabled style="opacity:0.4"' : ''}>تصحيح الإجابات</button>
-                <button class="btn-prev" onclick="backToDashboard()">⬅ الرجوع</button>
+        <div class="lesson-body-wrap">
+            <div class="back" onclick="backToDashboard()">⬅ الرجوع للوحة</div>
+            <p style="color:var(--coffee-500);margin-bottom:16px;">اختر الإجابة الصحيحة لكل سؤال. لازم تجيب 80% عشان تجتاز.</p>
+            ${quizPassed ? `<div style="padding:12px 16px;background:#d4edda;color:var(--green);border-radius:8px;margin-bottom:16px;font-weight:700;">✅ لقد اجتزت هذا الاختبار بنجاح!</div>` : ''}
+            <div class="quiz-section">
+                <h3>${mod.icon} ${mod.title}</h3>
+                <div class="quiz-status">
+                    ${mod.quiz.map((_, qi) => `<div class="q-dot" id="qdot-${modIdx}-${qi}">${qi+1}</div>`).join('')}
+                </div>
+                ${questionsHtml}
+                <div class="quiz-result" id="quizResult-${modIdx}"></div>
+                <div class="lesson-actions" style="padding:0;margin-top:16px;background:none;">
+                    <button class="btn-gold" onclick="submitQuiz(${modIdx})" ${quizPassed ? 'disabled style="opacity:0.4"' : ''}>🔍 تصحيح الإجابات</button>
+                    <button class="btn-prev" onclick="backToDashboard()">⬅ الرجوع</button>
+                </div>
             </div>
         </div>
     `;
@@ -1173,6 +960,7 @@ function selectQuizOption(modIdx, qi, oi) {
     const container = document.getElementById(`qq-${modIdx}-${qi}`);
     container.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('selected'));
     document.getElementById(`qo-${modIdx}-${qi}-${oi}`).classList.add('selected');
+    document.getElementById(`qdot-${modIdx}-${qi}`).classList.add('answered');
 }
 
 async function submitQuiz(modIdx) {
@@ -1195,12 +983,14 @@ async function submitQuiz(modIdx) {
         if (selected === q.ans) correct++;
     });
 
-    const passed = correct >= 4;
+    const totalQs = mod.quiz.length;
+    const passThreshold = Math.ceil(totalQs * 0.8);
+    const passed = correct >= passThreshold;
     const resultEl = document.getElementById(`quizResult-${modIdx}`);
     resultEl.className = `quiz-result ${passed ? 'pass' : 'fail'}`;
-    resultEl.textContent = passed
-        ? `✅ ممتاز! أجبت ${correct}/5 — اجتزت الاختبار!`
-        : `❌ أجبت ${correct}/5 — تحتاج 4 صح عشان تجتاز. حاول مرة أخرى.`;
+    resultEl.innerHTML = passed
+        ? `<div class="result-icon">🎉</div><div class="result-score">ممتاز! ${correct}/${totalQs}</div><div style="margin-top:8px;font-size:0.95rem;">اجتزت الاختبار بنجاح!</div>`
+        : `<div class="result-icon">😅</div><div class="result-score">${correct}/${totalQs}</div><div style="margin-top:8px;font-size:0.95rem;">تحتاج ${passThreshold}/${totalQs} عشان تجتاز. حاول مرة أخرى.</div>`;
 
     try {
         await ldb.deleteByIndex('quiz', 'username', currentUser.username);
@@ -1213,7 +1003,7 @@ async function submitQuiz(modIdx) {
         attemptedAt: new Date().toISOString()
     });
 
-    if (passed) showToast('✅ اجتزت الاختبار!');
+    if (passed) { showToast('🎉 اجتزت الاختبار!'); fireConfetti(); }
 }
 
 // ==================== Certificate ====================
@@ -1223,6 +1013,7 @@ function showCertificate() {
     document.getElementById('certView').style.display = 'block';
     document.getElementById('certName').textContent = currentUser.name;
     document.getElementById('certDate').textContent = new Date().toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' });
+    fireConfetti();
 }
 
 function printCert() {
@@ -1233,8 +1024,8 @@ function printCert() {
         <html dir="rtl"><head><meta charset="utf-8">
         <style>
             @page { margin:20mm; }
-            body { font-family:'Tajawal','Segoe UI',sans-serif; text-align:center; direction:rtl; padding:40px; }
-            .cert { border:3px double #D4A85A; border-radius:16px; padding:40px; background:white; }
+            body { font-family:'Tajawal','Segoe UI',sans-serif; text-align:center; direction:rtl; padding:40px; background:#f7f2eb; }
+            .cert { border:3px double #D4A85A; border-radius:16px; padding:40px; background:white; box-shadow:0 8px 40px rgba(0,0,0,0.1); }
             h1 { font-family:serif; color:#3E2312; font-size:2rem; }
             .seal { font-size:4rem; margin:16px 0; }
             .name { font-size:1.8rem; color:#D4A85A; font-weight:900; margin:12px 0; }
@@ -1242,7 +1033,7 @@ function printCert() {
         </style>
         </head><body>
         <div class="cert">
-            <h1>Lucca Academy</h1>
+            <h1>Esenza Academy</h1>
             <div class="seal">☕</div>
             <p style="font-size:1.1rem;color:#6D4C41;">يشهد بأن</p>
             <div class="name">${name}</div>
