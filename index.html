@@ -1350,6 +1350,12 @@ function printCert() {
 // ==================== Init ====================
 document.addEventListener('DOMContentLoaded', async () => {
     try { await ldb.init(); console.log('✅ Academy DB ready'); } catch(e) { console.error('DB error:', e); }
+    // Auto-login as admin
+    currentUser = { username: 'admin', name: 'المدير', role: 'admin' };
+    document.getElementById('authScreen').style.display = 'none';
+    currentLevel = null;
+    startInactivityTimer();
+    await showAdminPanel();
 });
 </script>
 </body>
