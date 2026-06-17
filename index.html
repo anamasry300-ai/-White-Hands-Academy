@@ -10,8 +10,8 @@ hdr::before{content:'';position:absolute;inset:0;background:url('https://images.
 hdr h1{color:#d4a85a;font-size:1.8rem;font-family:Georgia,serif;position:relative}
 hdr p{color:#a67b5b;position:relative}
 .c{max-width:1000px;margin:0 auto;padding:20px}
-.tbs{display:flex;gap:8px;margin-bottom:20px}
-.tb{padding:10px 24px;border:none;border-radius:8px;font-weight:700;cursor:pointer;background:#ede0d4;color:#6d4c41;transition:.3s;font-size:.95rem}
+.tbs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tb{padding:10px 20px;border:none;border-radius:8px;font-weight:700;cursor:pointer;background:#ede0d4;color:#6d4c41;transition:.3s;font-size:.9rem}
 .tb.act,.tb:hover{background:#d4a85a;color:#1a0f0a;transform:translateY(-1px)}
 .lg{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px}
 .lc{background:white;border-radius:20px;overflow:hidden;border:2px solid #ede0d4;cursor:pointer;transition:.4s cubic-bezier(.4,0,.2,1)}
@@ -107,7 +107,43 @@ hdr p{color:#a67b5b;position:relative}
 .ls-c .q-section .q-o.s .ql{background:#d4a85a;color:white}
 .ls-c .q-section .q-o.c .ql{background:#27ae60;color:white}
 .ls-c .q-section .q-o.w .ql{background:#e74c3c;color:white}
-@media(max-width:600px){.c{padding:12px}.lc .hd{min-height:110px}.lc .hd .ic{font-size:2.2rem}.mc .mh{flex-direction:column}.mc .msd{width:100%;min-height:60px;flex-direction:row;padding:8px}.mc .msd .mnm{display:none}.ls-sc .ls-b{padding:20px}.ls-sc .ls-h .hc{padding:24px 20px;min-height:140px}.ls-sc .ls-h .hc h2{font-size:1.2rem}.ls-c .img-row{grid-template-columns:1fr}}
+.ex{background:white;border-radius:16px;padding:28px 32px;box-shadow:0 8px 40px rgba(0,0,0,.08)}
+.ex .eq{margin-bottom:24px;padding:20px;background:#faf5ef;border-radius:12px;border-right:4px solid #d4a85a}
+.ex .eq .eqn{font-size:.8rem;color:#a67b5b;margin-bottom:4px}
+.ex .eq .eqq{font-weight:700;color:#3e2312;margin-bottom:12px;font-size:1.05rem}
+.ex .eq .eo{display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:6px;border-radius:8px;border:2px solid #ede0d4;cursor:pointer;transition:.3s}
+.ex .eq .eo:hover{border-color:#d4a85a;background:white}
+.ex .eq .eo input[type=radio]{accent-color:#d4a85a;width:18px;height:18px;cursor:pointer}
+.ex .eq .eo label{cursor:pointer;flex:1;font-size:.95rem;color:#3e2312}
+.ex .eq .eo.s{border-color:#d4a85a;background:#fff8e1}
+.ex .eq .eo.c{border-color:#27ae60;background:#e8f5e9}
+.ex .eq .eo.w{border-color:#e74c3c;background:#fde8e8}
+.cert{max-width:700px;margin:0 auto;background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 60px rgba(0,0,0,.12);border:8px double #d4a85a;position:relative}
+.cert::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#d4a85a,#e8cc8a,#d4a85a)}
+.cert .ci{padding:40px 32px;text-align:center}
+.cert .ci .logo{font-size:3rem;margin-bottom:4px}
+.cert .ci .an{font-size:1.3rem;font-weight:900;color:#3e2312;margin-bottom:2px}
+.cert .ci .sub{color:#a67b5b;font-size:.9rem;margin-bottom:20px}
+.cert .ci hr{width:80px;margin:0 auto 20px;border:none;height:2px;background:linear-gradient(90deg,transparent,#d4a85a,transparent)}
+.cert .ci .certh{font-size:1.6rem;font-weight:900;color:#1a0f0a;margin-bottom:6px;font-family:Georgia,serif}
+.cert .ci .certh span{color:#d4a85a}
+.cert .ci .cthis{color:#6d4c41;font-size:1rem;margin-bottom:16px;line-height:1.8}
+.cert .ci .cname{font-size:2rem;font-weight:900;color:#1a0f0a;margin:12px 0;font-family:Georgia,serif}
+.cert .ci .clevel{display:inline-block;background:#ede0d4;padding:6px 20px;border-radius:20px;font-weight:700;color:#3e2312;margin:8px 0;font-size:1.1rem}
+.cert .ci .cscore{color:#6d4c41;margin:8px 0;font-size:.95rem}
+.cert .ci .cscore strong{color:#3e2312}
+.cert .ci .cdate{color:#a67b5b;font-size:.85rem;margin-top:16px}
+.cert .ci .cseal{font-size:4rem;margin-top:16px;opacity:.4}
+.cnt{background:white;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.cnt .cci{display:flex;align-items:center;gap:16px;padding:14px;border:2px solid #ede0d4;border-radius:12px;margin-bottom:12px;transition:.3s;cursor:pointer}
+.cnt .cci:hover{border-color:#d4a85a;background:#faf5ef}
+.cnt .cci .ccic{font-size:2rem;width:50px;text-align:center}
+.cnt .cci .ccid{flex:1}
+.cnt .cci .ccid .cct{font-weight:700;color:#3e2312;font-size:.95rem}
+.cnt .cci .ccid .ccs{color:#a67b5b;font-size:.8rem}
+.cnt .cci .ccid .ccd{color:#6d4c41;font-size:.78rem}
+@media(max-width:600px){.c{padding:12px}.lc .hd{min-height:110px}.lc .hd .ic{font-size:2.2rem}.mc .mh{flex-direction:column}.mc .msd{width:100%;min-height:60px;flex-direction:row;padding:8px}.mc .msd .mnm{display:none}.ls-sc .ls-b{padding:20px}.ls-sc .ls-h .hc{padding:24px 20px;min-height:140px}.ls-sc .ls-h .hc h2{font-size:1.2rem}.ls-c .img-row{grid-template-columns:1fr}.ex{padding:16px}.ex .eq{padding:14px}.cert .ci{padding:24px 16px}.cert .ci .cname{font-size:1.5rem}}
+@media print{body{background:white!important}hdr,.tbs,.t{display:none!important}.c{max-width:100%;padding:0}.cert{border:4px double #d4a85a!important;box-shadow:none!important}.cert .ci .cseal{font-size:5rem}.cert .ci .btn{display:none!important}}
 </style>
 </head>
 <body>
@@ -117,22 +153,22 @@ hdr p{color:#a67b5b;position:relative}
 <script>
 const IMG = {
   hero:[
-    'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=800&q=80',  // 0: coffee beans - اكتشاف
-    'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=80',  // 1: green beans - البن
-    'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80',  // 2: coffee farm - أصول
-    'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80',  // 3: chemex brewing - استخلاص
-    'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=800&q=80',  // 4: coffee shop - أدوات
-    'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80',  // 5: espresso machine - اسبريسو
-    'https://images.unsplash.com/photo-1514432324607-a09d9b4aefda?w=800&q=80',  // 6: top view coffee - لاتيه
-    'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=800&q=80',  // 7: roasting - تحميص
-    'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80',  // 8: cupping - كابينج
+    'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=800&q=80',
+    'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=80',
+    'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80',
+    'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80',
+    'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=800&q=80',
+    'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80',
+    'https://images.unsplash.com/photo-1514432324607-a09d9b4aefda?w=800&q=80',
+    'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=800&q=80',
+    'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80',
   ],
   mod:[
-    'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=200&q=60',  // 0: beans
-    'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=200&q=60',  // 1: brewing
-    'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60',  // 2: green beans
-    'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=200&q=60',  // 3: shop
-    'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=200&q=60',  // 4: espresso
+    'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=200&q=60',
+    'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=200&q=60',
+    'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60',
+    'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=200&q=60',
+    'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=200&q=60',
   ]
 };
 
@@ -168,6 +204,45 @@ const CM = [
 ]}
 ];
 
+const QS = {
+  A:[
+    {q:'أين اكتشفت القهوة لأول مرة؟',o:['إثيوبيا','اليمن','إيطاليا','البرازيل'],a:0},
+    {q:'ما اسم الراعي الذي اكتشف القهوة؟',o:['كلد','موسى','إبراهيم','سليمان'],a:0},
+    {q:'ما النسبة المئوية للكافيين في البن العربي؟',o:['1.2%','2.2%','0.5%','3.5%'],a:0},
+    {q:'كم نوعاً رئيسياً من البن؟',o:['نوعان: عربية وروبوستا','ثلاثة أنواع','أربعة أنواع','نوع واحد فقط'],a:0},
+    {q:'ما درجة حرارة الماء المثلى لاستخلاص القهوة؟',o:['92-96°م','80-85°م','100°م','70-75°م'],a:0},
+    {q:'ما النسبة المثلى للقهوة للماء في V60؟',o:['1:15-1:17','1:5-1:7','1:30-1:40','1:2-1:3'],a:0},
+    {q:'ما معنى Under-extraction؟',o:['استخلاص ناقص (طعم حامض)','استخلاص زائد (طعم مر)','تحميص خفيف','تحميص داكن'],a:0},
+    {q:'ما مدة استخلاص الإسبريسو المثالية؟',o:['25-30 ثانية','10-15 ثانية','45-60 ثانية','دقيقتين'],a:0},
+    {q:'ما ضغط الإسبريسو؟',o:['9 بار','5 بار','15 بار','3 بار'],a:0},
+    {q:'الفرق بين الكابتشينو واللاتيه؟',o:['كمية الرغوة','نوع البن','درجة الحرارة','كمية السكر'],a:0},
+  ],
+  B:[
+    {q:'ما اسم التفاعل الكيميائي الرئيسي في التحميص؟',o:['تفاعل ميلارد','البناء الضوئي','الأكسدة','التخمر'],a:0},
+    {q:'عند أي درجة حرارة يبدأ تفاعل ميلارد؟',o:['150°م','100°م','200°م','50°م'],a:0},
+    {q:'ما درجة التحميص المناسبة للـ Single Origin الفاخر؟',o:['فاتح (195°م)','متوسط (210°م)','داكن (225°م)','فرنسي'],a:0},
+    {q:'ما مقياس Agtron؟',o:['مقياس درجة التحميص','مقياس الحموضة','مقياس القوام','مقياس الكافيين'],a:0},
+    {q:'النسبة المثلى للاستخلاص حسب SCA؟',o:['18-22%','10-15%','25-30%','5-10%'],a:0},
+    {q:'ماذا يحدث عند أول crack (196°م)؟',o:['يتمدد حجم الحبة 50-80%','تحترق الحبة','يتحول لونها للأسود','ينزل الماء'],a:0},
+    {q:'ما لون البن في التحميص المتوسط؟',o:['بني ذهبي','أسود','أخضر','أحمر'],a:0},
+    {q:'أي درجة تحميص تناسب الإسبريسو الإيطالي؟',o:['داكن','فاتح','متوسط','أخضر'],a:0},
+    {q:'ماذا يتحول النشا إلى في التحميص؟',o:['سكريات','بروتينات','دهون','ألياف'],a:0},
+    {q:'ما المنطقة بين First Crack و Second Crack؟',o:['مرحلة التطوير','مرحلة التبريد','مرحلة التجفيف','مرحلة التخمير'],a:0},
+  ],
+  C:[
+    {q:'كم معياراً في تقييم SCA للكابينج؟',o:['10 معايير','5 معايير','15 معياراً','8 معايير'],a:0},
+    {q:'ما أعلى معيار في تقييم SCA؟',o:['النكهة (Flavor) 20%','العطر (Aroma) 15%','القوام (Body) 10%','الحلاوة 10%'],a:0},
+    {q:'الفرق بين الحموضة والمرارة في القهوة؟',o:['الحموضة مرغوبة والمرارة تدل على عيب','كلاهما متشابه','المرارة مرغوبة والحموضة عيب','كلاهما عيب'],a:0},
+    {q:'ما هو الـ Peaberry؟',o:['بذرة واحدة في كرزة القهوة','نوع من أنواع البن','طريقة تحميص','أداة تحضير'],a:0},
+    {q:'ما هو الـ Cold Brew؟',o:['قهوة باردة بنقع طويل (12-24 ساعة)','إسبريسو مثلج','لاتيه بارد','قهوة سريعة'],a:0},
+    {q:'ماذا يعني Cupping Score 80+؟',o:['قهوة Specialty عالية الجودة','قهوة تجارية','قهوة غير صالحة','قهوة محمصة'],a:0},
+    {q:'ما هو Body القهوة؟',o:['قوام المشروب وثقله على اللسان','لون القهوة','رائحة القهوة','حجم الكوب'],a:0},
+    {q:'العلاقة بين الارتفاع عن البحر وجودة البن العربي؟',o:['كلما زاد الارتفاع زادت الجودة','كلما قل الارتفاع زادت الجودة','لا علاقة','يعتمد على الموسم'],a:0},
+    {q:'ما هي Crema؟',o:['الطبقة الذهبية فوق الإسبريسو','نوع من الحليب','أداة تحضير','مقياس حرارة'],a:0},
+    {q:'أفضل وقت لشرب القهوة علمياً؟',o:['بعد 30-60 دقيقة من الاستيقاظ','فور الاستيقاظ','قبل النوم','بعد الأكل مباشرة'],a:0},
+  ]
+};
+
 function $(id){return document.getElementById(id)}
 function to(m){let e=$('t');e.textContent=m;e.classList.add('s');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('s'),2000)}
 function gL(m){return m.id.replace('module-','')[0]}
@@ -175,8 +250,11 @@ function gM(l){return CM.filter(m=>gL(m)===l)}
 
 function rT(t){
   let r=$('root');
-  r.innerHTML='<div class="tbs"><button class="tb'+(t==='c'?' act':'')+'" onclick="rT(\'c\')">📚 المنهج</button><button class="tb'+(t==='a'?' act':'')+'" onclick="rT(\'a\')">🔐 الطلاب</button></div>';
-  if(t==='c') r.innerHTML+=sL();else r.innerHTML+=sA();
+  r.innerHTML='<div class="tbs"><button class="tb'+(t==='c'?' act':'')+'" onclick="rT(\'c\')">📚 المنهج</button><button class="tb'+(t==='e'?' act':'')+'" onclick="rT(\'e\')">📝 الاختبار</button><button class="tb'+(t==='v'?' act':'')+'" onclick="rT(\'v\')">🖨️ الشهادات</button><button class="tb'+(t==='a'?' act':'')+'" onclick="rT(\'a\')">🔐 الطلاب</button></div>';
+  if(t==='c') r.innerHTML+=sL();
+  else if(t==='e') r.innerHTML+=sEx();
+  else if(t==='v'){r.innerHTML+=sV();lC();}
+  else r.innerHTML+=sA();
   if(t==='a') lS();
 }
 
@@ -210,13 +288,140 @@ function sLsn(l,mi,li){
   let ms=gM(l),m=ms[mi],les=m.lessons[li];
   let prev=li>0?'<button class="btn" onclick="sLsn(\''+l+'\','+mi+','+(li-1)+')">⬅ السابق</button>':'';
   let next=li<m.lessons.length-1?'<button class="btn" onclick="sLsn(\''+l+'\','+mi+','+(li+1)+')">التالي ➡</button>':'';
+  let examLink=li===m.lessons.length-1?'<button class="btn" onclick="rT(\'e\');sExL(\''+l+'\')" style="background:#27ae60;color:white">📝 اختبر مستواك الآن</button>':'';
   let h='<div class="ls-sc"><div class="ls-h"><div class="hb" style="background-image:url('+IMG.hero[les.img||0]+')"></div><div class="hc"><div class="br">'+m.icon+' '+m.title+' <span class="prg">درس '+(li+1)+' من '+m.lessons.length+'</span></div><h2>'+les.title+'</h2></div></div>'+
     '<div class="ls-b"><div class="bk" onclick="sM(\''+l+'\')">⬅ الرجوع للموديول</div><div class="ls-c">'+les.body+'</div>'+
-    '<div class="nav-b">'+prev+next+'</div></div></div>';
+    '<div class="nav-b">'+prev+next+'</div>'+(examLink?'<div class="nav-b" style="border:none;padding-top:8px">'+examLink+'</div>':'')+'</div></div>';
   $('ls').innerHTML=h;
   window.scrollTo(0,0);
 }
 
+/* ===== Exam ===== */
+function sEx(){
+  let h='<h2 style="color:#3e2312;margin-bottom:16px;font-size:1.4rem">📝 الاختبار النهائي</h2><p style="color:#6d4c41;margin-bottom:20px;font-size:.9rem">اختبر معلوماتك بعد دراسة كل مستوى. 10 أسئلة اختيار من متعدد. النجاح من 70% فأعلى.</p><div class="lg">';
+  ['A','B','C'].forEach(l=>{
+    let lv=LV[l];
+    h+='<div class="lc" onclick="sExL(\''+l+'\')"><div class="hd"><div class="bg" style="background-image:url('+lv.bg+')"></div><div class="ov"></div><div class="ic">'+lv.ic+'</div><h3>'+lv.t+'</h3></div><div class="bd"><p>10 أسئلة — 70% نجاح</p></div></div>';
+  });
+  return h+'</div><div id="ex"></div>';
+}
+
+function sExL(l){
+  let lv=LV[l];
+  $('ex').innerHTML='<div class="ex"><h3 style="color:#3e2312;margin-bottom:16px;font-size:1.3rem">'+lv.ic+' اختبار المستوى '+lv.t+'</h3>'+
+    '<p style="color:#6d4c41;margin-bottom:16px;font-size:.9rem">أدخل اسمك لبدء الاختبار وطباعة الشهادة لاحقاً:</p>'+
+    '<div class="sf"><input type="text" id="en" placeholder="الاسم الكامل" style="flex:2;min-width:200px">'+
+    '<button class="btn" onclick="sExQ(\''+l+'\')">🚀 ابدأ الاختبار</button></div></div>';
+  $('en').focus();
+}
+
+function sExQ(l){
+  let n=$('en').value.trim();
+  if(!n){to('⚠️ أدخل اسمك أولاً');$('en').focus();return}
+  let qs=QS[l],h='<div class="ex"><h3 style="color:#3e2312;margin-bottom:20px;font-size:1.3rem">📝 اختبار المستوى '+LV[l].t+'</h3>'+
+    '<p style="color:#a67b5b;margin-bottom:20px;font-size:.85rem">الاسم: <strong>'+n+'</strong> • أجب على جميع الأسئلة</p>';
+  qs.forEach((q,i)=>{
+    h+='<div class="eq"><div class="eqn">سؤال '+(i+1)+' من '+qs.length+'</div><div class="eqq">'+q.q+'</div>';
+    q.o.forEach((o,oi)=>{
+      h+='<div class="eo"><input type="radio" name="q'+i+'" value="'+oi+'" id="q'+i+'_'+oi+'"><label for="q'+i+'_'+oi+'">'+o+'</label></div>';
+    });
+    h+='</div>';
+  });
+  h+='<button class="btn" onclick="cEx(\''+l+'\',\''+n+'\')" style="width:100%;padding:14px;font-size:1.1rem">✅ إنهاء الاختبار وعرض النتيجة</button></div>';
+  $('ex').innerHTML=h;
+  window.scrollTo(0,0);
+}
+
+function cEx(l,n){
+  let qs=QS[l],correct=0,total=qs.length;
+  for(let i=0;i<total;i++){
+    let sel=document.querySelector('input[name="q'+i+'"]:checked');
+    if(sel&&parseInt(sel.value)===qs[i].a) correct++;
+  }
+  let pct=Math.round(correct/total*100),pass=pct>=70;
+  let lv=LV[l];
+  let h='<div class="ex"><h3 style="color:'+(pass?'#27ae60':'#e74c3c')+';margin-bottom:16px;font-size:1.3rem">'+(pass?'🎉 تهانينا!':'😅 حاول مرة أخرى')+'</h3>'+
+    '<div style="background:#fff8e1;padding:24px;border-radius:12px;text-align:center;margin-bottom:20px">'+
+    '<div style="font-size:3rem;font-weight:900;color:'+(pass?'#27ae60':'#e74c3c')+'">'+correct+'/'+total+'</div>'+
+    '<div style="color:#6d4c41;margin-top:8px">'+(pass?'✅ نجاح — نسبة '+pct+'%':'❌ رسوب — النسبة '+pct+'% تحتاج 70%')+'</div></div>';
+  if(pass){
+    h+='<div id="cert-'+l+'-'+n+'"></div>';
+    h+=gCert(l,n,pct);
+    h+='<br><button class="btn" onclick="window.print()" style="background:#3e2312;color:white">🖨️ طباعة الشهادة</button> ';
+    sCert(l,n,pct);
+  } else {
+    h+='<button class="btn" onclick="sExL(\''+l+'\')" style="width:100%">🔄 حاول مرة أخرى</button>';
+  }
+  h+=' <button class="btn" onclick="rT(\'e\')" style="background:#ede0d4;color:#6d4c41">⬅ العودة للاختبارات</button></div>';
+  $('ex').innerHTML=h;
+  window.scrollTo(0,0);
+}
+
+function gCert(l,n,p){
+  let lv=LV[l];
+  let d=new Date();
+  let ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  return '<div class="cert" id="cert"><div class="ci">'+
+    '<div class="logo">☕</div><div class="an">Esenza Academy</div><div class="sub">تدريب الباريستا الاحترافي</div><hr>'+
+    '<div class="certh"><span>شهادة إتمام</span></div>'+
+    '<div class="cthis">نشهد بأن</div>'+
+    '<div class="cname">'+n+'</div>'+
+    '<div class="cthis">قد أتم بنجاح المستوى <strong>'+lv.t+'</strong><br>في برنامج تدريب الباريستا الاحترافي</div>'+
+    '<div class="clevel">'+lv.ic+' المستوى '+lv.id+' — '+lv.t+'</div>'+
+    '<div class="cscore">الدرجة: <strong>'+p+'%</strong> ('+Math.round(p/10*QS[l].length)+'/'+QS[l].length+' صحيح)</div>'+
+    '<div class="cdate">📅 '+ds+'</div>'+
+    '<div class="cseal">🎓</div>'+
+    '</div></div>';
+}
+
+async function sCert(l,n,p){
+  try{
+    let d=await oD();
+    let ts=new Date().toISOString();
+    let key='cert_'+l+'_'+n.replace(/\s/g,'_')+'_'+ts;
+    await pA('c',{k:key,level:l,name:n,score:p,date:ts});
+  }catch(e){}
+  to('✅ تم حفظ الشهادة — شاهدها في تبويب الشهادات');
+}
+
+/* ===== Certificates View ===== */
+function sV(){
+  return '<div class="ap"><h2>🖨️ الشهادات المحفوظة</h2><div id="cv"><div style="color:#a67b5b;padding:20px;text-align:center">جارٍ تحميل الشهادات...</div></div></div>';
+}
+
+async function lC(){
+  try{
+    let d=await oD();
+    let t=d.transaction('c','readonly');
+    let q=t.objectStore('c').getAll();
+    q.onsuccess=()=>{
+      d.close();
+      let certs=q.result;
+      let e=$('cv');
+      if(!certs||!certs.length){e.innerHTML='<div style="color:#a67b5b;padding:30px;text-align:center">📭 لا توجد شهادات بعد — اختبر مستواك واحصل على شهادتك!<br><button class="btn" onclick="rT(\'e\')" style="margin-top:16px">📝 ابدأ الاختبار</button></div>';return}
+      let h='<p style="color:#6d4c41;margin-bottom:16px;font-size:.9rem">لديك <strong>'+certs.length+'</strong> شهادة:</p>';
+      certs.sort((a,b)=>new Date(b.date)-new Date(a.date));
+      certs.forEach(c=>{
+        let lv=LV[c.level];
+        let d=new Date(c.date);
+        let ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+        h+='<div class="cci" onclick="sCertV(\''+c.k+'\',\''+c.level+'\',\''+c.name+'\','+c.score+')"><div class="ccic">'+lv.ic+'</div><div class="ccid"><div class="cct">'+c.name+' — المستوى '+c.level+' ('+lv.t+')</div><div class="ccs">الدرجة: '+c.score+'%</div><div class="ccd">📅 '+ds+'</div></div></div>';
+      });
+      e.innerHTML=h;
+    };
+    q.onerror=()=>{d.close();$('cv').innerHTML='<div style="color:#e74c3c;padding:20px;text-align:center">⚠️ فشل تحميل الشهادات</div>'}
+  }catch(e){$('cv').innerHTML='<div style="color:#e74c3c;padding:20px;text-align:center">⚠️ قاعدة البيانات غير متاحة</div>'}
+}
+
+function sCertV(k,l,n,p){
+  let h='<button class="btn" onclick="lC()" style="margin-bottom:16px">⬅ العودة للشهادات</button>';
+  h+=gCert(l,n,p);
+  h+='<br><button class="btn" onclick="window.print()" style="background:#3e2312;color:white">🖨️ طباعة الشهادة</button>';
+  $('cv').innerHTML=h;
+  window.scrollTo(0,0);
+}
+
+/* ===== Admin ===== */
 function sA(){
   return '<div class="ap"><h2>🔐 لوحة المشرف — إدارة الطلاب</h2>'+
     '<h3>➕ إضافة طالب</h3><div class="sf">'+
@@ -227,7 +432,7 @@ function sA(){
     '<h3>📋 قائمة الطلاب</h3><div id="sl"><div style="color:#a67b5b;padding:20px;text-align:center">لا يوجد طلاب بعد</div></div></div>';
 }
 
-function oD(){return new Promise((r,j)=>{let q=indexedDB.open('edb',1);q.onupgradeneeded=e=>{let d=e.target.result;if(!d.objectStoreNames.contains('u'))d.createObjectStore('u',{keyPath:'k'})};q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)})}
+function oD(){return new Promise((r,j)=>{let q=indexedDB.open('edb',2);q.onupgradeneeded=e=>{let d=e.target.result;if(!d.objectStoreNames.contains('u'))d.createObjectStore('u',{keyPath:'k'});if(!d.objectStoreNames.contains('c'))d.createObjectStore('c',{keyPath:'k'})};q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)})}
 async function gA(s){let d=await oD();return new Promise((r,j)=>{let t=d.transaction(s,'readonly'),q=t.objectStore(s).getAll();q.onsuccess=()=>{d.close();r(q.result)};q.onerror=()=>{d.close();j(q.error)}})}
 async function pA(s,v){let d=await oD();return new Promise((r,j)=>{let t=d.transaction(s,'readwrite'),q=t.objectStore(s).put(v);q.onsuccess=()=>{d.close();r()};q.onerror=()=>{d.close();j(q.error)}})}
 async function dA(s,k){let d=await oD();return new Promise((r,j)=>{let t=d.transaction(s,'readwrite'),q=t.objectStore(s).delete(k);q.onsuccess=()=>{d.close();r()};q.onerror=()=>{d.close();j(q.error)}})}
