@@ -1,132 +1,155 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Esenza Academy</title>
+<title>Esenza Academy — تدريب الباريستا</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui,sans-serif;background:#f7f2eb;color:#1a0f0a}
-hdr{background:linear-gradient(135deg,#1a0f0a,#3e2312);padding:20px;text-align:center;border-bottom:3px solid #d4a85a}
-hdr h1{color:#d4a85a;font-size:1.8rem;font-family:Georgia,serif}
-hdr p{color:#a67b5b}
+body{font-family:system-ui,sans-serif;background:#f7f2eb;color:#1a0f0a;min-height:100vh}
+hdr{background:linear-gradient(135deg,#1a0f0a,#3e2312);padding:20px;text-align:center;border-bottom:3px solid #d4a85a;position:relative;overflow:hidden}
+hdr::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80') center/cover;opacity:.06}
+hdr h1{color:#d4a85a;font-size:1.8rem;font-family:Georgia,serif;position:relative}
+hdr p{color:#a67b5b;position:relative}
 .c{max-width:1000px;margin:0 auto;padding:20px}
 .tbs{display:flex;gap:8px;margin-bottom:20px}
-.tb{padding:10px 24px;border:none;border-radius:8px;font-weight:700;cursor:pointer;background:#ede0d4;color:#6d4c41}
-.tb.act{background:#d4a85a;color:#1a0f0a}
-.lg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-.lc{background:white;border-radius:16px;overflow:hidden;border:2px solid #ede0d4;cursor:pointer;transition:.3s}
-.lc:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
-.lc .hd{padding:24px;text-align:center;background:linear-gradient(135deg,#1a0f0a,#3e2312);position:relative;overflow:hidden}
-.lc .hd .bg{position:absolute;inset:0;opacity:.15;background-size:cover;background-position:center}
-.lc .hd .ic{font-size:3rem;position:relative;z-index:1}
-.lc .hd h3{color:#d4a85a;font-family:Georgia,serif;font-size:1.4rem;margin-top:8px;position:relative;z-index:1}
+.tb{padding:10px 24px;border:none;border-radius:8px;font-weight:700;cursor:pointer;background:#ede0d4;color:#6d4c41;transition:.3s;font-size:.95rem}
+.tb.act,.tb:hover{background:#d4a85a;color:#1a0f0a;transform:translateY(-1px)}
+.lg{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px}
+.lc{background:white;border-radius:20px;overflow:hidden;border:2px solid #ede0d4;cursor:pointer;transition:.4s cubic-bezier(.4,0,.2,1)}
+.lc:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,0,0,.1);border-color:#d4a85a}
+.lc .hd{min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.lc .hd .bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:.5s}
+.lc:hover .hd .bg{transform:scale(1.1)}
+.lc .hd .ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(26,15,10,.85),rgba(62,35,18,.75))}
+.lc .hd .ic{font-size:3rem;position:relative;z-index:1;margin-bottom:4px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.2))}
+.lc .hd h3{color:#d4a85a;font-family:Georgia,serif;font-size:1.5rem;position:relative;z-index:1}
 .lc .bd{padding:20px}
 .lc .bd p{color:#6d4c41;font-size:.9rem;margin-bottom:12px}
 .lc .bd .st{display:flex;justify-content:space-around;padding-top:12px;border-top:1px solid #ede0d4}
 .lc .bd .st div{text-align:center}
-.lc .bd .st .n{font-weight:900;color:#3e2312;font-size:1.1rem}
+.lc .bd .st .n{font-weight:900;color:#3e2312;font-size:1.2rem}
 .lc .bd .st .l{font-size:.78rem;color:#a67b5b}
-.mc{background:white;border-radius:12px;margin-bottom:16px;border:1px solid #ede0d4;overflow:hidden;display:flex}
-.mc .msd{width:120px;min-height:130px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#3e2312,#5a3a28)}
-.mc .msd .mbg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.2}
+.mc{background:white;border-radius:16px;margin-bottom:16px;border:1px solid #ede0d4;overflow:hidden;transition:.3s}
+.mc:hover{box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.mc .mh{display:flex;cursor:pointer;transition:.3s}
+.mc .mh:hover{background:#faf5ef}
+.mc .msd{width:130px;min-height:130px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#3e2312,#5a3a28)}
+.mc .msd .mbg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.2;transition:.5s}
+.mc .mh:hover .msd .mbg{transform:scale(1.1)}
 .mc .msd .mic{font-size:2.5rem;position:relative;z-index:1}
-.mc .mi{flex:1;padding:16px 20px}
-.mc .mi h4{color:#3e2312}
-.mc .mi p{color:#6d4c41;font-size:.85rem;margin-bottom:8px}
-.mc .mi .ls{list-style:none;padding:0}
-.mc .mi .ls li{padding:8px 0;border-bottom:1px solid #ede0d4;cursor:pointer;color:#3e2312;font-size:.9rem;display:flex;align-items:center;gap:8px}
-.mc .mi .ls li:hover{color:#d4a85a;padding-right:8px}
-.ap{background:white;border-radius:12px;padding:24px}
+.mc .msd .mnm{position:relative;z-index:1;color:rgba(255,255,255,.5);font-size:.75rem;margin-top:4px}
+.mc .mi{flex:1;padding:16px 20px;display:flex;flex-direction:column;justify-content:center}
+.mc .mi h4{color:#3e2312;font-size:1.1rem}
+.mc .mi p{color:#6d4c41;font-size:.85rem;margin-top:4px}
+.mc .mi .pr{height:4px;background:#ede0d4;border-radius:2px;margin-top:10px;overflow:hidden}
+.mc .mi .pr .fl{height:100%;background:linear-gradient(90deg,#d4a85a,#e8cc8a);border-radius:2px;width:0%;transition:width .8s}
+.mc .lessons-list{padding:0 20px 16px}
+.mc .lessons-list .lsi{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;transition:.3s;border-bottom:1px solid #f0e8e0}
+.mc .lessons-list .lsi:hover{background:#faf5ef;padding-right:16px}
+.mc .lessons-list .lsi .ln{width:24px;height:24px;border-radius:50%;background:#ede0d4;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#6d4c41;flex-shrink:0}
+.mc .lessons-list .lsi .lt{font-size:.9rem;color:#3e2312;flex:1}
+.ap{background:white;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
 .ap h2{color:#3e2312;margin-bottom:16px}
 .sf{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.sf input{flex:1;min-width:120px;padding:10px 14px;border:2px solid #ede0d4;border-radius:8px;font-size:.95rem}
-.sf input:focus{outline:none;border-color:#d4a85a}
-.btn{padding:10px 24px;border:none;border-radius:8px;font-weight:700;cursor:pointer;background:#d4a85a;color:#1a0f0a}
-.btn:hover{background:#b8922e}
-.si{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #ede0d4}
+.sf input{flex:1;min-width:120px;padding:10px 14px;border:2px solid #ede0d4;border-radius:8px;font-size:.95rem;font-family:inherit}
+.sf input:focus{outline:none;border-color:#d4a85a;box-shadow:0 0 0 3px rgba(212,168,90,.1)}
+.btn{padding:10px 24px;border:none;border-radius:8px;font-weight:700;cursor:pointer;background:#d4a85a;color:#1a0f0a;transition:.3s;font-family:inherit;font-size:.9rem}
+.btn:hover{background:#b8922e;transform:translateY(-1px);box-shadow:0 4px 12px rgba(212,168,90,.3)}
+.btn-sm{padding:6px 14px;font-size:.85rem}
+.btn-rd{background:#e74c3c;color:white}.btn-rd:hover{background:#c0392b}
+.si{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #ede0d4}
 .h{display:none!important}
-.t{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1a0f0a;color:#ede0d4;padding:12px 24px;border-radius:8px;opacity:0;transition:.4s;pointer-events:none;z-index:999}
-.t.s{opacity:1}
-.ls-sc{background:white;border-radius:12px;margin-top:20px;overflow:hidden}
-.ls-sc .ls-h{position:relative;overflow:hidden;background:linear-gradient(135deg,#1a0f0a,#3e2312)}
-.ls-sc .ls-h .hb{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.2}
-.ls-sc .ls-h .hc{position:relative;z-index:1;padding:30px;color:white}
-.ls-sc .ls-h .hc .br{color:#a67b5b;font-size:.85rem}
-.ls-sc .ls-h .hc h2{margin-top:8px;font-family:Georgia,serif;font-size:1.5rem}
-.ls-sc .ls-b{padding:24px}
-.ls-sc .ls-b .bk{display:inline-flex;align-items:center;gap:6px;margin-bottom:16px;color:#d4a85a;cursor:pointer;font-weight:700;padding:6px 12px;border-radius:6px}
+.t{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1a0f0a;color:#ede0d4;padding:12px 28px;border-radius:12px;opacity:0;transition:.4s;pointer-events:none;z-index:999;font-size:.9rem;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.t.s{opacity:1;transform:translateX(-50%) translateY(0)}
+.ls-sc{background:white;border-radius:16px;margin-top:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.08)}
+.ls-sc .ls-h{position:relative;min-height:200px;overflow:hidden;background:linear-gradient(135deg,#1a0f0a,#3e2312)}
+.ls-sc .ls-h .hb{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.2;transition:.5s}
+.ls-sc:hover .ls-h .hb{transform:scale(1.05)}
+.ls-sc .ls-h .hc{position:relative;z-index:1;padding:40px 32px;display:flex;flex-direction:column;justify-content:flex-end;min-height:200px}
+.ls-sc .ls-h .hc .br{color:#a67b5b;font-size:.85rem;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.ls-sc .ls-h .hc .br .prg{background:rgba(255,255,255,.1);padding:2px 10px;border-radius:12px;font-size:.78rem}
+.ls-sc .ls-h .hc h2{margin-top:4px;font-family:Georgia,serif;font-size:1.6rem;color:white}
+.ls-sc .ls-b{padding:28px 32px}
+.ls-sc .ls-b .bk{display:inline-flex;align-items:center;gap:6px;margin-bottom:16px;color:#d4a85a;cursor:pointer;font-weight:700;padding:8px 16px;border-radius:8px;transition:.3s;font-size:.9rem}
 .ls-sc .ls-b .bk:hover{background:#ede0d4}
-.ls-c{line-height:1.8}
-.ls-c p{margin-bottom:12px}
-.ls-c h3{color:#3e2312;margin:20px 0 10px;font-size:1.15rem}
+.ls-c{line-height:1.9;font-size:.95rem}
+.ls-c p{margin-bottom:14px}
+.ls-c h3{color:#3e2312;margin:24px 0 12px;font-size:1.2rem}
+.ls-c h4{color:#5a3a28;margin:18px 0 8px;font-size:1.05rem}
 .ls-c .hl{background:#ede0d4;padding:16px 20px;border-right:4px solid #d4a85a;border-radius:8px;margin:16px 0}
-.ls-c .img-c{background:#f7f2eb;border-radius:12px;padding:16px;margin:16px 0;text-align:center;border:1px solid #ede0d4}
-.ls-c .img-c img{max-width:100%;border-radius:8px;display:block;margin:0 auto;max-height:300px}
-.ls-c .img-c .cap{margin-top:8px;font-size:.85rem;color:#6d4c41}
+.ls-c .img-c{background:#faf5ef;border-radius:12px;padding:12px;margin:16px 0;text-align:center;border:1px solid #ede0d4;overflow:hidden}
+.ls-c .img-c img{max-width:100%;border-radius:8px;display:block;margin:0 auto;max-height:350px;width:100%;object-fit:cover}
+.ls-c .img-c .cap{margin-top:8px;font-size:.85rem;color:#6d4c41;display:flex;align-items:center;justify-content:center;gap:6px}
 .ls-c .info-b{background:linear-gradient(135deg,#1a0f0a,#3e2312);color:white;padding:20px;border-radius:12px;margin:16px 0}
 .ls-c .info-b strong{color:#d4a85a}
-.ls-c .err{background:#fde8e8;padding:16px;border-radius:8px;margin:12px 0;border-right:4px solid #e74c3c}
+.ls-c .err{background:#fde8e8;padding:16px 20px;border-radius:8px;margin:12px 0;border-right:4px solid #e74c3c}
 .ls-c .err strong{color:#e74c3c}
-.ls-c .sum{background:#e8f5e9;padding:16px;border-radius:8px;margin:16px 0;border-right:4px solid #27ae60}
+.ls-c .sum{background:#e8f5e9;padding:16px 20px;border-radius:8px;margin:16px 0;border-right:4px solid #27ae60}
 .ls-c .sum strong{color:#27ae60}
 .ls-c .sc-b{background:#fff8e1;padding:12px 16px;border-radius:8px;margin:12px 0;font-size:.9rem;border-right:4px solid #ffc107}
 .ls-c .sc-b strong{color:#f57f17}
-@media(max-width:600px){.mc{flex-direction:column}.mc .msd{width:100%;min-height:60px;flex-direction:row;padding:10px}}
-</style>
-<style>
-/* Additional hero backgrounds */
-.hb1{background-image:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80')}
-.hb2{background-image:url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80')}
-.hb3{background-image:url('https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=80')}
-.hb4{background-image:url('https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=800&q=80')}
-.hb5{background-image:url('https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=800&q=80')}
-.hb6{background-image:url('https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80')}
-.mbg1{background-image:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=200&q=60')}
-.mbg2{background-image:url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=200&q=60')}
-.mbg3{background-image:url('https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60')}
-.lbg1{background-image:url('https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=800&q=80')}
-.lbg2{background-image:url('https://images.unsplash.com/photo-1514432324607-a09d9b4aefda?w=800&q=80')}
+.ls-c .img-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.ls-c .img-row .img-c{margin:0}
+.ls-c ul{margin:12px 0 12px 20px}
+.ls-c ul li{margin-bottom:6px}
+.ls-c table{width:100%;border-collapse:collapse;margin:16px 0;border-radius:8px;overflow:hidden}
+.ls-c table th,.ls-c table td{padding:10px 14px;text-align:right;border:1px solid #ede0d4;font-size:.9rem}
+.ls-c table th{background:#ede0d4;color:#3e2312;font-weight:700}
+.nav-b{margin-top:24px;padding-top:20px;border-top:2px solid #ede0d4;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.ls-c .q-section{background:#faf5ef;border-radius:12px;padding:20px;margin:16px 0;border:2px solid #ede0d4}
+.ls-c .q-section .q-q{margin-bottom:16px;padding:16px;background:white;border-radius:8px}
+.ls-c .q-section .q-q .q-t{font-weight:700;margin-bottom:10px;color:#3e2312}
+.ls-c .q-section .q-o{padding:10px 14px;margin-bottom:6px;border-radius:6px;cursor:pointer;border:2px solid #ede0d4;transition:.3s;display:flex;align-items:center;gap:8px}
+.ls-c .q-section .q-o:hover{border-color:#d4a85a;background:white}
+.ls-c .q-section .q-o.s{border-color:#d4a85a;background:#fff8e1}
+.ls-c .q-section .q-o.c{border-color:#27ae60;background:#e8f5e9}
+.ls-c .q-section .q-o.w{border-color:#e74c3c;background:#fde8e8}
+.ls-c .q-section .q-o .ql{width:24px;height:24px;border-radius:50%;background:#ede0d4;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+.ls-c .q-section .q-o.s .ql{background:#d4a85a;color:white}
+.ls-c .q-section .q-o.c .ql{background:#27ae60;color:white}
+.ls-c .q-section .q-o.w .ql{background:#e74c3c;color:white}
+@media(max-width:600px){.c{padding:12px}.lc .hd{min-height:110px}.lc .hd .ic{font-size:2.2rem}.mc .mh{flex-direction:column}.mc .msd{width:100%;min-height:60px;flex-direction:row;padding:8px}.mc .msd .mnm{display:none}.ls-sc .ls-b{padding:20px}.ls-sc .ls-h .hc{padding:24px 20px;min-height:140px}.ls-sc .ls-h .hc h2{font-size:1.2rem}.ls-c .img-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<hdr><h1>☕ Esenza Academy</h1><p>تدريب الباريستا — من البداية للاحتراف</p></hdr>
+<hdr><h1>☕ Esenza Academy</h1><p>تدريب الباريستا الاحترافي — من البداية إلى الاحتراف</p></hdr>
 <div class="c" id="root"></div>
 <div class="t" id="t"></div>
 <script>
 const IMG = {
-  hero:['https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80','https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80','https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=80','https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=800&q=80','https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=800&q=80'],
+  hero:['https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80','https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=800&q=80','https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=80','https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=800&q=80','https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=800&q=80','https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80'],
   mod:['https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=200&q=60','https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=200&q=60','https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60','https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=200&q=60','https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=200&q=60']
 };
 
 const LV = {
   A:{id:'A',t:'مبتدئ',ic:'🌱',co:'#27AE60',d:'اكتشاف القهوة وأصولها',bg:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80'},
   B:{id:'B',t:'محترف',ic:'🔥',co:'#E67E22',d:'أسرار التحميص والاستخلاص',bg:'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80'},
-  C:{id:'C',t:'ماستر',ic:'👑',co:'#8E44AD',d:'التقييم الحسي والإدارة والابتكار',bg:'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=600&q=80'}
+  C:{id:'C',t:'ماستر',ic:'👑',co:'#8E44AD',d:'التقييم الحسي والإدارة',bg:'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=600&q=80'}
 };
 
 const CM = [
 {id:'module-A1',title:'اكتشاف القهوة وأصولها',icon:'🌍',desc:'رحلة حبة البن من الغابة إلى الفنجان',img:0,lessons:[
-{title:'قصة اكتشاف القهوة',img:0,body:'<h3>📖 قصة كلد وقطيع الماعز</h3><p>يروى أن راعياً إثيوبياً اسمه كلد لاحظ نشاطاً غير عادي في قطيع الماعز بعد أن أكل ثماراً حمراء من شجرة غريبة. جربها بنفسه وشعر بالنشاط. أخبر الرهبان في الدير المجاور، فصنعوا منها مشروباً ساعدهم على السهر في الصلاة. هكذا بدأت رحلة القهوة.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt="قهوة"><div class="cap">☕ أول فنجان قهوة في التاريخ</div></div><div class="sum"><strong>💡 الخلاصة:</strong> اكتشاف القهوة كان مصادفة، لكنه غيّر العالم. الإثيوبيون أول من استخدموا حبة البن كمشروب منشط.</div>'},
-{title:'البن العربي — الأصول والتصنيف',img:2,body:'<h3>🔬 التصنيف النباتي</h3><p>القهوة تنتمي للجنس Coffea، وأهم نوعين: Coffea arabica (75% من الإنتاج) و Coffea canephora (روبوستا).</p><div class="img-c"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80" alt="حبوب البن"><div class="cap">🌱 حبوب البن العربي — Coffea arabica</div></div><p>العربية نشأت في إثيوبيا، وتزرع في المرتفعات (600-2000م). الروبوستا أكثر مقاومة للأمراض وأعلى كافيين.</p><div class="info-b"><strong>📊 التحليل العلمي:</strong> العربية تحتوي على 1.2% كافيين، الروبوستا 2.2%. الزيوت العطرية في العربية أكثر تعقيداً، مما يعطيها نكهات زهرية وفاكهية.</div><div class="err"><strong>❌ خطأ شائع:</strong> يعتقد البعض أن القهوة العربية والروبوستا من نفس النوع. الحقيقة أنهما نوعان مختلفان تماماً، لكل منهما خصائصه الفريدة في الزراعة والنكهة.</div>'},
-{title:'من الغابة إلى المزروعات',img:3,body:'<h3>🌍 انتشار القهوة حول العالم</h3><p>من إثيوبيا انتقلت القهوة إلى اليمن ثم الحجاز، فمصر، فتركيا، ثم أوروبا عبر البندقية. في القرن 17، انتشرت المقاهي في أوروبا وأطلقت عليها اسم "مدارس الحكماء".</p><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80" alt="مقهى"><div class="cap">🏛️ أول المقاهي الأوروبية في البندقية</div></div><div class="sum"><strong>💡 الخلاصة:</strong> القهوة قطعت رحلة آلاف الكيلومترات من غابات إثيوبيا لتصل إلى فنجانك اليوم. كل رشفة تحكي قصة آلاف السنين من التجارة والثقافة.</div>'},
-{title:'تشريح حبة البن',img:4,body:'<h3>🔬 تركيب حبة البن</h3><p>حبة البن هي بذرة ثمرة القهوة (الكرز). تتكون من: القشرة الخارجية، اللب (الميوسلاج)، الغلاف الرقيق (البارشمنت)، طبقة الفضة (السيلفر سكين)، وجنين البذرة (البين).</p><div class="img-c"><img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=600&q=80" alt="تشريح"><div class="cap">🔬 أجزاء حبة البن</div></div><div class="hl"><strong>📊 معلومة:</strong> كرزة القهوة الواحدة تحتوي عادة على بذرتين. أحياناً توجد بذرة واحدة فقط (peaberry) وتكون أكثر تركيزاً في النكهة.</div>'}
+{title:'قصة اكتشاف القهوة',img:0,body:'<h3>📖 قصة كلد وقطيع الماعز</h3><p>يروى أن راعياً إثيوبياً اسمه كلد لاحظ نشاطاً غير عادي في قطيع الماعز بعد أن أكل ثماراً حمراء من شجرة غريبة. جربها بنفسه وشعر بالنشاط. أخبر الرهبان في الدير المجاور، فصنعوا منها مشروباً ساعدهم على السهر في الصلاة. هكذا بدأت رحلة القهوة.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt=""><div class="cap">☕ أول فنجان قهوة في التاريخ — إثيوبيا، القرن 9</div></div><div class="img-row"><div class="img-c"><img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=300&q=60" alt=""><div class="cap">🌿 غابات البن الإثيوبية</div></div><div class="img-c"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300&q=60" alt=""><div class="cap">🫘 حبوب البن الطازجة</div></div></div><div class="sum"><strong>💡 الخلاصة:</strong> اكتشاف القهوة كان مصادفة، لكنه غيّر العالم. الإثيوبيون أول من استخدموا حبة البن كمشروب منشط.</div><div class="q-section"><div class="q-q"><div class="q-t">💬 هل تعلم؟</div><p style="font-size:.9rem;color:#6d4c41">كلمة "قهوة" أصلها من الكلمة العربية "قَهْوَة" التي كانت تعني الخمر في الشعر الجاهلي، ثم أصبحت تُطلق على شراب البن لنشوته.</p></div></div>'},
+{title:'البن العربي — الأصول والتصنيف',img:2,body:'<h3>🔬 التصنيف النباتي للقهوة</h3><p>القهوة تنتمي للجنس <em>Coffea</em>، وأهم نوعين: <strong>Coffea arabica</strong> (75% من الإنتاج) و <strong>Coffea canephora</strong> (روبوستا).</p><div class="img-c"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80" alt=""><div class="cap">🌱 حبوب البن العربي — Coffea arabica</div></div><p>العربية نشأت في إثيوبيا، وتزرع في المرتفعات (600-2000م). الروبوستا أكثر مقاومة للأمراض وأعلى كافيين.</p><table><tr><th>الخاصية</th><th>عربية Arabica</th><th>روبوستا Robusta</th></tr><tr><td>الكافيين</td><td>1.2%</td><td>2.2%</td></tr><tr><td>الارتفاع</td><td>600-2000م</td><td>0-800م</td></tr><tr><td>النكهة</td><td>زهرية/فاكهية</td><td>ترابية/خشنة</td></tr><tr><td>السعر</td><td>أعلى</td><td>أقل</td></tr></table><div class="info-b"><strong>📊 التحليل العلمي:</strong> العربية تحتوي على زيوت عطرية أكثر تعقيداً (أكثر من 800 مركب عطري)، مما يعطيها نكهات زهرية وفاكهية. الروبوستا تحتوي على ضعف الكافيين ومركبات كلوروجينيك أكثر، مما يعطيها نكهة أكثر مرارة وقسوة.</div><div class="err"><strong>❌ خطأ شائع:</strong> يعتقد البعض أن القهوة العربية والروبوستا من نفس النوع. الحقيقة أنهما نوعان مختلفان تماماً (species مختلفان)، لكل منهما خصائصه الفريدة في الزراعة والنكهة والاستخدام.</div><div class="img-row"><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=60" alt=""><div class="cap">🫘 البن العربي — نكهات معقدة</div></div><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=300&q=60" alt=""><div class="cap">☕ الروبوستا — قوة ومرارة</div></div></div>'},
+{title:'من الغابة إلى المزروعات',img:3,body:'<h3>🌍 انتشار القهوة حول العالم</h3><p>من إثيوبيا انتقلت القهوة إلى اليمن ثم الحجاز، فمصر، فتركيا، ثم أوروبا عبر البندقية. في القرن 17، انتشرت المقاهي في أوروبا وأطلقت عليها اسم "مدارس الحكماء".</p><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80" alt=""><div class="cap">🏛️ أول المقاهي الأوروبية — البندقية، القرن 17</div></div><p>شجرة القهوة العربية Coffea arabica نشأت في المرتفعات الإثيوبية. تنتشر اليوم في "حزام القهوة" (Coffee Belt) حول العالم: أمريكا اللاتينية، أفريقيا، وآسيا.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=600&q=80" alt=""><div class="cap">🗺️ خريطة حزام القهوة العالمي</div></div><div class="sum"><strong>💡 الخلاصة:</strong> القهوة قطعت رحلة آلاف الكيلومترات من غابات إثيوبيا لتصل إلى فنجانك اليوم. كل رشفة تحكي قصة آلاف السنين من التجارة والثقافة.</div>'},
+{title:'تشريح حبة البن — من الداخل',img:4,body:'<h3>🔬 تركيب حبة البن</h3><p>حبة البن هي بذرة ثمرة القهوة (الكرز). تتكون من عدة طبقات: القشرة الخارجية (Exocarp)، اللب الحلو (Mucilage/Mesocarp)، الغلاف الرقيق (Parchment/Endocarp)، طبقة الفضة (Silver Skin/Episperm)، وجنين البذرة (Endosperm).</p><div class="img-c"><img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=600&q=80" alt=""><div class="cap">🔬 تشريح حبة البن — الأجزاء الداخلية</div></div><div class="img-row"><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=300&q=60" alt=""><div class="cap">🍒 كرزة القهوة الحمراء</div></div><div class="img-c"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300&q=60" alt=""><div class="cap">🫘 البذور الخضراء (Green Beans)</div></div></div><div class="hl"><strong>📊 معلومة:</strong> كرزة القهوة الواحدة تحتوي عادة على بذرتين. أحياناً توجد بذرة واحدة فقط (peaberry) وتكون أكثر تركيزاً في النكهة. تمثل peaberry حوالي 5% من المحصول.</div><div class="q-section"><div class="q-q"><div class="q-t">💬 اختبار سريع</div><p style="font-size:.9rem;color:#6d4c41">ما هي الطبقة التي تُعرف بـ "Silver Skin" في حبة البن؟</p></div></div>'}
 ]},
 {id:'module-A2',title:'أساسيات التحضير',icon:'⚗️',desc:'من الحبة إلى الفنجان — علم الاستخلاص',img:1,lessons:[
-{title:'علم الاستخلاص',img:0,body:'<h3>🔬 فيزياء وكيمياء الاستخلاص</h3><p>الاستخلاص هو عملية إذابة المركبات القابلة للذوبان من البن المطحون في الماء.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80" alt="استخلاص"><div class="cap">⚗️ عملية الاستخلاص</div></div><p>العوامل المؤثرة: درجة الطحن، درجة حرارة الماء (92-96°م)، نسبة القهوة للماء، وقت التلامس.</p><div class="info-b"><strong>📊 التحليل:</strong> النسبة المثلى للاستخلاص هي 18-22% من وزن القهوة. أقل من 18% استخلاص ناقص (طعم حامض)، أكثر من 22% استخلاص زائد (طعم مر).</div><div class="err"><strong>❌ خطأ شائع:</strong> الماء المغلي مباشرة (100°م) يحرق القهوة ويسبب مرارة زائدة. الماء المثالي بين 92-96°م.</div>'},
-{title:'المعدات والأدوات',img:3,body:'<h3>🧰 أدوات تحضير القهوة</h3><p>أشهر طرق التحضير: V60، Chemex، AeroPress، French Press، والإسبريسو.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80" alt="أدوات"><div class="cap">🧰 أدوات تحضير القهوة</div></div><p>كل طريقة تعطي نكهة مختلفة. الاختيار يعتمد على نوع البن ودرجة التحميص والتفضيل الشخصي.</p><div class="sum"><strong>💡 نصيحة:</strong> ابدأ بطريقة V60 — الأبسط والأكثر تحكماً في المتغيرات. ثم جرب باقي الطرق.</div>'},
-{title:'المقاييس والنسب',img:1,body:'<h3>⚖️ علم النسب في القهوة</h3><p>النسبة الأساسية: 60 جرام قهوة لكل لتر ماء (1:16.7). للإسبريسو: 1:2 (قهوة:ماء).</p><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80" alt="ميزان"><div class="cap">⚖️ الدقة في القياس هي مفتاح الاتساق</div></div><div class="hl"><strong>📊 جدول النسب:</strong> V60: 1:15-1:17 · AeroPress: 1:14-1:16 · French Press: 1:12-1:15 · إسبريسو: 1:2-1:3</div>'}
+{title:'علم الاستخلاص فيزيائياً وكيميائياً',img:0,body:'<h3>🔬 فيزياء وكيمياء الاستخلاص</h3><p>الاستخلاص هو عملية إذابة المركبات القابلة للذوبان من البن المطحون في الماء. العوامل المؤثرة: درجة الطحن، درجة حرارة الماء (92-96°م)، نسبة القهوة للماء، وقت التلامس.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80" alt=""><div class="cap">⚗️ عملية الاستخلاص — القهوة المقطرة</div></div><div class="info-b"><strong>📊 التحليل العميق:</strong> النسبة المثلى للاستخلاص هي 18-22% من وزن القهوة. أقل من 18% = استخلاص ناقص (Under-extraction: طعم حامض ومالح). أكثر من 22% = استخلاص زائد (Over-extraction: طعم مر وجاف).</div><table><tr><th>العامل</th><th>التأثير</th><th>النطاق المثالي</th></tr><tr><td>درجة الطحن</td><td>أدق = أبطأ استخلاص</td><td>متوسط (مثل حبيبات السكر)</td></tr><tr><td>حرارة الماء</td><td>أعلى = استخلاص أسرع</td><td>92-96°م</td></tr><tr><td>وقت التلامس</td><td>أطول = استخلاص أكثر</td><td>2.5-4 دقائق</td></tr><tr><td>النسبة (قهوة:ماء)</td><td>أقل قهوة = استخلاص أسرع</td><td>1:15 إلى 1:17</td></tr></table><div class="err"><strong>❌ خطأ شائع:</strong> الماء المغلي مباشرة (100°م) يحرق القهوة ويسبب مرارة زائدة. الماء المثالي بين 92-96°م — اترك الغلاية 30 ثانية بعد الغليان.</div>'},
+{title:'المعدات والأدوات — دليل شامل',img:3,body:'<h3>🧰 أدوات تحضير القهوة — مقارنة شاملة</h3><p>أشهر طرق التحضير: V60، Chemex، AeroPress، French Press، والإسبريسو. كل طريقة تعطي نكهة مختلفة.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80" alt=""><div class="cap">🧰 مجموعة أدوات تحضير القهوة المنزلية</div></div><table><tr><th>الطريقة</th><th>النكهة</th><th>الصعوبة</th><th>الوقت</th></tr><tr><td>V60</td><td>نظيفة، زهرية</td><td>متوسطة</td><td>2.5 دقيقة</td></tr><tr><td>Chemex</td><td>نظيفة جداً، خفيفة</td><td>متوسطة</td><td>4 دقائق</td></tr><tr><td>AeroPress</td><td>غنية، كاملة</td><td>سهلة</td><td>1.5 دقيقة</td></tr><tr><td>French Press</td><td>ثقيلة، زيتية</td><td>سهلة</td><td>4 دقائق</td></tr><tr><td>إسبريسو</td><td>مركزة، كريمية</td><td>صعبة</td><td>25-30 ثانية</td></tr></table><div class="img-row"><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=60" alt=""><div class="cap">☕ V60</div></div><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=300&q=60" alt=""><div class="cap">⚗️ Chemex</div></div></div><div class="sum"><strong>💡 نصيحة:</strong> ابدأ بطريقة V60 — الأبسط والأكثر تحكماً في المتغيرات. أتقنها أولاً ثم جرب باقي الطرق.</div>'},
+{title:'المقاييس والنسب الذهبية',img:1,body:'<h3>⚖️ علم النسب في القهوة</h3><p>النسبة الأساسية: 60 جرام قهوة لكل لتر ماء (1:16.7). للإسبريسو: 1:2 (قهوة:ماء).</p><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80" alt=""><div class="cap">⚖️ الدقة في القياس — مفتاح الاتساق</div></div><div class="hl"><strong>📊 جدول النسب الذهبية:</strong> V60: 1:15-1:17 · AeroPress: 1:14-1:16 · French Press: 1:12-1:15 · إسبريسو: 1:2-1:3 · Cold Brew: 1:8-1:10</div><div class="q-section"><div class="q-q"><div class="q-t">📝 تمرين عملي</div><p style="font-size:.9rem;color:#6d4c41">استخدم ميزان القهوة لقياس 15 جرام بن. أضف 250 مل ماء عند 94°م. انتظر 3 دقائق واستمتع بأول فنجان احترافي!</p></div></div>'},
+{title:'تمارين عملية — أول فنجان احترافي',img:4,body:'<h3>🛠️ دليل خطوة بخطوة</h3><p>الآن حان وقت التطبيق العملي. اتبع هذه الخطوات لتحضير أول فنجان قهوة باحترافية:</p><ol style="margin:12px 0 12px 20px"><li><strong>جهز الأدوات:</strong> V60، فلتر ورقي، غلاية بميزان حرارة، ميزان دقيق</li><li><strong>سخن الماء:</strong> اغلي الماء واتركه 30 ثانية ليصل إلى 94°م</li><li><strong>اطحن البن:</strong> درجة طحن متوسطة (مثل حبيبات السكر الخشن)</li><li><strong>وزن:</strong> 15 جرام بن + 250 جرام ماء</li><li><strong>صب:</strong> بلل البن أولاً بـ 30 مل وانتظر 30 ثانية (Blooming)</li><li><strong>استمر في الصب:</strong> على 3 مراحل متساوية</li><li><strong>انتظر:</strong> 2.5-3 دقائق إجمالي وقت التحضير</li><li><strong>استمتع:</strong> صب في الكوب المفضل لديك!</li></ol><div class="img-c"><img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=600&q=80" alt=""><div class="cap">🛠️ تحضير V60 خطوة بخطوة</div></div><div class="sum"><strong>💡 الخلاصة:</strong> الممارسة تصنع الإتقان. كل مرة تحضر فيها قهوة، سجل الملاحظات: الطعم، الرائحة، وقت التحضير. ستتحسن مع كل مرة!</div>'}
 ]},
 {id:'module-A3',title:'مشروبات الإسبريسو',icon:'☕',desc:'فن تحضير الإسبريسو والمشروبات المبنية عليه',img:4,lessons:[
-{title:'ما هو الإسبريسو؟',img:1,body:'<h3>☕ تعريف الإسبريسو</h3><p>الإسبريسو مشروب مركّز يُحضّر بدفع الماء الساخن (92°م) تحت ضغط 9 بار عبر البن المطحون ناعماً (طحن إسبريسو).</p><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80" alt="إسبريسو"><div class="cap">☕ الإسبريسو — قلب عالم القهوة</div></div><div class="info-b"><strong>📊 مواصفات الإسبريسو المثالي:</strong> 25-30 ثانية استخلاص · 25-35 مل حجم · 7-9 جرام جرعة · كريما ذهبية سميكة</div><div class="sc-b"><strong>🔬 SCA:</strong> الإسبريسو حسب معايير SCA هو 25-35 مل يحضر من 7-9 جرام بن في 25-30 ثانية.</div>'},
-{title:'لاتيه — فن الحليب',img:3,body:'<h3>🥛 لاتيه (Caffè Latte)</h3><p>إسبريسو + حليب مبخر (steamed milk) + طبقة رقيقة من الرغوة. النسبة: 1/3 إسبريسو + 2/3 حليب.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80" alt="لاتيه"><div class="cap">🥛 لاتيه — المشروب الأكثر شعبية في المقاهي</div></div><p>اليو أرت (Latte Art) هو فن صب الحليب على الإسبريسو لتشكيل رسومات (قلب، روزيتا، توليب). يبدأ بالحليب المناسب — كامل الدسم عند 55-65°م.</p><div class="err"><strong>❌ خطأ شائع:</strong> تسخين الحليب لأكثر من 70°م يحرق البروتينات ويفسد الطعم. الحرارة المثالية 55-65°م.</div>'},
-{title:'كابتشينو والموكا',img:2,body:'<h3>☕ كابتشينو وموكا</h3><p>الكابتشينو: إسبريسو + حليب مبخر + رغوة كثيفة (1:1:1). الموكتشينو: إسبريسو + شوكولاتة + حليب مبخر.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80" alt="كابتشينو"><div class="cap">☕ كابتشينو كلاسيك</div></div><div class="sum"><strong>💡 الخلاصة:</strong> الفرق بين لاتيه وكابتشينو هو كمية الرغوة. اللاتيه رغوة خفيفة، الكابتشينو رغوة كثيفة. </div>'}
+{title:'ما هو الإسبريسو؟',img:1,body:'<h3>☕ تعريف الإسبريسو</h3><p>الإسبريسو مشروب مركّز يُحضّر بدفع الماء الساخن (92°م) تحت ضغط 9 بار عبر البن المطحون ناعماً (طحن إسبريسو).</p><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80" alt=""><div class="cap">☕ الإسبريسو — قلب عالم القهوة الاحترافي</div></div><div class="info-b"><strong>📊 مواصفات الإسبريسو المثالي حسب SCA:</strong> 25-30 ثانية استخلاص · 25-35 مل حجم · 7-9 جرام جرعة · كريما ذهبية سميكة 3-5 مم · درجة حرارة 90-96°م</div><div class="img-row"><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=60" alt=""><div class="cap">⏱️ التوقيت المثالي</div></div><div class="img-c"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300&q=60" alt=""><div class="cap">🎯 الكريما الذهبية</div></div></div><div class="sc-b"><strong>🔬 مرجع SCA:</strong> الإسبريسو حسب معايير SCA هو 25-35 مل من الإسبريسو تُحضّر من 7-9 جرام بن في 25-30 ثانية عند 90-96°م و 9 بار ضغط.</div>'},
+{title:'لاتيه — فن الحليب',img:3,body:'<h3>🥛 لاتيه (Caffè Latte)</h3><p>إسبريسو + حليب مبخر (steamed milk) + طبقة رقيقة من الرغوة. النسبة: 1/3 إسبريسو + 2/3 حليب.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80" alt=""><div class="cap">🥛 لاتيه — المشروب الأكثر شعبية في المقاهي حول العالم</div></div><p><strong>Latte Art (فن اللاتيه)</strong> هو فن صب الحليب على الإسبريسو لتشكيل رسومات (قلب، روزيتا، توليب). يبدأ بالحليب المناسب — حليب كامل الدسم عند درجة حرارة 55-65°م.</p><div class="hl"><strong>🖌️ أنواع فن اللاتيه:</strong> ❤️ القلب (Heart) — الأسهل للمبتدئين · 🌸 الروزيتا (Rosetta) — شكل ورق الشجر · 🌷 التوليب (Tulip) — متعدد الطبقات</div><div class="err"><strong>❌ خطأ شائع:</strong> تسخين الحليب لأكثر من 70°م يحرق البروتينات (اللاكتوز) ويفسد الطعم الحلو. الحرارة المثالية للتبخير: 55-65°م.</div>'},
+{title:'كابتشينو وموكا',img:2,body:'<h3>☕ كابتشينو وموكا — المشروبات الكلاسيكية</h3><p><strong>الكابتشينو:</strong> إسبريسو + حليب مبخر + رغوة كثيفة بنسبة 1:1:1. سُمي على اسم رهبان الكابوتشين بسبب لون ردائهم البني.</p><p><strong>الموكا (Caffè Mocha):</strong> إسبريسو + شوكولاتة + حليب مبخر. ابتكرت في إيطاليا كخيار للحلويات.</p><div class="img-row"><div class="img-c"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300&q=60" alt=""><div class="cap">☕ كابتشينو كلاسيك</div></div><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=60" alt=""><div class="cap">🍫 موكا بالشوكولاتة</div></div></div><table><tr><th>المشروب</th><th>إسبريسو</th><th>حليب</th><th>رغوة</th><th>إضافات</th></tr><tr><td>لاتيه</td><td>1</td><td>2</td><td>خفيفة</td><td>-</td></tr><tr><td>كابتشينو</td><td>1</td><td>1</td><td>كثيفة</td><td>-</td></tr><tr><td>موكا</td><td>1</td><td>2</td><td>خفيفة</td><td>شوكولاتة</td></tr><tr><td>ماكياتو</td><td>1</td><td>½</td><td>قليلة</td><td>-</td></tr></table><div class="sum"><strong>💡 الخلاصة:</strong> الفرق بين لاتيه وكابتشينو هو كمية الرغوة. اللاتيه رغوة خفيفة، الكابتشينو رغوة كثيفة تعلو المشروب.</div>'}
 ]},
-{id:'module-B1',title:'أسرار التحميص',icon:'🔥',desc:'من البن الأخضر إلى البن المحمص — علم التحميص',img:2,lessons:[
-{title:'كيمياء التحميص',img:0,body:'<h3>🔥 علم تحميص القهوة</h3><p>التحميص هو تطبيق حرارة على البن الأخضر لتحويله كيميائياً وفيزيائياً إلى بن محمص صالح للاستخلاص.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt="تحميص"><div class="cap">🔥 عملية التحميص</div></div><p>درجات التحميص: فاتح (Light) عند 195°م — يبرز الحموضة والنكهات الزهرية. متوسط (Medium) عند 210°م — توازن بين الحموضة والمرارة. داكن (Dark) عند 225°م — نكهات شوكولاتة ومدخنة.</p><div class="info-b"><strong>📊 التحليل العلمي:</strong> تفاعل ميلارد (Maillard Reaction) يبدأ عند 150°م ويكون مسؤولاً عن النكهات المعقدة. التفاعل عند أول crack (196°م) يطلق ثاني أكسيد الكربون ويزيد الحجم بنسبة 50-80%.</div>'},
-{title:'درجات التحميص',img:4,body:'<h3>🌡️ درجات التحميص بالتفصيل</h3><p>القاعدة الذهبية: تحميص فاتح للقهوة العربية الفاخرة (Single Origin)، تحميص متوسط للمشروبات بالحليب، تحميص داكن للإسبريسو الإيطالي.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=600&q=80" alt="درجات"><div class="cap">🌡️ درجات التحميص من الفاتح إلى الداكن</div></div><div class="sc-b"><strong>🔬 مرجع SCA:</strong> مقياس Agtron يستخدم لقياس درجة التحميص رقمياً. #95 = فاتح جداً، #25 = داكن جداً.</div>'},
+{id:'module-B1',title:'أسرار التحميص',icon:'🔥',desc:'من البن الأخضر إلى المحمص — علم التحميص',img:2,lessons:[
+{title:'كيمياء التحميص — تفاعل ميلارد',img:0,body:'<h3>🔥 علم تحميص القهوة</h3><p>التحميص هو تطبيق حرارة على البن الأخضر لتحويله كيميائياً وفيزيائياً إلى بن محمص صالح للاستخلاص. تبدأ الحبة باللون الأخضر وتنتهي باللون البني.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt=""><div class="cap">🔥 عملية التحميص — من الأخضر إلى البني</div></div><p><strong>درجات التحميص:</strong></p><ul><li><strong>فاتح (Light):</strong> عند 195°م — يبرز الحموضة والنكهات الزهرية والفاكهية (لـ Single Origin الفاخر)</li><li><strong>متوسط (Medium):</strong> عند 210°م — توازن بين الحموضة والمرارة (للمشروبات بالحليب)</li><li><strong>داكن (Dark):</strong> عند 225°م — نكهات شوكولاتة ومدخنة (للإسبريسو الإيطالي)</li></ul><div class="info-b"><strong>📊 التحليل العلمي العميق:</strong> تفاعل ميلارد (Maillard Reaction) يبدأ عند 150°م ويكون مسؤولاً عن النكهات المعقدة — نفس التفاعل الذي يعطي الخبز المحمص والستيك نكهته. عند أول crack (196°م)، يتمدد حجم الحبة بنسبة 50-80% ويتحول النشا إلى سكريات. عند ثاني crack (220°م)، تتحول الزيوت إلى سطح الحبة.</div><div class="sc-b"><strong>🔬 مرجع SCA:</strong> مقياس Agtron يستخدم لقياس درجة التحميص رقمياً. #95 = فاتح جداً، #25 = داكن جداً. المقياس معتمد من SCA.</div>'},
 ]},
 {id:'module-C1',title:'التقييم الحسي والكابينج',icon:'👅',desc:'علم تذوق القهوة الاحترافي',img:3,lessons:[
-{title:'فن الكابينج (Cupping)',img:1,body:'<h3>👅 التقييم الحسي الاحترافي</h3><p>الكابينج هو طريقة موحدة لتقييم القهوة معتمدة من SCA. يقيم 10 معايير: العطر، النكهة، الحموضة، القوام، التوازن، وغيرها.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80" alt="كابينج"><div class="cap">👅 جلسة كابينج احترافية</div></div><div class="info-b"><strong>📊 معايير SCA للتقييم:</strong> العطر (Fragrance/Aroma) · النكهة (Flavor) · الحموضة (Acidity) · القوام (Body) · المذاق النهائي (Aftertaste) · التوازن (Balance)</div><div class="err"><strong>❌ خطأ شائع:</strong> الخلط بين الحموضة (Acidity) والمرارة (Bitterness). الحموضة نكهة مرغوبة تدل على جودة البن. المرارة الزائدة تدل على استخلاص زائد أو تحميص داكن جداً.</div>'},
-]},
+{title:'فن الكابينج — تذوق احترافي',img:1,body:'<h3>👅 التقييم الحسي الاحترافي (Cupping)</h3><p>الكابينج هو طريقة موحدة لتقييم القهوة معتمدة من SCA. يقيم 10 معايير: العطر، النكهة، الحموضة، القوام، التوازن، وغيرها.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80" alt=""><div class="cap">👅 جلسة كابينج احترافية — تقييم القهوة</div></div><div class="info-b"><strong>📊 معايير SCA للتقييم (100 نقطة):</strong> العطر (Fragrance/Aroma) 15% · النكهة (Flavor) 20% · الحموضة (Acidity) 10% · القوام (Body) 10% · المذاق النهائي (Aftertaste) 10% · التوازن (Balance) 10% · الحلاوة (Sweetness) 10% · النظافة (Clean Cup) 10% · التوحيد (Uniformity) 10% · الانطباع العام (Overall) 5%</div><div class="err"><strong>❌ خطأ شائع جداً:</strong> الخلط بين الحموضة (Acidity) والمرارة (Bitterness). الحموضة نكهة مرغوبة تدل على جودة البن — تشبه حموضة الحمضيات أو التفاح. المرارة الزائدة تدل على استخلاص زائد أو تحميص داكن جداً.</div><div class="q-section"><div class="q-q"><div class="q-t">📝 تمرين تذوق</div><p style="font-size:.9rem;color:#6d4c41">جرب قهوتين مختلفتين جنباً إلى جنب. سجل: العطر، الحموضة، القوام، النكهة العامة. استخدم مقياس 1-10 لكل عنصر.</p></div></div>'},
+]}
 ];
 
 function $(id){return document.getElementById(id)}
@@ -145,7 +168,7 @@ function sL(){
   let h='<h2 style="color:#3e2312;margin-bottom:16px;font-size:1.4rem">🎯 اختر مستواك</h2><div class="lg">';
   ['A','B','C'].forEach(l=>{
     let lv=LV[l],ms=gM(l),tl=ms.reduce((s,m)=>s+m.lessons.length,0);
-    h+='<div class="lc" onclick="sM(\''+l+'\')"><div class="hd"><div class="bg" style="background-image:url('+lv.bg+')"></div><div class="ic">'+lv.ic+'</div><h3>'+lv.t+'</h3></div><div class="bd"><p>'+lv.d+'</p><div class="st"><div><div class="n">'+ms.length+'</div><div class="l">موديولات</div></div><div><div class="n">'+tl+'</div><div class="l">دروس</div></div></div></div></div>';
+    h+='<div class="lc" onclick="sM(\''+l+'\')"><div class="hd"><div class="bg" style="background-image:url('+lv.bg+')"></div><div class="ov"></div><div class="ic">'+lv.ic+'</div><h3>'+lv.t+'</h3></div><div class="bd"><p>'+lv.d+'</p><div class="st"><div><div class="n">'+ms.length+'</div><div class="l">موديولات</div></div><div><div class="n">'+tl+'</div><div class="l">دروس</div></div></div></div></div>';
   });
   return h+'</div><div id="ms"></div><div id="ls"></div>';
 }
@@ -155,23 +178,25 @@ function sM(l){
   let h='<button class="btn" onclick="rT(\'c\')" style="margin-bottom:16px">⬅ الرجوع للمستويات</button>'+
     '<h2 style="color:#3e2312;margin-bottom:16px;font-size:1.4rem">'+lv.ic+' '+lv.t+' — '+ms.length+' موديولات</h2>';
   ms.forEach((m,mi)=>{
-    h+='<div class="mc"><div class="msd"><div class="mbg" style="background-image:url('+IMG.mod[m.img%IMG.mod.length]+')"></div><div class="mic">'+m.icon+'</div></div><div class="mi"><h4>'+m.title+'</h4><p>'+m.desc+' — '+m.lessons.length+' دروس</p><ul class="ls">';
+    h+='<div class="mc"><div class="mh" onclick="sMl(\''+l+'\','+mi+')"><div class="msd"><div class="mbg" style="background-image:url('+IMG.mod[m.img%IMG.mod.length]+')"></div><div class="mic">'+m.icon+'</div><div class="mnm">موديول '+(mi+1)+'</div></div><div class="mi"><h4>'+m.title+'</h4><p>'+m.desc+' — '+m.lessons.length+' دروس</p><div class="pr"><div class="fl" style="width:0%"></div></div></div></div><div class="lessons-list" id="ll-'+l+'-'+mi+'">';
     m.lessons.forEach((les,li)=>{
-      h+='<li onclick="sLsn(\''+l+'\','+mi+','+li+')">📖 '+les.title+'</li>';
+      h+='<div class="lsi" onclick="sLsn(\''+l+'\','+mi+','+li+')"><span class="ln">'+(li+1)+'</span><span class="lt">'+les.title+'</span></div>';
     });
-    h+='</ul></div></div>';
+    h+='</div></div>';
   });
   $('ms').innerHTML=h;
   $('ms').scrollIntoView({behavior:'smooth'});
 }
 
+function sMl(l,mi){}
+
 function sLsn(l,mi,li){
   let ms=gM(l),m=ms[mi],les=m.lessons[li];
-  let prev=li>0?'<button class="btn" onclick="sLsn(\''+l+'\','+mi+','+(li-1)+')" style="margin-left:8px">⬅ السابق</button>':'';
+  let prev=li>0?'<button class="btn" onclick="sLsn(\''+l+'\','+mi+','+(li-1)+')">⬅ السابق</button>':'';
   let next=li<m.lessons.length-1?'<button class="btn" onclick="sLsn(\''+l+'\','+mi+','+(li+1)+')">التالي ➡</button>':'';
-  let h='<div class="ls-sc"><div class="ls-h"><div class="hb" style="background-image:url('+IMG.hero[les.img||0]+')"></div><div class="hc"><div class="br">'+m.icon+' '+m.title+' — درس '+(li+1)+' من '+m.lessons.length+'</div><h2>'+les.title+'</h2></div></div>'+
+  let h='<div class="ls-sc"><div class="ls-h"><div class="hb" style="background-image:url('+IMG.hero[les.img||0]+')"></div><div class="hc"><div class="br">'+m.icon+' '+m.title+' <span class="prg">درس '+(li+1)+' من '+m.lessons.length+'</span></div><h2>'+les.title+'</h2></div></div>'+
     '<div class="ls-b"><div class="bk" onclick="sM(\''+l+'\')">⬅ الرجوع للموديول</div><div class="ls-c">'+les.body+'</div>'+
-    '<div style="margin-top:24px;padding-top:20px;border-top:2px solid #ede0d4;display:flex;justify-content:center;gap:8px">'+prev+next+'</div></div></div>';
+    '<div class="nav-b">'+prev+next+'</div></div></div>';
   $('ls').innerHTML=h;
   window.scrollTo(0,0);
 }
@@ -182,11 +207,10 @@ function sA(){
     '<input type="text" id="ni" placeholder="الاسم">'+
     '<input type="text" id="ui" placeholder="اسم المستخدم">'+
     '<input type="text" id="pi" placeholder="كلمة المرور">'+
-    '<button class="btn" onclick="aS()">إضافة</button></div>'+
-    '<h3>📋 الطلاب</h3><div id="sl"><div style="color:#a67b5b;padding:20px;text-align:center">لا يوجد طلاب</div></div></div>';
+    '<button class="btn" onclick="aS()">➕ إضافة</button></div>'+
+    '<h3>📋 قائمة الطلاب</h3><div id="sl"><div style="color:#a67b5b;padding:20px;text-align:center">لا يوجد طلاب بعد</div></div></div>';
 }
 
-// IndexedDB
 function oD(){return new Promise((r,j)=>{let q=indexedDB.open('edb',1);q.onupgradeneeded=e=>{let d=e.target.result;if(!d.objectStoreNames.contains('u'))d.createObjectStore('u',{keyPath:'k'})};q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)})}
 async function gA(s){let d=await oD();return new Promise((r,j)=>{let t=d.transaction(s,'readonly'),q=t.objectStore(s).getAll();q.onsuccess=()=>{d.close();r(q.result)};q.onerror=()=>{d.close();j(q.error)}})}
 async function pA(s,v){let d=await oD();return new Promise((r,j)=>{let t=d.transaction(s,'readwrite'),q=t.objectStore(s).put(v);q.onsuccess=()=>{d.close();r()};q.onerror=()=>{d.close();j(q.error)}})}
@@ -194,18 +218,18 @@ async function dA(s,k){let d=await oD();return new Promise((r,j)=>{let t=d.trans
 
 async function lS(){
   try{let a=await gA('u'),s=a.filter(x=>x.k!=='admin');let e=$('sl');if(!s.length){e.innerHTML='<div style="color:#a67b5b;padding:20px;text-align:center">لا يوجد طلاب بعد</div>';return}
-  e.innerHTML=s.map(x=>'<div class="si"><div><strong>'+x.n+'</strong><br><span style="color:#6d4c41;font-size:.85rem">@'+x.k+'</span></div><button class="btn" style="background:#e74c3c;color:white" onclick="dS(\''+x.k+'\')">حذف</button></div>').join('')}
-  catch(e){$('sl').innerHTML='<div style="color:#e74c3c;padding:20px;text-align:center">⚠️ خطأ</div>'}
+  e.innerHTML=s.map(x=>'<div class="si"><div><strong>'+x.n+'</strong><br><span style="color:#6d4c41;font-size:.85rem">@'+x.k+'</span></div><button class="btn btn-rd btn-sm" onclick="dS(\''+x.k+'\')">🗑️ حذف</button></div>').join('')}
+  catch(e){$('sl').innerHTML='<div style="color:#e74c3c;padding:20px;text-align:center">⚠️ قاعدة البيانات غير متاحة</div>'}
 }
 
 async function aS(){
   let n=$('ni').value.trim(),u=$('ui').value.trim(),p=$('pi').value.trim();
-  if(!n||!u||!p){to('⚠️ املأ الحقول');return}
-  if(u==='admin'){to('⚠️ محجوز');return}
+  if(!n||!u||!p){to('⚠️ املأ جميع الحقول');return}
+  if(u==='admin'){to('⚠️ اسم المستخدم محجوز');return}
   try{await pA('u',{k:u,n,password:p,role:'student'})}catch(e){}
   $('ni').value='';$('ui').value='';$('pi').value='';to('✅ تم إضافة '+n);lS();
 }
-async function dS(u){try{await dA('u',u)}catch(e){}to('🗑️ تم الحذف');lS()}
+async function dS(u){try{await dA('u',u)}catch(e){}to('🗑️ تم حذف الطالب');lS()}
 
 rT('c');
 </script>
