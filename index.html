@@ -118,22 +118,38 @@ hdr p{color:#a67b5b;position:relative}
 .ex .eq .eo.s{border-color:#d4a85a;background:#fff8e1}
 .ex .eq .eo.c{border-color:#27ae60;background:#e8f5e9}
 .ex .eq .eo.w{border-color:#e74c3c;background:#fde8e8}
-.cert{max-width:700px;margin:0 auto;background:white;border-radius:20px;overflow:hidden;box-shadow:0 8px 60px rgba(0,0,0,.12);border:8px double #d4a85a;position:relative}
-.cert::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#d4a85a,#e8cc8a,#d4a85a)}
-.cert .ci{padding:40px 32px;text-align:center}
-.cert .ci .logo{font-size:3rem;margin-bottom:4px}
-.cert .ci .an{font-size:1.3rem;font-weight:900;color:#3e2312;margin-bottom:2px}
-.cert .ci .sub{color:#a67b5b;font-size:.9rem;margin-bottom:20px}
-.cert .ci hr{width:80px;margin:0 auto 20px;border:none;height:2px;background:linear-gradient(90deg,transparent,#d4a85a,transparent)}
-.cert .ci .certh{font-size:1.6rem;font-weight:900;color:#1a0f0a;margin-bottom:6px;font-family:Georgia,serif}
+/* ===== Certificate ===== */
+.cert{max-width:720px;margin:0 auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 8px 60px rgba(0,0,0,.15);position:relative;animation:fi .6s ease}
+.cert::before{content:'';position:absolute;inset:8px;border:2px solid #d4a85a;border-radius:12px;pointer-events:none;z-index:1}
+.cert::after{content:'';position:absolute;inset:14px;border:1px solid rgba(212,168,90,.3);border-radius:8px;pointer-events:none;z-index:1}
+.cert .ci{padding:44px 36px;text-align:center;position:relative;z-index:2}
+.cert .ci .cf{font-size:1.5rem;margin-bottom:12px;display:flex;justify-content:center;gap:8px;animation:fi .8s ease}
+.cert .ci .cf span{display:inline-block;animation:fl 3s ease-in-out infinite}
+.cert .ci .cf span:nth-child(2){animation-delay:.3s}
+.cert .ci .cf span:nth-child(3){animation-delay:.6s}
+.cert .ci .cf span:nth-child(4){animation-delay:.9s}
+.cert .ci .cf span:nth-child(5){animation-delay:1.2s}
+.cert .ci .cb{width:70px;height:70px;margin:0 auto 12px;background:linear-gradient(135deg,#d4a85a,#b8922e);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 4px 20px rgba(212,168,90,.3);animation:pp 2s ease-in-out infinite}
+.cert .ci .an{font-size:1.3rem;font-weight:900;color:#3e2312;letter-spacing:1px}
+.cert .ci .sub{color:#a67b5b;font-size:.85rem;margin-bottom:16px}
+.cert .ci .cd{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px}
+.cert .ci .cd .cdl{flex:1;max-width:120px;height:1px;background:linear-gradient(90deg,transparent,#d4a85a)}
+.cert .ci .cd .cdd{color:#d4a85a;font-size:1rem}
+.cert .ci .cd .cdr{flex:1;max-width:120px;height:1px;background:linear-gradient(90deg,#d4a85a,transparent)}
+.cert .ci .certh{font-size:1.5rem;font-weight:900;color:#1a0f0a;margin-bottom:4px;font-family:Georgia,serif}
 .cert .ci .certh span{color:#d4a85a}
-.cert .ci .cthis{color:#6d4c41;font-size:1rem;margin-bottom:16px;line-height:1.8}
-.cert .ci .cname{font-size:2rem;font-weight:900;color:#1a0f0a;margin:12px 0;font-family:Georgia,serif}
-.cert .ci .clevel{display:inline-block;background:#ede0d4;padding:6px 20px;border-radius:20px;font-weight:700;color:#3e2312;margin:8px 0;font-size:1.1rem}
-.cert .ci .cscore{color:#6d4c41;margin:8px 0;font-size:.95rem}
+.cert .ci .cthis{color:#6d4c41;font-size:.95rem;margin-bottom:12px;line-height:1.8}
+.cert .ci .cname{font-size:2.2rem;font-weight:900;color:#1a0f0a;margin:8px 0;font-family:Georgia,serif;position:relative;display:inline-block}
+.cert .ci .cname::after{content:'';display:block;width:60%;height:2px;margin:4px auto 0;background:linear-gradient(90deg,transparent,#d4a85a,transparent)}
+.cert .ci .clevel{display:inline-block;background:linear-gradient(135deg,#ede0d4,#f5ebe0);padding:6px 24px;border-radius:20px;font-weight:700;color:#3e2312;margin:6px 0;font-size:1rem;border:1px solid #d4a85a}
+.cert .ci .csb{height:8px;background:#ede0d4;border-radius:4px;margin:12px auto;overflow:hidden;max-width:300px}
+.cert .ci .csb .csf{height:100%;background:linear-gradient(90deg,#d4a85a,#e8cc8a);border-radius:4px;transition:width 1s ease;animation:fw 1.2s ease forwards}
+.cert .ci .cscore{color:#6d4c41;margin:4px 0;font-size:.9rem}
 .cert .ci .cscore strong{color:#3e2312}
-.cert .ci .cdate{color:#a67b5b;font-size:.85rem;margin-top:16px}
-.cert .ci .cseal{font-size:4rem;margin-top:16px;opacity:.4}
+.cert .ci .cft{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:20px;padding-top:16px;border-top:1px solid #ede0d4}
+.cert .ci .cft .cdate{color:#a67b5b;font-size:.8rem}
+.cert .ci .cft .cs{width:60px;height:60px;border-radius:50%;border:3px solid #d4a85a;display:flex;align-items:center;justify-content:center;font-size:1.8rem;background:linear-gradient(135deg,#fff8e1,#fff);box-shadow:0 2px 12px rgba(212,168,90,.2);animation:pp 3s ease-in-out infinite}
+.cert .ci .cm{color:#c4b5a5;font-size:.65rem;margin-top:16px;letter-spacing:1px}
 .cnt{background:white;border-radius:16px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
 .cnt .cci{display:flex;align-items:center;gap:16px;padding:14px;border:2px solid #ede0d4;border-radius:12px;margin-bottom:12px;transition:.3s;cursor:pointer}
 .cnt .cci:hover{border-color:#d4a85a;background:#faf5ef}
@@ -142,8 +158,49 @@ hdr p{color:#a67b5b;position:relative}
 .cnt .cci .ccid .cct{font-weight:700;color:#3e2312;font-size:.95rem}
 .cnt .cci .ccid .ccs{color:#a67b5b;font-size:.8rem}
 .cnt .cci .ccid .ccd{color:#6d4c41;font-size:.78rem}
+/* ===== Animations ===== */
+@keyframes fi{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pp{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes fw{from{width:0%}}
+@keyframes sh{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes gl{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes sd{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes ru{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.lc{animation:fi .5s ease both}
+.lc:nth-child(2){animation-delay:.15s}
+.lc:nth-child(3){animation-delay:.3s}
+.mc{animation:ru .4s ease both}
+.mc:nth-child(2){animation-delay:.1s}
+.mc:nth-child(3){animation-delay:.2s}
+.mc:nth-child(4){animation-delay:.3s}
+.mc:nth-child(5){animation-delay:.4s}
+.mc:nth-child(6){animation-delay:.5s}
+.mc:nth-child(7){animation-delay:.6s}
+.mc:nth-child(8){animation-delay:.7s}
+.mc:nth-child(9){animation-delay:.8s}
+.ls-sc{animation:fi .5s ease}
+.ex{animation:fi .5s ease}
+.cert .ci .cb{animation:pp 2s ease-in-out infinite}
+.cert .ci .cs{animation:pp 3s ease-in-out infinite}
+.btn{position:relative;overflow:hidden}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);background-size:200% 100%;animation:sh 3s ease-in-out infinite;pointer-events:none}
+.tb{animation:sd .3s ease both}
+.tb:nth-child(2){animation-delay:.05s}
+.tb:nth-child(3){animation-delay:.1s}
+.tb:nth-child(4){animation-delay:.15s}
+.lc .hd .ic{animation:fl 4s ease-in-out infinite}
+.cci{animation:ru .4s ease both}
+.cci:nth-child(2){animation-delay:.1s}
+.cci:nth-child(3){animation-delay:.2s}
+.cci:nth-child(4){animation-delay:.3s}
+.lsi{transition:.3s}
+.lsi:hover .ln{transform:scale(1.15);background:#d4a85a;color:white}
+.ln{transition:.3s}
+hdr{animation:sd .5s ease}
+.cert .cf span{animation:fl 3s ease-in-out infinite}
 @media(max-width:600px){.c{padding:12px}.lc .hd{min-height:110px}.lc .hd .ic{font-size:2.2rem}.mc .mh{flex-direction:column}.mc .msd{width:100%;min-height:60px;flex-direction:row;padding:8px}.mc .msd .mnm{display:none}.ls-sc .ls-b{padding:20px}.ls-sc .ls-h .hc{padding:24px 20px;min-height:140px}.ls-sc .ls-h .hc h2{font-size:1.2rem}.ls-c .img-row{grid-template-columns:1fr}.ex{padding:16px}.ex .eq{padding:14px}.cert .ci{padding:24px 16px}.cert .ci .cname{font-size:1.5rem}}
-@media print{body{background:white!important}hdr,.tbs,.t{display:none!important}.c{max-width:100%;padding:0}.cert{border:4px double #d4a85a!important;box-shadow:none!important}.cert .ci .cseal{font-size:5rem}.cert .ci .btn{display:none!important}}
+@media print{body{background:white!important}hdr,.tbs,.t{display:none!important}.c{max-width:100%;padding:0}.cert{border:4px double #d4a85a!important;box-shadow:none!important;animation:none!important}.cert .ci .cs{animation:none!important}.cert .ci .btn{display:none!important}}
 </style>
 </head>
 <body>
@@ -181,8 +238,8 @@ const LV = {
 const CM = [
 {id:'module-A1',title:'اكتشاف القهوة وأصولها',icon:'🌍',desc:'رحلة حبة البن من الغابة إلى الفنجان',img:0,lessons:[
 {title:'قصة اكتشاف القهوة',img:0,body:'<h3>📖 قصة كلد وقطيع الماعز</h3><p>يروى أن راعياً إثيوبياً اسمه كلد لاحظ نشاطاً غير عادي في قطيع الماعز بعد أن أكل ثماراً حمراء من شجرة غريبة. جربها بنفسه وشعر بالنشاط. أخبر الرهبان في الدير المجاور، فصنعوا منها مشروباً ساعدهم على السهر في الصلاة. هكذا بدأت رحلة القهوة.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt=""><div class="cap">☕ أول فنجان قهوة في التاريخ — إثيوبيا، القرن 9</div></div><div class="img-row"><div class="img-c"><img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=300&q=60" alt=""><div class="cap">🌿 غابات البن الإثيوبية</div></div><div class="img-c"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300&q=60" alt=""><div class="cap">🫘 حبوب البن الطازجة</div></div></div><div class="sum"><strong>💡 الخلاصة:</strong> اكتشاف القهوة كان مصادفة، لكنه غيّر العالم. الإثيوبيون أول من استخدموا حبة البن كمشروب منشط.</div><div class="q-section"><div class="q-q"><div class="q-t">💬 هل تعلم؟</div><p style="font-size:.9rem;color:#6d4c41">كلمة "قهوة" أصلها من الكلمة العربية "قَهْوَة" التي كانت تعني الخمر في الشعر الجاهلي، ثم أصبحت تُطلق على شراب البن لنشوته.</p></div></div>'},
-{title:'البن العربي — الأصول والتصنيف',img:2,body:'<h3>🔬 التصنيف النباتي للقهوة</h3><p>القهوة تنتمي للجنس <em>Coffea</em>، وأهم نوعين: <strong>Coffea arabica</strong> (75% من الإنتاج) و <strong>Coffea canephora</strong> (روبوستا).</p><div class="img-c"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80" alt=""><div class="cap">🌱 حبوب البن العربي — Coffea arabica</div></div><p>العربية نشأت في إثيوبيا، وتزرع في المرتفعات (600-2000م). الروبوستا أكثر مقاومة للأمراض وأعلى كافيين.</p><table><tr><th>الخاصية</th><th>عربية Arabica</th><th>روبوستا Robusta</th></tr><tr><td>الكافيين</td><td>1.2%</td><td>2.2%</td></tr><tr><td>الارتفاع</td><td>600-2000م</td><td>0-800م</td></tr><tr><td>النكهة</td><td>زهرية/فاكهية</td><td>ترابية/خشنة</td></tr><tr><td>السعر</td><td>أعلى</td><td>أقل</td></tr></table><div class="info-b"><strong>📊 التحليل العلمي:</strong> العربية تحتوي على زيوت عطرية أكثر تعقيداً (أكثر من 800 مركب عطري)، مما يعطيها نكهات زهرية وفاكهية. الروبوستا تحتوي على ضعف الكافيين ومركبات كلوروجينيك أكثر، مما يعطيها نكهة أكثر مرارة وقسوة.</div><div class="err"><strong>❌ خطأ شائع:</strong> يعتقد البعض أن القهوة العربية والروبوستا من نفس النوع. الحقيقة أنهما نوعان مختلفان تماماً (species مختلفان)، لكل منهما خصائصه الفريدة في الزراعة والنكهة والاستخدام.</div><div class="img-row"><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=60" alt=""><div class="cap">🫘 البن العربي — نكهات معقدة</div></div><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=300&q=60" alt=""><div class="cap">☕ الروبوستا — قوة ومرارة</div></div></div>'},
-{title:'من الغابة إلى المزروعات',img:3,body:'<h3>🌍 انتشار القهوة حول العالم</h3><p>من إثيوبيا انتقلت القهوة إلى اليمن ثم الحجاز، فمصر، فتركيا، ثم أوروبا عبر البندقية. في القرن 17، انتشرت المقاهي في أوروبا وأطلقت عليها اسم "مدارس الحكماء".</p><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80" alt=""><div class="cap">🏛️ أول المقاهي الأوروبية — البندقية، القرن 17</div></div><p>شجرة القهوة العربية Coffea arabica نشأت في المرتفعات الإثيوبية. تنتشر اليوم في "حزام القهوة" (Coffee Belt) حول العالم: أمريكا اللاتينية، أفريقيا، وآسيا.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=600&q=80" alt=""><div class="cap">🗺️ خريطة حزام القهوة العالمي</div></div><div class="sum"><strong>💡 الخلاصة:</strong> القهوة قطعت رحلة آلاف الكيلومترات من غابات إثيوبيا لتصل إلى فنجانك اليوم. كل رشفة تحكي قصة آلاف السنين من التجارة والثقافة.</div>'},
+{title:'البن العربي — الأصول والتصنيف',img:2,body:'<h3>🔬 التصنيف النباتي للقهوة</h3><p>القهوة تنتمي للجنس <em>Coffea</em>، وأهم نوعين:     <strong>Coffea arabica</strong> (75% من الإنتاج) و <strong>Coffea canephora</strong> (روبوستا).</p><div class="img-c"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80" alt=""><div class="cap">🌱 حبوب بن الأرابيكا — Coffea arabica</div></div><p>الأرابيكا نشأت في إثيوبيا، وتُزرع في المرتفعات (600-2000م). الروبوستا أكثر مقاومة للأمراض وأعلى كافيين.</p><table><tr><th>الخاصية</th><th>أرابيكا Arabica</th><th>روبوستا Robusta</th></tr><tr><td>الكافيين</td><td>1.2%</td><td>2.2%</td></tr><tr><td>الارتفاع</td><td>600-2000م</td><td>0-800م</td></tr><tr><td>النكهة</td><td>زهرية/فاكهية</td><td>ترابية/خشنة</td></tr><tr><td>السعر</td><td>أعلى</td><td>أقل</td></tr></table><div class="info-b"><strong>📊 التحليل العلمي:</strong> الأرابيكا تحتوي على زيوت عطرية أكثر تعقيداً (أكثر من 800 مركب عطري)، مما يعطيها نكهات زهرية وفاكهية. الروبوستا تحتوي على ضعف الكافيين ومركبات كلوروجينيك أكثر، مما يعطيها نكهة أكثر مرارة وقسوة.</div><div class="err"><strong>❌ خطأ شائع:</strong> يعتقد البعض أن الأرابيكا والروبوستا من نفس النوع. الحقيقة أنهما نوعان مختلفان تماماً (species مختلفان)، لكل منهما خصائصه الفريدة في الزراعة والنكهة والاستخدام.</div><div class="img-row"><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=60" alt=""><div class="cap">🫘 بن الأرابيكا — نكهات معقدة</div></div><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=300&q=60" alt=""><div class="cap">☕ الروبوستا — قوة ومرارة</div></div></div>'},
+{title:'من الغابة إلى المزروعات',img:3,body:'<h3>🌍 انتشار القهوة حول العالم</h3><p>من إثيوبيا انتقلت القهوة إلى اليمن ثم الحجاز، فمصر، فتركيا، ثم أوروبا عبر البندقية. في القرن 17، انتشرت المقاهي في أوروبا وأطلقت عليها اسم "مدارس الحكماء".</p><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80" alt=""><div class="cap">🏛️ أول المقاهي الأوروبية — البندقية، القرن 17</div></div><p>شجرة البن الأرابيكا Coffea arabica نشأت في المرتفعات الإثيوبية. تنتشر اليوم في "حزام القهوة" (Coffee Belt) حول العالم: أمريكا اللاتينية، أفريقيا، وآسيا.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=600&q=80" alt=""><div class="cap">🗺️ خريطة حزام القهوة العالمي</div></div><div class="sum"><strong>💡 الخلاصة:</strong> القهوة قطعت رحلة آلاف الكيلومترات من غابات إثيوبيا لتصل إلى فنجانك اليوم. كل رشفة تحكي قصة آلاف السنين من التجارة والثقافة.</div>'},
 {title:'تشريح حبة البن — من الداخل',img:4,body:'<h3>🔬 تركيب حبة البن</h3><p>حبة البن هي بذرة ثمرة القهوة (الكرز). تتكون من عدة طبقات: القشرة الخارجية (Exocarp)، اللب الحلو (Mucilage/Mesocarp)، الغلاف الرقيق (Parchment/Endocarp)، طبقة الفضة (Silver Skin/Episperm)، وجنين البذرة (Endosperm).</p><div class="img-c"><img src="https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=600&q=80" alt=""><div class="cap">🔬 تشريح حبة البن — الأجزاء الداخلية</div></div><div class="img-row"><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=300&q=60" alt=""><div class="cap">🍒 كرزة القهوة الحمراء</div></div><div class="img-c"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300&q=60" alt=""><div class="cap">🫘 البذور الخضراء (Green Beans)</div></div></div><div class="hl"><strong>📊 معلومة:</strong> كرزة القهوة الواحدة تحتوي عادة على بذرتين. أحياناً توجد بذرة واحدة فقط (peaberry) وتكون أكثر تركيزاً في النكهة. تمثل peaberry حوالي 5% من المحصول.</div><div class="q-section"><div class="q-q"><div class="q-t">💬 اختبار سريع</div><p style="font-size:.9rem;color:#6d4c41">ما هي الطبقة التي تُعرف بـ "Silver Skin" في حبة البن؟</p></div></div>'}
 ]},
 {id:'module-A2',title:'أساسيات التحضير',icon:'⚗️',desc:'من الحبة إلى الفنجان — علم الاستخلاص',img:1,lessons:[
@@ -217,7 +274,7 @@ const CM = [
 {title:'بروتوكول الكابينج — خطوة بخطوة',img:0,body:'<h3>📋 بروتوكول الكابينج الرسمي SCA</h3><p>بروتوكول الكابينج موحد لضمان العدالة والموضوعية في التقييم. إليك الخطوات الرسمية حسب SCA:</p><div class="img-c"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600&q=80" alt=""><div class="cap">📋 طاولة كابينج احترافية — 5 أكواب لكل عينة</div></div><p><strong>خطوات الكابينج الرسمي:</strong></p><ol style="margin:12px 0 12px 20px"><li><strong>تحضير العينات:</strong> 8.25 جرام بن + 150 مل ماء عند 93°م (نسبة 1:18.18)</li><li><strong>طحن:</strong> درجة طحن خشنة (مثل ملح البحر) — 70-75% من العينات تمر عبر منخل 20 ميش</li><li><strong>شم الرائحة الجافة:</strong> في غضون 15 دقيقة من الطحن</li><li><strong>صب الماء:</strong> صب الماء على البن وانتظر 4 دقائق</li><li><strong>كسر القشرة (Breaking):</strong> حرك القشرة السطحية بملعقة واشم الرائحة المتصاعدة</li><li><strong>إزالة القشرة:</strong> استخدم ملعقتين لإزالة القشرة والرغوة السطحية</li><li><strong>التذوق:</strong> بعد 10-12 دقيقة من الصب، ابدأ التذوق بسرعة — القهوة تبرد وتتغير</li><li><strong>التقييم:</strong> سجل كل معيار على حدة في ورقة التقييم SCA</li></ol><div class="info-b"><strong>📊 نصائح التذوق الاحترافي:</strong> استخدم ملعقة كابينج عميقة · امص القهوة بقوة مع صوت (Slurp) لرشها على كل براعم الذوق · انتظر 30 ثانية بين كل تذوقة · كل 4 عينات، نظف ذوقك بماء فاتر وخبز محايد.</div><div class="sum"><strong>💡 الخلاصة:</strong> الكابينج ليس مجرد تذوق، إنه نظام تقييم علمي. أتقن البروتوكول لتصبح Q Grader معتمداً من SCA.</div>'},
 ]},
 {id:'module-C2',title:'إدارة المقهى الاحترافية',icon:'📊',desc:'إدارة العمليات والتكاليف في عالم القهوة',img:4,lessons:[
-{title:'اختيار مصادر البن والتجارة العادلة',img:2,body:'<h3>🌍 من المزرعة إلى المقهى — سلسلة التوريد</h3><p>اختيار مصدر البن هو أهم قرار في المقهى. سلسلة التوريد: المزرعة → المعالجة → الوسيط → المستورد → المحمصة → المقهى. كل وسيط يضيف 10-20% للسعر.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt=""><div class="cap">🌍 سلسلة توريد القهوة من المزرعة إلى الفنجان</div></div><p><strong>شهادات الاستدامة:</strong></p><ul><li><strong>Direct Trade:</strong> المقهى يشتري مباشرة من المزرعة — أعلى جودة، أعلى سعر، علاقة مباشرة</li><li><strong>Fair Trade:</strong> سعر عادل للمزارع — الحد الأدنى $1.40/باوند للعربية، $1.01 للروبوستا</li><li><strong>Rainforest Alliance:</strong> تحافظ على الغابات المطيرة — 30% من إنتاج القهوة العالمي</li><li><strong>Organic:</strong> زراعة عضوية بدون مبيدات — 10% من الإنتاج العالمي</li></ul><div class="info-b"><strong>📊 أسعار البن 2024-2025:</strong> العربية التجارية: $2.5-3.5/باوند · Specialty: $5-12/باوند · Direct Trade الفاخر: $15-40/باوند (مثل Panama Geisha الذي قد يصل إلى $600/باوند في المزادات!).</div><div class="err"><strong>❌ خطأ شائع:</strong> افتراض أن السعر الأعلى = جودة أعلى دائماً. السعر يعكس أيضاً الندرة والتكاليف اللوجستية. اعرف من تتعامل معه واطلب عينات قبل الشراء.</div>'},
+{title:'اختيار مصادر البن والتجارة العادلة',img:2,body:'<h3>🌍 من المزرعة إلى المقهى — سلسلة التوريد</h3><p>اختيار مصدر البن هو أهم قرار في المقهى. سلسلة التوريد: المزرعة → المعالجة → الوسيط → المستورد → المحمصة → المقهى. كل وسيط يضيف 10-20% للسعر.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt=""><div class="cap">🌍 سلسلة توريد القهوة من المزرعة إلى الفنجان</div></div><p><strong>شهادات الاستدامة:</strong></p><ul><li><strong>Direct Trade:</strong> المقهى يشتري مباشرة من المزرعة — أعلى جودة، أعلى سعر، علاقة مباشرة</li><li><strong>Fair Trade:</strong> سعر عادل للمزارع — الحد الأدنى $1.40/باوند للأرابيكا، $1.01 للروبوستا</li><li><strong>Rainforest Alliance:</strong> تحافظ على الغابات المطيرة — 30% من إنتاج القهوة العالمي</li><li><strong>Organic:</strong> زراعة عضوية بدون مبيدات — 10% من الإنتاج العالمي</li></ul><div class="info-b"><strong>📊 أسعار البن 2024-2025:</strong> الأرابيكا التجارية: $2.5-3.5/باوند · Specialty: $5-12/باوند · Direct Trade الفاخر: $15-40/باوند (مثل Panama Geisha الذي قد يصل إلى $600/باوند في المزادات!).</div><div class="err"><strong>❌ خطأ شائع:</strong> افتراض أن السعر الأعلى = جودة أعلى دائماً. السعر يعكس أيضاً الندرة والتكاليف اللوجستية. اعرف من تتعامل معه واطلب عينات قبل الشراء.</div>'},
 {title:'حساب التكاليف وإدارة المخزون',img:1,body:'<h3>💰 اقتصاديات المقهى — من التكلفة إلى الربح</h3><p>فهم التكاليف ضروري لاستمرارية المقهى. كلفة فنجان القهوة لا تقتصر على البن فقط.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600&q=80" alt=""><div class="cap">📊 تحليل تكلفة فنجان القهوة</div></div><p><strong>توزيع تكلفة الفنجان (مثال):</strong></p><ul><li>البن: 12-18 جرام بـ $0.15-0.30 للفنجان (8-12% من سعر البيع)</li><li>الحليب: $0.10-0.20 للفنجان (للمشروبات بالحليب)</li><li>الكوب والغطاء: $0.05-0.15</li><li>العمالة: $0.50-1.00 للفنجان (أكبر تكلفة تشغيلية)</li><li>الإيجار والمصاريف: $0.30-0.80 للفنجان</li></ul><table><tr><th>المشروب</th><th>تكلفة المواد</th><th>سعر البيع</th><th>هامش الربح</th></tr><tr><td>إسبريسو</td><td>$0.20</td><td>$2.50-3.50</td><td>85-92%</td></tr><tr><td>لاتيه</td><td>$0.45</td><td>$4.50-6.00</td><td>87-92%</td></tr><tr><td>V60 Specialty</td><td>$0.80-1.50</td><td>$5.00-8.00</td><td>70-84%</td></tr></table><div class="hl"><strong>💡 قاعدة 30%:</strong> تكلفة البن يجب ألا تتجاوز 30% من سعر بيع الفنجان. إذا اشتريت بناً بـ $8/باوند، كلفة 18 جرام = $0.32. أقل سعر بيع = $0.32 ÷ 0.30 = $1.07. أضف الحليب والتكاليف الأخرى للوصول للسعر النهائي.</div><div class="sum"><strong>💡 الخلاصة:</strong> المقهى الناجح = جودة عالية + تكاليف مضبوطة + تجربة مميزة. البن الجيد يجذب الزبائن، لكن الإدارة الجيدة تبقي المقهى مفتوحاً.</div>'},
 {title:'تدريب فريق الباريستا ومعايير الجودة',img:3,body:'<h3>👥 بناء فريق باريستا احترافي</h3><p>فريق الباريستا هو وجه المقهى. تدريبهم وتقييمهم المستمر يضمن جودة ثابتة وتجربة زبون ممتازة.</p><div class="img-c"><img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&q=80" alt=""><div class="cap">👥 فريق باريستا محترف في العمل</div></div><p><strong>برنامج تدريب الباريستا الأساسي (أسبوعان):</strong></p><ul><li>اليوم 1-2: نظرية القهوة (أصول، أنواع، تحميص) + اختبار نظري</li><li>اليوم 3-4: تشغيل الماكينة (طحن، جرع، ضبط) + تدريب عملي</li><li>اليوم 5-6: تبخير الحليب و Latte Art الأساسي</li><li>اليوم 7-8: المشروبات (إسبريسو، لاتيه، كابتشينو، موكا)</li><li>اليوم 9-10: النظافة، الصيانة، خدمة الزبائن، طلب الرصيد</li></ul><div class="info-b"><strong>📊 نظام تقييم الجودة اليومي:</strong> كل صباح، اسحب إسبريسو تجريبي وقيّمه: الوقت (25-30 ث) · اللون (بني ذهبي) · الكريما (3-5 مم، مستمرة) · الطعم (توازن بين الحموضة والحلاوة والمرارة). سجل في دفتر الجودة اليومي.</div><div class="err"><strong>❌ خطأ شائع:</strong> تدريب الباريستا الجديد على ماكينة الإسبريسو فقط. الباريستا المحترف يجب أن يتقن كل طرق التحضير: V60، Chemex، AeroPress، Cold Brew.</div><div class="hl"><strong>💡 نصيحة:</strong> اعمل جلسة تذوق أسبوعية للفريق. كل باريستا يحضر قهوته ويتذوقها الفريق ويناقش النكهات. هذا يبني لغة نكهات مشتركة ويرفع مستوى الفريق كله.</div>'},
 ]},
@@ -233,7 +290,7 @@ const QS = {
     {q:'أين اكتشفت القهوة لأول مرة؟',o:['إثيوبيا','اليمن','إيطاليا','البرازيل'],a:0},
     {q:'ما اسم الراعي الذي اكتشف القهوة؟',o:['كلد','موسى','إبراهيم','سليمان'],a:0},
     {q:'ما النسبة المئوية للكافيين في البن العربي؟',o:['1.2%','2.2%','0.5%','3.5%'],a:0},
-    {q:'كم نوعاً رئيسياً من البن؟',o:['نوعان: عربية وروبوستا','ثلاثة أنواع','أربعة أنواع','نوع واحد فقط'],a:0},
+    {q:'كم نوعاً رئيسياً من البن؟',o:['نوعان: أرابيكا وروبوستا','ثلاثة أنواع','أربعة أنواع','نوع واحد فقط'],a:0},
     {q:'ما درجة حرارة الماء المثلى لاستخلاص القهوة؟',o:['92-96°م','80-85°م','100°م','70-75°م'],a:0},
     {q:'ما النسبة المثلى للقهوة للماء في V60؟',o:['1:15-1:17','1:5-1:7','1:30-1:40','1:2-1:3'],a:0},
     {q:'ما معنى Under-extraction؟',o:['استخلاص ناقص (طعم حامض)','استخلاص زائد (طعم مر)','تحميص خفيف','تحميص داكن'],a:0},
@@ -257,7 +314,7 @@ const QS = {
     {q:'كم معياراً في تقييم SCA للكابينج؟',o:['10 معايير','5 معايير','15 معياراً','8 معايير'],a:0},
     {q:'ما أعلى معيار في تقييم SCA؟',o:['النكهة (Flavor) 20%','العطر (Aroma) 15%','القوام (Body) 10%','الحلاوة 10%'],a:0},
     {q:'ما درجة Specialty حسب SCA؟',o:['80+ نقطة','70+ نقطة','90+ نقطة','60+ نقطة'],a:0},
-    {q:'أي طريقة معالجة تنتج أclar نكهة وأعلى حموضة؟',o:['المعالجة المغسولة (Washed)','المعالجة الطبيعية (Natural)','المعالجة بالعسل (Honey)',' التخمير اللاهوائي'],a:0},
+     {q:'أي طريقة معالجة تنتج أنقى نكهة وأعلى حموضة؟',o:['المعالجة المغسولة (Washed)','المعالجة الطبيعية (Natural)','المعالجة بالعسل (Honey)','التخمير اللاهوائي (Anaerobic)'],a:0},
     {q:'أي معالجة تنتج نكهات فاكهية كثيفة وجسم ثقيل؟',o:['الطبيعية (Natural)','المغسولة (Washed)','العسل (Honey)','جميعها متشابهة'],a:0},
     {q:'ما معنى Direct Trade؟',o:['شراء مباشر من المزرعة بدون وسطاء','تجارة عبر البورصة','نوع من التحميص','شهادة عضوية'],a:0},
     {q:'أي نوع فلاتر مياه يتحكم في TDS بالكامل؟',o:['RO + إعادة تمعدن','كربون نشط فقط','تبادل أيوني فقط','فلتر ورقي'],a:0},
@@ -385,16 +442,21 @@ function gCert(l,n,p){
   let lv=LV[l];
   let d=new Date();
   let ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  let sn='ESZ-'+lv.id+'-'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+String(Math.floor(Math.random()*1000)).padStart(3,'0');
   return '<div class="cert" id="cert"><div class="ci">'+
-    '<div class="logo">☕</div><div class="an">Esenza Academy</div><div class="sub">تدريب الباريستا الاحترافي</div><hr>'+
+    '<div class="cf"><span>🇪🇹</span><span>🇧🇷</span><span>🇨🇴</span><span>🇪🇹</span><span>🌍</span></div>'+
+    '<div class="cb">☕</div>'+
+    '<div class="an">Esenza Academy</div><div class="sub">تدريب الباريستا الاحترافي</div>'+
+    '<div class="cd"><span class="cdl"></span><span class="cdd">✦</span><span class="cdr"></span></div>'+
     '<div class="certh"><span>شهادة إتمام</span></div>'+
     '<div class="cthis">نشهد بأن</div>'+
     '<div class="cname">'+n+'</div>'+
     '<div class="cthis">قد أتم بنجاح المستوى <strong>'+lv.t+'</strong><br>في برنامج تدريب الباريستا الاحترافي</div>'+
     '<div class="clevel">'+lv.ic+' المستوى '+lv.id+' — '+lv.t+'</div>'+
-    '<div class="cscore">الدرجة: <strong>'+p+'%</strong> ('+Math.round(p/10*QS[l].length)+'/'+QS[l].length+' صحيح)</div>'+
-    '<div class="cdate">📅 '+ds+'</div>'+
-    '<div class="cseal">🎓</div>'+
+    '<div class="csb"><div class="csf" style="width:'+p+'%"></div></div>'+
+    '<div class="cscore">الدرجة: <strong>'+p+'%</strong> ('+Math.round(p/100*QS[l].length)+'/'+QS[l].length+' صحيح)</div>'+
+    '<div class="cft"><div class="cdate">📅 '+ds+'</div><div class="cs">🎓</div><div class="cdate">🔢 '+sn+'</div></div>'+
+    '<div class="cm">Esenza Academy ● صادر عن أكاديمية إيسينزا ● Certified Barista Training</div>'+
     '</div></div>';
 }
 
