@@ -3,32 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="pragma" content="no-cache">
-    <meta http-equiv="expires" content="0">
-    <title>Esenza Academy</title>
+    <title>Esenza Academy — منهج الباريستا</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background: #F7F2EB; color: #1A0F0A;
-            min-height: 100vh;
         }
         .header {
             background: linear-gradient(135deg, #1A0F0A, #3E2312);
             padding: 20px; text-align: center;
             border-bottom: 3px solid #D4A85A;
         }
-        .header h1 {
-            font-family: 'Georgia', serif;
-            color: #D4A85A; font-size: 1.8rem;
-        }
+        .header h1 { font-family: Georgia, serif; color: #D4A85A; font-size: 1.8rem; }
         .header p { color: #A67B5B; font-size: 0.9rem; margin-top: 4px; }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-        .admin-panel {
-            background: white; border-radius: 12px; padding: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+        .tab {
+            padding: 10px 24px; border: none; border-radius: 8px;
+            font-family: inherit; font-weight: 700; cursor: pointer;
+            background: #EDE0D4; color: #6D4C41; transition: 0.3s;
         }
+        .tab.active { background: #D4A85A; color: #1A0F0A; }
+        .tab:hover { background: #D4A85A; color: #1A0F0A; }
+
+        .level-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .level-card {
+            background: white; border-radius: 16px; overflow: hidden;
+            border: 2px solid #EDE0D4; cursor: pointer; transition: 0.3s;
+        }
+        .level-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+        .level-card .head {
+            padding: 24px; text-align: center;
+            background: linear-gradient(135deg, #1A0F0A, #3E2312);
+        }
+        .level-card .head .icon { font-size: 3rem; }
+        .level-card .head h3 { font-family: Georgia, serif; color: #D4A85A; font-size: 1.4rem; margin-top: 8px; }
+        .level-card .body { padding: 20px; }
+        .level-card .body p { color: #6D4C41; font-size: 0.9rem; margin-bottom: 12px; }
+        .level-card .body .stats { display: flex; justify-content: space-around; padding-top: 12px; border-top: 1px solid #EDE0D4; }
+        .level-card .body .stats div { text-align: center; }
+        .level-card .body .stats .num { font-weight: 900; color: #3E2312; font-size: 1.1rem; }
+        .level-card .body .stats .label { font-size: 0.78rem; color: #A67B5B; }
+
+        .module-card {
+            background: white; border-radius: 12px; margin-bottom: 12px;
+            display: flex; overflow: hidden; border: 1px solid #EDE0D4;
+        }
+        .module-card .side {
+            width: 100px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #3E2312, #5A3A28);
+            color: #D4A85A; font-size: 2.5rem;
+        }
+        .module-card .info { flex: 1; padding: 16px 20px; }
+        .module-card .info h4 { color: #3E2312; margin-bottom: 4px; }
+        .module-card .info p { color: #6D4C41; font-size: 0.85rem; }
+        .module-card .info .lessons { margin-top: 8px; }
+        .module-card .info .lessons summary { cursor: pointer; color: #D4A85A; font-weight: 700; font-size: 0.9rem; }
+        .module-card .info .lessons .les { padding: 6px 0; font-size: 0.85rem; color: #5A3A28; border-bottom: 1px solid #EDE0D4; }
+        .module-card .info .lessons .les:last-child { border: none; }
+
+        .admin-panel { background: white; border-radius: 12px; padding: 24px; }
         .admin-panel h2 { color: #3E2312; margin-bottom: 16px; }
         .student-form { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
         .student-form input {
@@ -42,25 +78,39 @@
             font-family: inherit; font-weight: 700; cursor: pointer;
             background: #D4A85A; color: #1A0F0A; transition: 0.3s;
         }
-        .btn:hover { background: #B8922E; transform: translateY(-1px); }
+        .btn:hover { background: #B8922E; }
         .btn-danger { background: #E74C3C; color: white; }
         .btn-danger:hover { background: #c0392b; }
-        .student-list { margin-top: 16px; }
         .student-item {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 0; border-bottom: 1px solid #EDE0D4;
+            padding: 10px 0; border-bottom: 1px solid #EDE0D4;
         }
-        .student-item strong { color: #3E2312; }
-        .student-item span { color: #6D4C41; font-size: 0.85rem; }
         .empty { color: #A67B5B; text-align: center; padding: 20px; }
         .toast {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
             background: #1A0F0A; color: #EDE0D4; padding: 12px 24px;
-            border-radius: 8px; opacity: 0; transition: 0.4s;
-            pointer-events: none;
+            border-radius: 8px; opacity: 0; transition: 0.4s; pointer-events: none;
+            z-index: 999;
         }
         .toast.show { opacity: 1; }
-        
+        .hidden { display: none !important; }
+
+        .lesson-screen {
+            background: white; border-radius: 12px; overflow: hidden;
+            margin: 20px 0;
+        }
+        .lesson-screen .body-wrap { padding: 24px; }
+        .lesson-screen .back {
+            display: inline-block; margin-bottom: 16px; color: #D4A85A;
+            cursor: pointer; font-weight: 700;
+        }
+        .lesson-screen .content { line-height: 1.8; }
+        .lesson-screen .content p { margin-bottom: 12px; }
+        .lesson-screen .content h3 { color: #3E2312; margin: 20px 0 10px; }
+        .lesson-screen .content .highlight {
+            background: #EDE0D4; padding: 16px; border-right: 4px solid #D4A85A;
+            border-radius: 8px; margin: 12px 0;
+        }
     </style>
 </head>
 <body>
@@ -70,53 +120,163 @@
     <p>تدريب الباريستا — من البداية للاحتراف</p>
 </div>
 
-<div id="appScreen" class="container">
-    <div class="admin-panel">
-        <h2>🔐 لوحة المشرف — Esenza Academy</h2>
-        <h3>➕ إضافة طالب جديد</h3>
-        <div class="student-form">
-            <input type="text" id="nameInput" placeholder="الاسم">
-            <input type="text" id="userNewInput" placeholder="اسم المستخدم">
-            <input type="text" id="passNewInput" placeholder="كلمة المرور">
-            <button class="btn" onclick="addStudent()">إضافة</button>
+<div class="container">
+    <div class="tabs">
+        <button class="tab active" id="tabContent" onclick="showTab('content')">📚 المنهج</button>
+        <button class="tab" id="tabAdmin" onclick="showTab('admin')">🔐 المشرف</button>
+    </div>
+
+    <div id="contentSection">
+        <h2 style="color:#3E2312;margin-bottom:16px;">🎯 اختر مستواك</h2>
+        <div class="level-grid" id="levelGrid"></div>
+
+        <div id="modulesSection" class="hidden" style="margin-top:20px;">
+            <button class="btn" onclick="showLevels()" style="margin-bottom:16px;">⬅ الرجوع للمستويات</button>
+            <div id="modulesList"></div>
         </div>
-        <h3>📋 قائمة الطلاب</h3>
-        <div id="studentList" class="student-list">
-            <div class="empty">لا يوجد طلاب بعد</div>
+
+        <div id="lessonSection" class="hidden">
+            <div class="lesson-screen" id="lessonContent"></div>
+        </div>
+    </div>
+
+    <div id="adminSection" class="hidden">
+        <div class="admin-panel">
+            <h2>🔐 لوحة المشرف — إدارة الطلاب</h2>
+            <h3>➕ إضافة طالب جديد</h3>
+            <div class="student-form">
+                <input type="text" id="nameInput" placeholder="الاسم">
+                <input type="text" id="userNewInput" placeholder="اسم المستخدم">
+                <input type="text" id="passNewInput" placeholder="كلمة المرور">
+                <button class="btn" onclick="addStudent()">إضافة</button>
+            </div>
+            <h3>📋 قائمة الطلاب</h3>
+            <div id="studentList" class="student-list">
+                <div class="empty">لا يوجد طلاب بعد</div>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<script src="academic-content.js"></script>
 <script>
-let students = [];
+const COURSE = window.COURSE;
+const LEVELS = {
+    A: { id:'A', title:'مبتدئ', icon:'🌱', color:'#27AE60', desc:'اكتشاف القهوة وأصولها' },
+    B: { id:'B', title:'محترف', icon:'🔥', color:'#E67E22', desc:'أسرار التحميص والاستخلاص المتقدم' },
+    C: { id:'C', title:'ماستر', icon:'👑', color:'#8E44AD', desc:'التقييم الحسي والإدارة والابتكار' },
+};
 
-const DB_NAME = 'esenza_db';
-const DB_VER = 1;
+function getLevelOfModule(modId) { return modId.replace('module-','').charAt(0); }
+function getModulesForLevel(level) { return COURSE.filter(m => getLevelOfModule(m.id) === level); }
 
+function showTab(tab) {
+    document.getElementById('tabContent').classList.toggle('active', tab === 'content');
+    document.getElementById('tabAdmin').classList.toggle('active', tab === 'admin');
+    document.getElementById('contentSection').classList.toggle('hidden', tab !== 'content');
+    document.getElementById('adminSection').classList.toggle('hidden', tab !== 'admin');
+    if (tab === 'admin') loadStudents();
+}
+
+showLevels();
+
+function showLevels() {
+    document.getElementById('levelGrid').classList.remove('hidden');
+    document.getElementById('modulesSection').classList.add('hidden');
+    document.getElementById('lessonSection').classList.add('hidden');
+
+    const grid = document.getElementById('levelGrid');
+    let html = '';
+    ['A','B','C'].forEach(lid => {
+        const lvl = LEVELS[lid];
+        const mods = getModulesForLevel(lid);
+        const totalLessons = mods.reduce((s,m) => s + m.lessons.length, 0);
+        html += `<div class="level-card" onclick="showModules('${lid}')">
+            <div class="head"><div class="icon">${lvl.icon}</div><h3>${lvl.title}</h3></div>
+            <div class="body">
+                <p>${lvl.desc}</p>
+                <div class="stats">
+                    <div><div class="num">${mods.length}</div><div class="label">موديولات</div></div>
+                    <div><div class="num">${totalLessons}</div><div class="label">دروس</div></div>
+                </div>
+            </div>
+        </div>`;
+    });
+    grid.innerHTML = html;
+}
+
+function showModules(lid) {
+    document.getElementById('levelGrid').classList.add('hidden');
+    document.getElementById('modulesSection').classList.remove('hidden');
+    document.getElementById('lessonSection').classList.add('hidden');
+
+    const mods = getModulesForLevel(lid);
+    const lvl = LEVELS[lid];
+    let html = `<h2 style="color:#3E2312;margin-bottom:16px;">${lvl.icon} ${lvl.title} — ${mods.length} موديولات</h2>`;
+    mods.forEach((mod, mi) => {
+        html += `<div class="module-card">
+            <div class="side">${mod.icon}</div>
+            <div class="info">
+                <h4>${mod.title}</h4>
+                <p>${mod.desc} — ${mod.lessons.length} دروس</p>
+                <div class="lessons">
+                    <details>
+                        <summary>عرض الدروس (${mod.lessons.length})</summary>
+                        ${mod.lessons.map((les, li) => `
+                            <div class="les" onclick="showLesson('${lid}', ${mi}, ${li})" style="cursor:pointer;">📖 ${les.title}</div>
+                        `).join('')}
+                        ${mod.quiz ? `<div style="margin-top:8px;padding:8px;background:#fde8e8;border-radius:6px;font-size:0.85rem;color:#E74C3C;">
+                            📝 اختبار: ${mod.quiz.length} أسئلة (يحتاج 80% للنجاح)
+                        </div>` : ''}
+                    </details>
+                </div>
+            </div>
+        </div>`;
+    });
+    document.getElementById('modulesList').innerHTML = html;
+}
+
+function showLesson(lid, mi, li) {
+    document.getElementById('modulesSection').classList.add('hidden');
+    document.getElementById('lessonSection').classList.remove('hidden');
+
+    const mod = getModulesForLevel(lid)[mi];
+    const les = mod.lessons[li];
+    const el = document.getElementById('lessonContent');
+
+    el.innerHTML = `
+        <div style="padding:20px;background:linear-gradient(135deg,#1A0F0A,#3E2312);color:white;">
+            <div style="color:#A67B5B;font-size:0.85rem;">${mod.icon} ${mod.title} — درس ${li+1} من ${mod.lessons.length}</div>
+            <h2 style="margin-top:8px;font-family:Georgia,serif;">${les.title}</h2>
+        </div>
+        <div class="body-wrap">
+            <div class="back" onclick="showModules('${lid}')">⬅ الرجوع للموديول</div>
+            <div class="content">${les.body}</div>
+        </div>
+    `;
+}
+
+// ==================== Admin / IndexedDB ====================
 function openDB() {
     return new Promise((resolve, reject) => {
-        const req = indexedDB.open(DB_NAME, DB_VER);
+        const req = indexedDB.open('esenza_db', 1);
         req.onupgradeneeded = (e) => {
             const db = e.target.result;
-            if (!db.objectStoreNames.contains('users')) {
+            if (!db.objectStoreNames.contains('users'))
                 db.createObjectStore('users', { keyPath: 'username' });
-            }
-            if (!db.objectStoreNames.contains('settings')) {
-                db.createObjectStore('settings', { keyPath: 'key' });
-            }
         };
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
     });
 }
 
-async function dbGet(store, key) {
+async function dbGetAll(store) {
     const db = await openDB();
     return new Promise((res, rej) => {
         const t = db.transaction(store, 'readonly');
-        const r = t.objectStore(store).get(key);
+        const r = t.objectStore(store).getAll();
         r.onsuccess = () => { db.close(); res(r.result); };
         r.onerror = () => { db.close(); rej(r.error); };
     });
@@ -128,16 +288,6 @@ async function dbPut(store, data) {
         const t = db.transaction(store, 'readwrite');
         const r = t.objectStore(store).put(data);
         r.onsuccess = () => { db.close(); res(); };
-        r.onerror = () => { db.close(); rej(r.error); };
-    });
-}
-
-async function dbGetAll(store) {
-    const db = await openDB();
-    return new Promise((res, rej) => {
-        const t = db.transaction(store, 'readonly');
-        const r = t.objectStore(store).getAll();
-        r.onsuccess = () => { db.close(); res(r.result); };
         r.onerror = () => { db.close(); rej(r.error); };
     });
 }
@@ -159,22 +309,23 @@ function showToast(msg) {
 }
 
 async function loadStudents() {
-    const all = await dbGetAll('users');
-    students = all.filter(u => u.username !== 'admin');
-    const el = document.getElementById('studentList');
-    if (students.length === 0) {
-        el.innerHTML = '<div class="empty">لا يوجد طلاب بعد</div>';
-        return;
-    }
-    el.innerHTML = students.map(s => `
-        <div class="student-item">
-            <div>
-                <strong>${s.name}</strong><br>
-                <span>@${s.username}</span>
+    try {
+        const all = await dbGetAll('users');
+        const students = all.filter(u => u.username !== 'admin');
+        const el = document.getElementById('studentList');
+        if (students.length === 0) {
+            el.innerHTML = '<div class="empty">لا يوجد طلاب بعد</div>';
+            return;
+        }
+        el.innerHTML = students.map(s => `
+            <div class="student-item">
+                <div><strong>${s.name}</strong><br><span style="color:#6D4C41;font-size:0.85rem;">@${s.username}</span></div>
+                <button class="btn btn-danger" onclick="deleteStudent('${s.username}')">حذف</button>
             </div>
-            <button class="btn btn-danger" onclick="deleteStudent('${s.username}')">حذف</button>
-        </div>
-    `).join('');
+        `).join('');
+    } catch(e) {
+        document.getElementById('studentList').innerHTML = '<div class="empty">⚠️ قاعدة البيانات غير متاحة</div>';
+    }
 }
 
 async function addStudent() {
@@ -183,9 +334,13 @@ async function addStudent() {
     const pass = document.getElementById('passNewInput').value.trim();
     if (!name || !user || !pass) { showToast('⚠️ املأ جميع الحقول'); return; }
     if (user === 'admin') { showToast('⚠️ هذا الاسم محجوز'); return; }
-    const existing = await dbGet('users', user);
-    if (existing) { showToast('⚠️ الطالب موجود'); return; }
-    await dbPut('users', { username: user, password: pass, name, role: 'student' });
+    try {
+        const existing = await dbGet('users', user);
+        if (existing) { showToast('⚠️ الطالب موجود'); return; }
+        await dbPut('users', { username: user, password: pass, name, role: 'student' });
+    } catch(e) {
+        await dbPut('users', { username: user, password: pass, name, role: 'student' });
+    }
     document.getElementById('nameInput').value = '';
     document.getElementById('userNewInput').value = '';
     document.getElementById('passNewInput').value = '';
@@ -193,13 +348,21 @@ async function addStudent() {
     loadStudents();
 }
 
+async function dbGet(store, key) {
+    const db = await openDB();
+    return new Promise((res, rej) => {
+        const t = db.transaction(store, 'readonly');
+        const r = t.objectStore(store).get(key);
+        r.onsuccess = () => { db.close(); res(r.result); };
+        r.onerror = () => { db.close(); rej(r.error); };
+    });
+}
+
 async function deleteStudent(username) {
-    await dbDelete('users', username);
+    try { await dbDelete('users', username); } catch(e) {}
     showToast('🗑️ تم حذف الطالب');
     loadStudents();
 }
-
-loadStudents();
 </script>
 </body>
 </html>
