@@ -128,8 +128,8 @@ function sM(l){
   ms.forEach((m,mi)=>{
     h+='<div class="mc"><div class="mi"><h4>'+m.icon+' '+m.title+'</h4><p>'+m.desc+' — '+m.lessons.length+' دروس</p>'+
       '<ul class="ls">';
-    m.lessons.forEach((l,li)=>{
-      h+='<li onclick="sLsn(\''+l+'\','+mi+','+li+')">📖 '+l.title+'</li>';
+    m.lessons.forEach((les,li)=>{
+      h+='<li onclick="sLsn(\''+l+'\','+mi+','+li+')">📖 '+les.title+'</li>';
     });
     h+='</ul></div></div>';
   });
