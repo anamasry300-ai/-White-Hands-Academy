@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <rect width="100%" height="100%" fill="#F5EDE3"/>
+  <g fill="#3E2312">
+    <text x="50%" y="40%" font-family="Playfair Display, serif" font-size="48" font-weight="700" text-anchor="middle">ورشة عمليّة</text>
+    <text x="50%" y="52%" font-family="Inter, sans-serif" font-size="22" text-anchor="middle">Hands-on workshop — mentor & students</text>
+  </g>
+</svg>

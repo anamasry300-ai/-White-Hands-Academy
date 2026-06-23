@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucca — البروشور التعريفي</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Amiri',Georgia,'Traditional Arabic',serif;background:#f7f2eb;color:#1a0f0a;padding:0;min-height:100vh}
+.page{max-width:210mm;margin:0 auto;background:white;box-shadow:0 0 40px rgba(0,0,0,.1);position:relative;overflow:hidden}
+
+/* Cover */
+.cover{background:linear-gradient(135deg,#1a0f0a 0%,#3e2312 50%,#1a0f0a 100%);padding:70px 44px 50px;text-align:center;position:relative;overflow:hidden;min-height:297mm;display:flex;flex-direction:column;justify-content:center}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 25%,rgba(212,168,90,.06) 0%,transparent 60%);pointer-events:none}
+.cover .emblem{font-size:5rem;margin-bottom:20px;position:relative}
+.cover h1{color:#d4a85a;font-size:5rem;font-weight:700;letter-spacing:6px;margin-bottom:6px;position:relative;font-family:Georgia,'Times New Roman',serif}
+.cover .subtitle{color:#a67b5b;font-size:1.2rem;letter-spacing:3px;margin-bottom:20px;position:relative;text-transform:uppercase}
+.cover .divider{width:120px;height:2px;background:linear-gradient(90deg,transparent,#d4a85a,transparent);margin:0 auto 30px;position:relative}
+.cover .tagline{color:rgba(247,242,235,.65);font-size:.95rem;line-height:2;max-width:440px;margin:0 auto 36px;position:relative}
+.cover .badge-row{display:flex;justify-content:center;gap:12px;margin-bottom:36px;position:relative}
+.cover .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(212,168,90,.12);border:1px solid rgba(212,168,90,.25);padding:6px 16px;border-radius:20px;color:#d4a85a;font-size:.78rem;font-weight:600}
+.cover .stats-row{display:flex;justify-content:center;gap:50px;position:relative;flex-wrap:wrap}
+.cover .stat-item{text-align:center}
+.cover .stat-item .num{color:#d4a85a;font-size:2rem;font-weight:700}
+.cover .stat-item .lbl{color:rgba(255,255,255,.35);font-size:.75rem;margin-top:4px;letter-spacing:1px}
+
+/* Section */
+.section{padding:44px 40px}
+.section-title{text-align:center;margin-bottom:32px}
+.section-title h2{color:#1a0f0a;font-size:1.5rem;font-weight:700}
+.section-title .bar{width:50px;height:3px;background:#d4a85a;margin:10px auto 8px;border-radius:2px}
+.section-title p{color:#6d4c41;font-size:.85rem;max-width:520px;margin:0 auto;line-height:1.6}
+
+/* Grid */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px}
+
+/* Cards */
+.card{border-radius:12px;overflow:hidden;border:1px solid #ede0d4;transition:.3s}
+.card-dark{background:linear-gradient(135deg,#1a0f0a,#3e2312);color:white;border-color:rgba(212,168,90,.12)}
+.card-light{background:white;border-color:#ede0d4;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.card .card-img{height:110px;background-size:cover;background-position:center;position:relative}
+.card .card-img .ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(26,15,10,.7),rgba(62,35,18,.5))}
+.card .card-img .ic{position:absolute;bottom:10px;right:14px;font-size:2.2rem}
+.card .card-body{padding:16px 18px}
+.card .card-body h3{font-size:1rem;margin-bottom:5px}
+.card .card-body h3.gold{color:#d4a85a}
+.card .card-body p{font-size:.82rem;line-height:1.7;color:#6d4c41}
+.card .card-body p.light{color:rgba(255,255,255,.6)}
+.card .card-body .tag{display:inline-block;background:rgba(212,168,90,.12);color:#d4a85a;padding:2px 10px;border-radius:10px;font-size:.72rem;margin-bottom:6px;font-weight:600}
+
+/* Level badges */
+.level-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:6px}
+.lb-f{background:rgba(39,174,96,.08);border:1px solid #27ae60;color:#27ae60}
+.lb-p{background:rgba(41,128,185,.08);border:1px solid #2980b9;color:#2980b9}
+.lb-m{background:rgba(142,68,173,.08);border:1px solid #8e44ad;color:#8e44ad}
+
+/* Info box */
+.info-box{background:#faf5ef;border-radius:12px;padding:22px 24px;margin-top:24px;border-right:4px solid #d4a85a}
+.info-box h3{color:#3e2312;font-size:1rem;margin-bottom:8px}
+.info-box p{color:#6d4c41;font-size:.85rem;line-height:1.8}
+.info-box ul{margin:8px 0 0 20px}
+.info-box ul li{color:#6d4c41;font-size:.85rem;margin-bottom:5px;line-height:1.6}
+.info-box ul li strong{color:#3e2312}
+
+/* Highlight bar */
+.highlight{background:linear-gradient(135deg,#1a0f0a,#3e2312);padding:36px 40px;text-align:center}
+.highlight p{color:rgba(255,255,255,.7);font-size:.95rem;line-height:2;max-width:650px;margin:0 auto}
+.highlight strong{color:#d4a85a}
+
+/* Table */
+.qi{width:100%;border-collapse:collapse;margin-top:12px}
+.qi td{padding:9px 14px;border-bottom:1px solid #ede0d4;font-size:.82rem;color:#5a3a28;line-height:1.6}
+.qi td:first-child{color:#a67b5b;width:130px;font-weight:600}
+.qi tr:last-child td{border-bottom:none}
+
+/* Values */
+.v-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.v-item{display:flex;align-items:flex-start;gap:10px;padding:14px;background:#faf5ef;border-radius:10px}
+.v-item .v-ic{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.v-item .v-t{font-size:.9rem;font-weight:600;color:#3e2312}
+.v-item .v-d{font-size:.78rem;color:#6d4c41;margin-top:3px;line-height:1.5}
+
+/* Testimonial */
+.test-box{background:#faf5ef;border-radius:12px;padding:22px 24px;border-right:4px solid #d4a85a;margin-top:24px}
+.test-box .t-text{font-size:.88rem;color:#5a3a28;line-height:1.8;font-style:italic}
+.test-box .t-author{font-size:.82rem;color:#a67b5b;margin-top:8px;font-style:normal}
+.test-box .t-author strong{color:#3e2312}
+
+/* Module list */
+.m-list{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:20px}
+.m-item{border-radius:10px;padding:14px;text-align:center;border:1px solid #ede0d4;background:white}
+.m-item .m-ic{font-size:1.6rem;margin-bottom:4px}
+.m-item .m-t{font-size:.85rem;font-weight:600;color:#3e2312}
+.m-item .m-l{font-size:.72rem;color:#a67b5b;margin-top:2px}
+
+/* Journey */
+.journey{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-top:24px;padding:0 10px}
+.j-step{flex:1;text-align:center;position:relative}
+.j-step::after{content:'→';position:absolute;left:-10px;top:14px;color:#d4a85a;font-size:1.1rem;opacity:.5}
+.j-step:last-child::after{display:none}
+.j-step .j-ic{font-size:1.8rem;margin-bottom:4px}
+.j-step .j-t{font-size:.72rem;color:#5a3a28;font-weight:600}
+.j-step .j-d{font-size:.65rem;color:#a67b5b;margin-top:2px}
+
+/* Footer */
+.footer{background:#1a0f0a;padding:28px 40px;text-align:center}
+.footer .fb-logo{font-size:1.3rem;color:#d4a85a;margin-bottom:6px;letter-spacing:2px}
+.footer p{color:rgba(255,255,255,.25);font-size:.75rem;line-height:1.8}
+.footer .sep{color:rgba(255,255,255,.1);margin:0 8px}
+
+/* Full-width image strip */
+.img-strip{width:100%;height:160px;background:linear-gradient(135deg,#1a0f0a,#3e2312);display:flex;align-items:center;justify-content:center;gap:20px;overflow:hidden}
+.img-strip img{height:120px;width:auto;border-radius:8px;opacity:.85;transition:.3s}
+
+/* Cert preview */
+.cert-preview{background:#faf5ef;border:2px dashed #d4a85a;border-radius:16px;padding:24px;text-align:center;margin-top:20px}
+.cert-preview .cp-icon{font-size:2.5rem;margin-bottom:6px}
+.cert-preview .cp-t{color:#3e2312;font-size:.95rem;font-weight:600}
+.cert-preview .cp-d{color:#a67b5b;font-size:.78rem;margin-top:4px}
+
+/* Print */
+@media print{body{background:white}.page{box-shadow:none;margin:0}.cover{min-height:100vh;page-break-after:always}.section{page-break-inside:avoid}.img-strip{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<!-- ─── COVER ─── -->
+<div class="cover">
+  <div class="emblem">☕</div>
+  <h1>Lucca</h1>
+  <div class="subtitle">Premium Barista Academy</div>
+  <div class="divider"></div>
+  <div class="badge-row">
+    <span class="badge">✓ SCA-Aligned Curriculum</span>
+    <span class="badge">✓ Certified Training</span>
+    <span class="badge">✓ Arabic &amp; English</span>
+  </div>
+  <div class="tagline">
+    رحلتك من البذرة إلى الفنجان<br>
+    تدريب احترافي معتمد وفقاً لمعايير<br>
+    Specialty Coffee Association (SCA)<br>
+    مع منهج متكامل باللغة العربية
+  </div>
+  <div class="stats-row">
+    <div class="stat-item"><div class="num">٣</div><div class="lbl">مستويات</div></div>
+    <div class="stat-item"><div class="num">١٢</div><div class="lbl">وحدة دراسية</div></div>
+    <div class="stat-item"><div class="num">+٦٠</div><div class="lbl">درس تفاعلي</div></div>
+    <div class="stat-item"><div class="num">+١٠٠</div><div class="lbl">ساعة تدريب</div></div>
+    <div class="stat-item"><div class="num">+٢٠٠</div><div class="lbl">سؤال اختبارات</div></div>
+  </div>
+</div>
+
+<!-- ─── ABOUT ─── -->
+<div class="section">
+  <div class="section-title">
+    <h2>عن Lucca</h2>
+    <div class="bar"></div>
+    <p>أول أكاديمية قهوة متخصصة بالكامل بالعربية — تدريب احترافي من البذرة إلى الفنجان</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-dark">
+      <div class="card-body">
+        <h3 class="gold">🎯 رسالتنا</h3>
+        <p class="light">نصنع الجيل القادم من خبراء القهوة من خلال تعليم متكامل، منهج معتمد دولياً، وتدريب عملي يركز على المهارات الحقيقية وليس فقط النظري.</p>
+      </div>
+    </div>
+    <div class="card card-dark">
+      <div class="card-body">
+        <h3 class="gold">🔭 رؤيتنا</h3>
+        <p class="light">أن نكون المنصة الأولى في العالم العربي للتعليم الاحترافي في القهوة المتخصصة، معترفاً بها دولياً من SCA و CQI.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h3>📋 لماذا Lucca؟</h3>
+    <ul>
+      <li><strong>منهج معتمد دولياً</strong> — جميع المحتويات مبنية على أحدث معايير SCA و CQI و WCR و ICO</li>
+      <li><strong>شهادات رقمية موثقة</strong> — تحصل على شهادة بختم الأكاديمية بعد إتمام كل مستوى، قابلة للطباعة والمشاركة</li>
+      <li><strong>تدريب تفاعلي متكامل</strong> — دروس نصية، صور، رسوم بيانية، اختبارات تفاعلية، حاسبة قهوة، أدوات تقييم حسي</li>
+      <li><strong>باللغة العربية أولاً</strong> — المحتوى العلمي بالعربية مع الحفاظ على المصطلحات الدولية والمعايير العالمية</li>
+      <li><strong>خريطة منشأ تفاعلية</strong> — استكشف ٨ دول منتجة للقهوة مع بيانات حقيقية عن النكهات والارتفاعات والأصناف</li>
+      <li><strong>لوحة متابعة شخصية</strong> — تتبع تقدمك في كل وحدة، نسبة الإنجاز، نتائج الاختبارات، الشهادات المكتملة</li>
+    </ul>
+  </div>
+
+  <div class="journey">
+    <div class="j-step"><div class="j-ic">🌱</div><div class="j-t">اكتشف</div><div class="j-d">المنشأ</div></div>
+    <div class="j-step"><div class="j-ic">📖</div><div class="j-t">تعلم</div><div class="j-d">الأساسيات</div></div>
+    <div class="j-step"><div class="j-ic">🔥</div><div class="j-t">أتقن</div><div class="j-d">التحميص</div></div>
+    <div class="j-step"><div class="j-ic">☕</div><div class="j-t">احترف</div><div class="j-d">الإسبريسو</div></div>
+    <div class="j-step"><div class="j-ic">🎨</div><div class="j-t">أبدع</div><div class="j-d">اللاتيه آرت</div></div>
+    <div class="j-step"><div class="j-ic">🏆</div><div class="j-t">تألق</div><div class="j-d">كخبير</div></div>
+  </div>
+</div>
+
+<!-- ─── LEVELS ─── -->
+<div class="highlight">
+  <p><strong>منهج متكامل من ثلاث مستويات</strong> — كل مستوى يبني على الذي قبله، من الأساسيات إلى الاحتراف الكامل. أكثر من ١٠٠ ساعة تدريب و ٦٠ درساً تفاعلياً و ٢٠٠ سؤال اختبار.</p>
+</div>
+
+<div class="section">
+  <div class="grid-3">
+    <div class="card card-light">
+      <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=80')">
+        <div class="ov"></div>
+        <div class="ic">🌱</div>
+      </div>
+      <div class="card-body">
+        <span class="level-badge lb-f">● Foundation</span>
+        <h3 style="margin-top:6px">المستوى التأسيسي</h3>
+        <p>أساسيات القهوة: المنشأ، تشريح الكرزة، المعالجة، التصنيف، التحميص المبدئي، التخمير اليدوي، تاريخ القهوة. للمبتدئين الذين يبدأون رحلتهم.</p>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <span class="tag">٤ وحدات</span>
+          <span class="tag">١٦ درساً</span>
+          <span class="tag">مبتدئ</span>
+        </div>
+      </div>
+    </div>
+    <div class="card card-light">
+      <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300&q=80')">
+        <div class="ov"></div>
+        <div class="ic">🔥</div>
+      </div>
+      <div class="card-body">
+        <span class="level-badge lb-p">● Professional</span>
+        <h3 style="margin-top:6px">المستوى الاحترافي</h3>
+        <p>علوم التحميص، كيمياء القهوة، تحسين الاستخلاص، ESPRESSO STANDARDS SCA، اللاتيه آرت، TDS &amp; Extraction Yield، تحليل المياه، PSD.</p>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <span class="tag">٤ وحدات</span>
+          <span class="tag">٢٠ درساً</span>
+          <span class="tag">متوسط</span>
+        </div>
+      </div>
+    </div>
+    <div class="card card-light">
+      <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=300&q=80')">
+        <div class="ov"></div>
+        <div class="ic">🏆</div>
+      </div>
+      <div class="card-body">
+        <span class="level-badge lb-m">● Master</span>
+        <h3 style="margin-top:6px">مستوى الماستر</h3>
+        <p>Coffee Cupping بروتوكول SCA، Flavor Wheel، التحكيم، سلسلة التوريد والاستدامة، إدارة المقهى، اقتصاديات القهوة، الشهادات الدولية.</p>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <span class="tag">٤ وحدات</span>
+          <span class="tag">٢٤ درساً</span>
+          <span class="tag">متقدم</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CURRICULUM ─── -->
+<div class="section" style="background:#faf5ef">
+  <div class="section-title">
+    <h2>المنهج الدراسي الكامل</h2>
+    <div class="bar"></div>
+  </div>
+
+  <div class="m-list">
+    <div class="m-item"><div class="m-ic">🌍</div><div class="m-t">منشأ القهوة</div><div class="m-l">A1 — ٤ دروس</div></div>
+    <div class="m-item"><div class="m-ic">🔬</div><div class="m-t">تشريح الكرزة</div><div class="m-l">A2 — ٤ دروس</div></div>
+    <div class="m-item"><div class="m-ic">💧</div><div class="m-t">طرق المعالجة</div><div class="m-l">A3 — ٤ دروس</div></div>
+    <div class="m-item"><div class="m-ic">📏</div><div class="m-t">تصنيف البن الأخضر</div><div class="m-l">A4 — ٤ دروس</div></div>
+    <div class="m-item"><div class="m-ic">🔥</div><div class="m-t">كيمياء التحميص</div><div class="m-l">B1 — ٦ دروس</div></div>
+    <div class="m-item"><div class="m-ic">☕</div><div class="m-t">الإسبريسو</div><div class="m-l">B2 — ٦ دروس</div></div>
+    <div class="m-item"><div class="m-ic">💦</div><div class="m-t">المياه والأستخلاص</div><div class="m-l">B3 — ٤ دروس</div></div>
+    <div class="m-item"><div class="m-ic">⚙️</div><div class="m-t">الطحن و PSD</div><div class="m-l">B4 — ٤ دروس</div></div>
+    <div class="m-item"><div class="m-ic">👃</div><div class="m-t">التقييم الحسي</div><div class="m-l">C1 — ٦ دروس</div></div>
+    <div class="m-item"><div class="m-ic">🗺️</div><div class="m-t">سلاسل التوريد</div><div class="m-l">C2 — ٦ دروس</div></div>
+    <div class="m-item"><div class="m-ic">📊</div><div class="m-t">إدارة المقهى</div><div class="m-l">C3 — ٦ دروس</div></div>
+    <div class="m-item"><div class="m-ic">📜</div><div class="m-t">الشهادات النهائية</div><div class="m-l">اختبارات + شهادة</div></div>
+  </div>
+
+  <table class="qi" style="margin-top:24px">
+    <tr><td>🌍 منشأ القهوة</td><td>إثيوبيا، البرازيل، كولومبيا، كينيا، بنما، اليمن، كوستاريكا، غواتيمالا — حزام القهوة، التاريخ، الأصناف البرية</td></tr>
+    <tr><td>🔬 تشريح الكرزة</td><td>طبقات الكرزة، أنواع البن (أرابيكا ٧٥%، روبوستا، ليبيريكا)، التركيب الكيميائي، الجينات</td></tr>
+    <tr><td>💧 طرق المعالجة</td><td>Washed — Natural — Honey — Anaerobic — التخمر، تأثير كل طريقة على النكهة</td></tr>
+    <tr><td>📏 تصنيف البن الأخضر</td><td>SCA Green Grading، عيوب الدرجة الأولى والثانية، الشفافية والجودة</td></tr>
+    <tr><td>🔥 كيمياء التحميص</td><td>منحنيات التحميص، Rate of Rise (RoR)، تفاعل Maillard، First/Second Crack، Agtron</td></tr>
+    <tr><td>☕ الإسبريسو</td><td>معايير SCA: ٩ بار، ٩٢-٩٦°م، ٢٥-٣٠ ثانية، Dialing In، الضبط الدقيق</td></tr>
+    <tr><td>💦 المياه والاستخلاص</td><td>SCA Water Standards (TDS 150-175 ppm)، TDS، Extraction Yield ١٨-٢٢%</td></tr>
+    <tr><td>⚙️ الطحن و PSD</td><td>Particle Size Distribution، Fines &amp; Boulders، أنواع الطواحين، الضبط</td></tr>
+    <tr><td>👃 التقييم الحسي</td><td>Cupping بروتوكول SCA، Coffee Flavor Wheel (WCR/SCA)، Q Grader</td></tr>
+    <tr><td>🗺️ سلاسل التوريد</td><td>Direct Trade، Fair Trade، Rainforest Alliance، Organic، الاستدامة</td></tr>
+    <tr><td>📊 إدارة المقهى</td><td>تحليل التكاليف، التسعير، جداول الجدوى، إدارة الفريق، تجربة العميل</td></tr>
+    <tr><td>📜 الشهادات</td><td>اختبارات شاملة لكل مستوى، شهادة رقمية موثقة، تقييم الأداء</td></tr>
+  </table>
+</div>
+
+<!-- ─── TOOLS & FEATURES ─── -->
+<div class="section">
+  <div class="section-title">
+    <h2>أدوات المنصة التفاعلية</h2>
+    <div class="bar"></div>
+    <p>أكثر من مجرد دروس — أدوات عملية تصمم لتعميق فهمك للقهوة</p>
+  </div>
+  <div class="grid-4">
+    <div class="card card-light" style="text-align:center"><div class="card-body"><div style="font-size:2rem;margin-bottom:4px">🧮</div><h3 style="font-size:.9rem">حاسبة القهوة</h3><p style="font-size:.75rem">نسب التخمير، TDS، Extraction Yield، وصفات الإسبريسو</p></div></div>
+    <div class="card card-light" style="text-align:center"><div class="card-body"><div style="font-size:2rem;margin-bottom:4px">🗺️</div><h3 style="font-size:.9rem">خريطة المنشأ</h3><p style="font-size:.75rem">تصفح ٨ دول منتجة — نكهات، ارتفاعات، أصناف مع بيانات WCR</p></div></div>
+    <div class="card card-light" style="text-align:center"><div class="card-body"><div style="font-size:2rem;margin-bottom:4px">📊</div><h3 style="font-size:.9rem">لوحة التقدم</h3><p style="font-size:.75rem">نسبة الإنجاز، نتائج الاختبارات، الشهادات المكتملة</p></div></div>
+    <div class="card card-light" style="text-align:center"><div class="card-body"><div style="font-size:2rem;margin-bottom:4px">📜</div><h3 style="font-size:.9rem">الشهادات</h3><p style="font-size:.75rem">شهادة رقمية بختام الأكاديمية بعد كل مستوى</p></div></div>
+  </div>
+
+  <div class="cert-preview">
+    <div class="cp-icon">📜</div>
+    <div class="cp-t">شهادة معتمدة لكل مستوى</div>
+    <div class="cp-d">بعد إتمام المستوى بنجاح (اجتياز ٨٠% +)، تحصل على شهادة رقمية باسمك<br>بختم Lucca وتوقيع المدرب، قابلة للطباعة والتحميل والمشاركة</div>
+  </div>
+</div>
+
+<!-- ─── VALUES ─── -->
+<div class="section" style="background:#faf5ef">
+  <div class="section-title">
+    <h2>قيمنا</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="v-list">
+    <div class="v-item"><div class="v-ic">🎓</div><div><div class="v-t">الجودة أولاً</div><div class="v-d">منهج مبني على أحدث أبحاث SCA و WCR و CQI — لا اختصارات، لا تنازلات</div></div></div>
+    <div class="v-item"><div class="v-ic">🌍</div><div><div class="v-t">الشمولية</div><div class="v-d">من المزرعة إلى الفنجان — نفهم كل حلقة في سلسلة القهوة</div></div></div>
+    <div class="v-item"><div class="v-ic">🤝</div><div><div class="v-t">الاستدامة</div><div class="v-d">ندعم الممارسات الأخلاقية: Direct Trade، Fair Trade، الوعي البيئي</div></div></div>
+    <div class="v-item"><div class="v-ic">🔬</div><div><div class="v-t">الدقة العلمية</div><div class="v-d">كل حقيقة موثقة بمصدر علمي — الشفافية في كل معلومة</div></div></div>
+    <div class="v-item"><div class="v-ic">🌐</div><div><div class="v-t">الهوية العربية</div><div class="v-d">أول أكاديمية قهوة متخصصة بالكامل بالعربية — بدون فقدان الدقة الدولية</div></div></div>
+    <div class="v-item"><div class="v-ic">🚀</div><div><div class="v-t">الابتكار</div><div class="v-d">أدوات تفاعلية، خريطة منشأ، حاسبة — تعلم يتجاوز القراءة</div></div></div>
+  </div>
+</div>
+
+<!-- ─── TESTIMONIAL ─── -->
+<div class="section">
+  <div class="section-title">
+    <h2>ماذا يقول متدربونا</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="grid-2">
+    <div class="test-box">
+      <div class="t-text">"منهج Lucca ساعدني أجتاز اختبار Q Grader من أول محاولة. الخرائط التفاعلية والاختبارات كانت فرق كبير."</div>
+      <div class="t-author"><strong>أحمد السيد</strong> — Q Grader معتمد، السعودية</div>
+    </div>
+    <div class="test-box">
+      <div class="t-text">"دائماً كنت أظن أني فاهم القهوة، لكن بعد Level B اكتشفت إن كان في عالم كامل مش عارفه. المحتوى عميق جداً."</div>
+      <div class="t-author"><strong>ليلى عبدالله</strong> — باريستا محترف، الإمارات</div>
+    </div>
+  </div>
+  <div class="test-box" style="margin-top:12px">
+    <div class="t-text">"أخيراً أكاديمية قهوة بالعربي بمستوى عالمي. كل حاجة موثقة بمصادر SCA و CQI. فخور إني جزء من هذا المجتمع."</div>
+    <div class="t-author"><strong>محمد الغامدي</strong> — صاحب مقهى متخصص، البحرين</div>
+  </div>
+</div>
+
+<!-- ─── SOURCES ─── -->
+<div class="section" style="background:#faf5ef;padding-bottom:24px">
+  <div class="section-title">
+    <h2>المصادر العلمية</h2>
+    <div class="bar"></div>
+    <p>جميع المعلومات في منهج Lucca مستندة إلى أحدث الأبحاث والمعايير الدولية</p>
+  </div>
+  <div class="info-box">
+    <ul>
+      <li><strong>Specialty Coffee Association (SCA)</strong> — <em>Introduction to Coffee</em> 3rd ed. 2024; <em>Brewing Handbook</em>; <em>Espresso Standards</em>; <em>Water Quality Standards</em></li>
+      <li><strong>World Coffee Research (WCR)</strong> — <em>Arabica Coffee Botany &amp; Origins</em> 2023; <em>Variety Catalog</em> (1,212 varieties); <em>Sensory Lexicon &amp; Flavor Wheel</em></li>
+      <li><strong>Coffee Quality Institute (CQI)</strong> — <em>Q Grader Manual</em>; <em>Green Coffee Grading Handbook</em> 2024</li>
+      <li><strong>International Coffee Organization (ICO)</strong> — <em>Coffee Market Report</em> 2024; Trade Statistics</li>
+      <li><strong>Flament, I.</strong> — <em>Coffee Flavor Chemistry</em>, John Wiley &amp; Sons, 2002</li>
+      <li><strong>Barista Hustle</strong> — <em>Brewing Science Collection</em>; <em>Water for Coffee</em>; <em>PSD Analysis</em>; <em>Espresso Compass</em></li>
+      <li><strong>National Coffee Association USA</strong> — Industry Economic Impact Reports; Coffee History</li>
+      <li><strong>Perfect Daily Grind</strong> — Roasting Curves; Processing Guides; Market Analysis</li>
+      <li><strong>Statista</strong> — Coffee Market Report — Specialty Segment 2024</li>
+      <li><strong>Fair Trade International</strong> — Coffee Certification Standards 2024</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<div class="footer">
+  <div class="fb-logo">☕ Lucca — Premium Barista Academy</div>
+  <p>من البذرة إلى الفنجان — تدريب معتمد وفقاً لمعايير SCA</p>
+  <p style="margin-top:6px">info@luccacaffe.com <span class="sep">|</span> luccacaffe.com <span class="sep">|</span> From Seed to Cup</p>
+  <p style="margin-top:6px">© 2026 Lucca — جميع الحقوق محفوظة <span class="sep">|</span> Crafted with passion for coffee</p>
+</div>
+
+</div>
+
+</body>
+</html>
