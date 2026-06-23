@@ -24,6 +24,7 @@
             <li><a href="#brewing">الصب</a></li>
             <li><a href="#visual-academy">الصور</a></li>
             <li><a href="#journey">رحلتك</a></li>
+            <li><a href="#exams">الاختبارات</a></li>
         </ul>
     </div>
 </nav>
@@ -872,6 +873,39 @@
     </div>
 </section>
 
+<!-- EXAMS SECTION -->
+<section id="exams" class="academy-section">
+    <div class="section-hero" style="background: linear-gradient(135deg, rgba(26,15,10,0.8), rgba(62,35,18,0.8)), url('assets/images/derivatives/photo-classroom-1280.webp'); background-size: cover; background-position: center;">
+        <div class="section-header">
+            <h2>الاختبارات</h2>
+            <p>اختبر معرفتك واحصل على شهادة إتمام لكل مستوى</p>
+        </div>
+    </div>
+    <div class="section-content" style="padding-bottom:40px">
+        <div class="exam-grid" id="exam-grid">
+            <div class="exam-card" data-level="A">
+                <div class="exam-card-icon">🌱</div>
+                <h3>المستوى A — مبتدئ</h3>
+                <p>10 أسئلة • 15 دقيقة • 70% نجاح</p>
+                <button class="exam-btn" onclick="startExam('A')">ابدأ الاختبار</button>
+            </div>
+            <div class="exam-card" data-level="B">
+                <div class="exam-card-icon">🔥</div>
+                <h3>المستوى B — محترف</h3>
+                <p>10 أسئلة • 15 دقيقة • 70% نجاح</p>
+                <button class="exam-btn" onclick="startExam('B')">ابدأ الاختبار</button>
+            </div>
+            <div class="exam-card" data-level="C">
+                <div class="exam-card-icon">👑</div>
+                <h3>المستوى C — ماستر</h3>
+                <p>10 أسئلة • 15 دقيقة • 70% نجاح</p>
+                <button class="exam-btn" onclick="startExam('C')">ابدأ الاختبار</button>
+            </div>
+        </div>
+        <div id="exam-container"></div>
+    </div>
+</section>
+
 <!-- FOOTER -->
 <footer class="footer">
     <div class="footer-content">
@@ -881,7 +915,82 @@
     </div>
 </footer>
 
+<script src="academic-content.js"></script>
 <script src="academy-script.js"></script>
+<script>
+/* ===== EXAM SYSTEM ===== */
+const LV={A:{t:'مبتدئ',ic:'🌱',id:'A'},B:{t:'محترف',ic:'🔥',id:'B'},C:{t:'ماستر',ic:'👑',id:'C'}};
+const NAMES={A:'Foundation',B:'Professional',C:'Master'};
+
+function gM(l){return window.COURSE.filter(m=>m.id.startsWith('module-'+l))}
+function $(id){return document.getElementById(id)}
+
+function startExam(l){
+  let lv=LV[l];
+  $('exam-container').innerHTML='<div class="exam-box"><h3>'+lv.ic+' اختبار المستوى '+lv.t+'</h3><p style="margin:12px 0;color:#6d4c41">أدخل اسمك لبدء الاختبار:</p><div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="exam-name" placeholder="الاسم الكامل" style="flex:1;min-width:180px;padding:10px 14px;border:2px solid #ede0d4;border-radius:8px;font-size:.95rem;font-family:inherit"><button class="exam-btn" onclick="beginExam(\''+l+'\')">ابدأ</button></div></div>';
+  setTimeout(()=>{let e=$('exam-name');if(e)e.focus()},100);
+}
+
+function beginExam(l){
+  let n=$('exam-name').value.trim();
+  if(!n){alert('الرجاء إدخال اسمك');return}
+  let pool=[];
+  gM(l).forEach(m=>{if(m.quiz)pool.push(...m.quiz)});
+  if(!pool.length){$('exam-container').innerHTML='<div class="exam-box" style="color:#e74c3c">لا توجد أسئلة لهذا المستوى</div>';return}
+  let qs=pool.sort(()=>Math.random()-.5).slice(0,10);
+  window._EQ=qs;window._EL=l;window._EN=n;
+  let h='<div class="exam-box"><h3>'+LV[l].ic+' اختبار المستوى '+LV[l].t+'</h3><p style="color:#a67b5b;margin-bottom:16px;font-size:.85rem">الطالب: <strong>'+n+'</strong></p>';
+  qs.forEach((q,i)=>{
+    h+='<div class="exam-q"><div class="exam-q-num">سؤال '+(i+1)+' من 10</div><div class="exam-q-text">'+q.q+'</div>';
+    q.opts.forEach((o,oi)=>{
+      h+='<label class="exam-opt"><input type="radio" name="eq'+i+'" value="'+oi+'"><span>'+o+'</span></label>';
+    });
+    h+='</div>';
+  });
+  h+='<button class="exam-btn" onclick="submitExam()" style="width:100%;padding:14px;font-size:1.1rem">✅ إنهاء الاختبار</button></div>';
+  $('exam-container').innerHTML=h;
+  window.scrollTo(0,0);
+}
+
+function submitExam(){
+  let qs=window._EQ,l=window._EL,n=window._EN;
+  let correct=0,total=qs.length;
+  for(let i=0;i<total;i++){
+    let sel=document.querySelector('input[name="eq'+i+'"]:checked');
+    if(sel&&parseInt(sel.value)===qs[i].ans)correct++;
+  }
+  let pct=Math.round(correct/total*100),pass=pct>=70;
+  let lv=LV[l];
+  let h='<div class="exam-box"><h3 style="color:'+(pass?'#27ae60':'#e74c3c')+'">'+(pass?'🎉 تهانينا!':'😔 لم تنجح')+'</h3>'+
+    '<div class="exam-result"><div class="exam-score" style="font-size:3rem;font-weight:900;color:'+(pass?'#27ae60':'#e74c3c')+'">'+correct+'/'+total+'</div>'+
+    '<p style="color:#6d4c41;margin-top:8px">'+(pass?'✅ نجاح بنسبة '+pct+'%':'❌ النسبة '+pct+'% — المطلوب 70%')+'</p></div>';
+  if(pass){
+    let d=new Date(),mo=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    let ds=d.getDate()+' '+mo[d.getMonth()]+' '+d.getFullYear();
+    let grd=pct>=90?'امتياز (Honours)':pct>=80?'جيد جداً (Very Good)':'ناجح (Pass)';
+    h+='<div class="exam-cert"><div class="cert-inner"><div class="cert-top">Esenza Academy</div>'+
+      '<div class="cert-title">شهادة إتمام</div><div class="cert-sub">Certificate of Completion</div>'+
+      '<div class="cert-divider"></div><div class="cert-statement">تشهد الأكاديمية بأن</div>'+
+      '<div class="cert-name">'+n+'</div>'+
+      '<div class="cert-statement">قد أتم بنجاح اختبار المستوى <strong>'+lv.t+'</strong><br>في برنامج تدريب الباريستا المحترف</div>'+
+      '<div class="cert-level">'+lv.ic+' المستوى '+lv.id+' — '+lv.t+' <span style="color:#a67b5b;font-size:.7rem">('+NAMES[l]+' Level)</span></div>'+
+      '<div class="cert-score">'+pct+'% — '+grd+'</div>'+
+      '<div class="cert-bar"><div class="cert-bar-fill" style="width:'+pct+'%"></div></div>'+
+      '<div class="cert-footer"><span>📅 '+ds+'</span><span>☕ Esenza Academy</span></div></div></div>'+
+      '<button class="exam-btn" onclick="window.print()" style="background:#3e2312;color:white">🖨️ طباعة الشهادة</button>';
+  } else {
+    h+='<button class="exam-btn" onclick="startExam(\''+l+'\')">🔄 إعادة الاختبار</button>';
+  }
+  h+=' <button class="exam-btn" onclick="resetExam()" style="background:#ede0d4;color:#6d4c41">🔙 العودة للاختبارات</button></div>';
+  $('exam-container').innerHTML=h;
+  window.scrollTo(0,0);
+}
+
+function resetExam(){
+  $('exam-container').innerHTML='';
+  window.scrollTo(0,0);
+}
+</script>
 <!-- LIGHTBOX / JOURNEY DETAIL MODAL -->
 <div id="journey-lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="تفاصيل رحلة الدارس">
     <div class="lightbox-backdrop" data-action="close"></div>
