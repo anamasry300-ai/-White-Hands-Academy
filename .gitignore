@@ -1,0 +1,10 @@
+*.crdownload
+*.ps1
+*.zip
+*.7z
+node_modules/
+.vscode/
+Coffee_Academy_Assets/
+academic-content.js
+cafe-success-brochure.html
+setup-firebase.ps1

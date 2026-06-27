@@ -1,0 +1,16 @@
+{
+  "name": "أكاديمية الأيادي البيضاء — White Hands Academy",
+  "short_name": "WHA Academy",
+  "description": "أول منصة عربية متكاملة لتدريب الباريستا — 3 مستويات، 9 وحدات، دروس تفاعلية",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "orientation": "any",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    { "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%238B5A2B'/%3E%3Cstop offset='100%25' stop-color='%234A2810'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='192' height='192' rx='32' fill='%231a1a2e'/%3E%3Cellipse cx='96' cy='96' rx='42' ry='56' fill='url(%23m)' transform='rotate(-10,96,96)'/%3E%3Cpath d='M84 82 C92 90,92 100,84 108' stroke='%233A1800' stroke-width='3' fill='none' opacity='.5'/%3E%3Cpath d='M100 84 C96 92,96 102,100 106' stroke='%233A1800' stroke-width='1.5' fill='none' opacity='.3'/%3E%3C/svg%3E", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='m2' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%238B5A2B'/%3E%3Cstop offset='100%25' stop-color='%234A2810'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='64' fill='%231a1a2e'/%3E%3Cellipse cx='256' cy='256' rx='100' ry='140' fill='url(%23m2)' transform='rotate(-10,256,256)'/%3E%3Cpath d='M220 218 C240 232,240 260,220 278' stroke='%233A1800' stroke-width='6' fill='none' opacity='.5'/%3E%3Cpath d='M260 224 C252 240,252 268,260 276' stroke='%233A1800' stroke-width='3' fill='none' opacity='.3'/%3E%3C/svg%3E", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
