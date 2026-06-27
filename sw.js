@@ -7,8 +7,8 @@ const FILES = [
   'manifest.json'
 ];
 const LOCAL_IMGS = [
-  'A0','A1','A2','A3','barista','beans','cafe','cherry','coldbrew',
-  'cupping','espresso','journey','latte','map','roast','team','v60','water'
+  'A0','A1','A2','A3','barista','beans','beans_tree','cafe','cherry','coldbrew',
+  'cupping','espresso','farm','journey','latte','map','roast','roastery','team','v60','water'
 ];
 const ALL_ASSETS = [...FILES, ...LOCAL_IMGS.map(k => 'images/'+k+'.jpg')];
 
