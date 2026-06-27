@@ -1699,74 +1699,74 @@ str('C3','<div class="story-box"><h4>📜 المقاهي — مدارس الحك
 /* ===== Render Functions ===== */
 
 const CM = [
-  {id:'A1',level:'A',title:{ar:'اكتشاف القهوة وأصولها',en:'Coffee Discovery & Origins'},icon:'🌍',desc:{ar:'تاريخ، تصنيف، تشريح',en:'History, Classification, Anatomy'},img:svg('A1'),lessons:[
-    {title:{ar:'قهوة مختصة vs تجارية + قصة الاكتشاف',en:'Specialty vs Commercial + Discovery Story'},img:svg('A1')},
-    {title:{ar:'البن العربي — التصنيف النباتي',en:'Arabica — Botanical Classification'},img:svg('A1')},
-    {title:{ar:'انتشار القهوة حول العالم',en:'Coffee Spread Around the World'},img:svg('A1')},
-    {title:{ar:'تشريح حبة البن',en:'Anatomy of the Coffee Bean'},img:svg('A1')},
-    {title:{ar:'القهوة في الثقافة والدين',en:'Coffee in Culture & Religion'},img:svg('A1')}
+  {id:'A1',level:'A',title:{ar:'اكتشاف القهوة وأصولها',en:'Coffee Discovery & Origins'},icon:'🌍',desc:{ar:'تاريخ، تصنيف، تشريح',en:'History, Classification, Anatomy'},img:imgPath('A1'),lessons:[
+    {title:{ar:'قهوة مختصة vs تجارية + قصة الاكتشاف',en:'Specialty vs Commercial + Discovery Story'},img:imgPath('A1')},
+    {title:{ar:'البن العربي — التصنيف النباتي',en:'Arabica — Botanical Classification'},img:imgPath('cherry')},
+    {title:{ar:'انتشار القهوة حول العالم',en:'Coffee Spread Around the World'},img:imgPath('map')},
+    {title:{ar:'تشريح حبة البن',en:'Anatomy of the Coffee Bean'},img:imgPath('beans')},
+    {title:{ar:'القهوة في الثقافة والدين',en:'Coffee in Culture & Religion'},img:imgPath('A1')}
   ]},
-  {id:'A2',level:'A',title:{ar:'أساسيات التحضير',en:'Brewing Fundamentals'},icon:'⚗️',desc:{ar:'علم الاستخلاص',en:'Extraction Science'},img:svg('A2'),lessons:[
-    {title:{ar:'فيزياء وكيمياء الاستخلاص',en:'Physics & Chemistry of Extraction'},img:svg('A2')},
-    {title:{ar:'المعدات والأدوات',en:'Equipment & Tools'},img:svg('A2')},
-    {title:{ar:'المقاييس والنسب الذهبية',en:'Golden Ratios'},img:svg('A2')},
-    {title:{ar:'تحضير V60',en:'V60 Brewing'},img:svg('A2')},
-    {title:{ar:'القهوة الباردة وطرقها',en:'Cold Brew & Iced Coffee'},img:svg('A2')}
+  {id:'A2',level:'A',title:{ar:'أساسيات التحضير',en:'Brewing Fundamentals'},icon:'⚗️',desc:{ar:'علم الاستخلاص',en:'Extraction Science'},img:imgPath('A2'),lessons:[
+    {title:{ar:'فيزياء وكيمياء الاستخلاص',en:'Physics & Chemistry of Extraction'},img:imgPath('A2')},
+    {title:{ar:'المعدات والأدوات',en:'Equipment & Tools'},img:imgPath('barista')},
+    {title:{ar:'المقاييس والنسب الذهبية',en:'Golden Ratios'},img:imgPath('v60')},
+    {title:{ar:'تحضير V60',en:'V60 Brewing'},img:imgPath('v60')},
+    {title:{ar:'القهوة الباردة وطرقها',en:'Cold Brew & Iced Coffee'},img:imgPath('coldbrew')}
   ]},
-{id:'A3',level:'A',title:{ar:'مشروبات الإسبريسو',en:'Espresso Drinks'},icon:'☕',desc:{ar:'من الإسبريسو إلى اللاتيه',en:'From Espresso to Latte'},img:svg('A3'),lessons:[
-    {title:{ar:'ما هو الإسبريسو؟',en:'What is Espresso?'},img:svg('A3')},
-    {title:{ar:'لاتيه — فن الحليب',en:'Latte — The Art of Milk'},img:svg('A3')},
-    {title:{ar:'كابتشينو وموكا',en:'Cappuccino & Mocha'},img:svg('A3')},
-    {title:{ar:'ماكياتو, أفوجاتو, فلات وايت',en:'Macchiato, Affogato & Flat White'},img:svg('A3')},
-    {title:{ar:'أساسيات اللاتيه أرت',en:'Latte Art Basics'},img:svg('A3')},
-    {title:{ar:'صيانة آلة الإسبريسو',en:'Espresso Machine Maintenance'},img:svg('A3')}
+{id:'A3',level:'A',title:{ar:'مشروبات الإسبريسو',en:'Espresso Drinks'},icon:'☕',desc:{ar:'من الإسبريسو إلى اللاتيه',en:'From Espresso to Latte'},img:imgPath('A3'),lessons:[
+    {title:{ar:'ما هو الإسبريسو؟',en:'What is Espresso?'},img:imgPath('espresso')},
+    {title:{ar:'لاتيه — فن الحليب',en:'Latte — The Art of Milk'},img:imgPath('latte')},
+    {title:{ar:'كابتشينو وموكا',en:'Cappuccino & Mocha'},img:imgPath('A3')},
+    {title:{ar:'ماكياتو, أفوجاتو, فلات وايت',en:'Macchiato, Affogato & Flat White'},img:imgPath('latte')},
+    {title:{ar:'أساسيات اللاتيه أرت',en:'Latte Art Basics'},img:imgPath('latte')},
+    {title:{ar:'صيانة آلة الإسبريسو',en:'Espresso Machine Maintenance'},img:imgPath('barista')}
 ]},
-{id:'B1',level:'B',title:{ar:'أسرار التحميص',en:'Roasting Secrets'},icon:'🔥',desc:{ar:'من الأخضر إلى المحمص',en:'Green to Brown'},img:svg('B1'),lessons:[
-    {title:{ar:'كيمياء التحميص',en:'Roasting Chemistry'},img:svg('B1')},
-    {title:{ar:'منحنيات التحميص',en:'Roast Curves'},img:svg('B1')},
-    {title:{ar:'التحميص والاستخلاص',en:'Roast & Extraction'},img:svg('B1')},
-    {title:{ar:'تحميص حسب المنشأ',en:'Origin-Specific Roasting'},img:svg('B1')},
-    {title:{ar:'دليل معدات التحميص',en:'Roasting Equipment Guide'},img:svg('B1')},
-    {title:{ar:'حرفي أم تجاري',en:'Artisan vs Commercial'},img:svg('B1')}
+{id:'B1',level:'B',title:{ar:'أسرار التحميص',en:'Roasting Secrets'},icon:'🔥',desc:{ar:'من الأخضر إلى المحمص',en:'Green to Brown'},img:imgPath('B1'),lessons:[
+    {title:{ar:'كيمياء التحميص',en:'Roasting Chemistry'},img:imgPath('roast')},
+    {title:{ar:'منحنيات التحميص',en:'Roast Curves'},img:imgPath('roast')},
+    {title:{ar:'التحميص والاستخلاص',en:'Roast & Extraction'},img:imgPath('B1')},
+    {title:{ar:'تحميص حسب المنشأ',en:'Origin-Specific Roasting'},img:imgPath('beans')},
+    {title:{ar:'دليل معدات التحميص',en:'Roasting Equipment Guide'},img:imgPath('B1')},
+    {title:{ar:'حرفي أم تجاري',en:'Artisan vs Commercial'},img:imgPath('cafe')}
 ]},
-  {id:'B2',level:'B',title:{ar:'علم الماء',en:'Water Science'},icon:'💧',desc:{ar:'جودة الماء',en:'Water Quality'},img:svg('B2'),lessons:[
-    {title:{ar:'كيمياء الماء',en:'Water Chemistry'},img:svg('B2')},
-    {title:{ar:'قياس TDS',en:'TDS Measurement'},img:svg('B2')},
-    {title:{ar:'معالجة المياه',en:'Water Treatment'},img:svg('B2')},
-    {title:{ar:'وصفات الماء المثالية',en:'DIY Water Recipes'},img:svg('B2')},
-    {title:{ar:'عسر الماء وتأثيره',en:'Water Hardness Impact'},img:svg('B2')},
-    {title:{ar:'الماء المثالي لكل طريقة',en:'Water per Brew Method'},img:svg('B2')}
+  {id:'B2',level:'B',title:{ar:'علم الماء',en:'Water Science'},icon:'💧',desc:{ar:'جودة الماء',en:'Water Quality'},img:imgPath('B2'),lessons:[
+    {title:{ar:'كيمياء الماء',en:'Water Chemistry'},img:imgPath('water')},
+    {title:{ar:'قياس TDS',en:'TDS Measurement'},img:imgPath('water')},
+    {title:{ar:'معالجة المياه',en:'Water Treatment'},img:imgPath('water')},
+    {title:{ar:'وصفات الماء المثالية',en:'DIY Water Recipes'},img:imgPath('B2')},
+    {title:{ar:'عسر الماء وتأثيره',en:'Water Hardness Impact'},img:imgPath('water')},
+    {title:{ar:'الماء المثالي لكل طريقة',en:'Water per Brew Method'},img:imgPath('v60')}
   ]},
-{id:'B3',level:'B',title:{ar:'متغيرات التحضير',en:'Advanced Brewing'},icon:'⚙️',desc:{ar:'الطحن والاستخلاص',en:'Grinding & Extraction'},img:svg('B3'),lessons:[
-    {title:{ar:'توزيع حجم الطحن',en:'Particle Size Distribution'},img:svg('B3')},
-    {title:{ar:'الاستخلاص المتقدم',en:'Advanced Extraction'},img:svg('B3')},
-    {title:{ar:'تحسين جودة الفنجان',en:'Cup Quality'},img:svg('B3')},
-    {title:{ar:'تحضير الكميات الكبيرة',en:'Batch Brew & High Volume'},img:svg('B3')},
-    {title:{ar:'أنواع الطواحين',en:'Grinder Burr Types'},img:svg('B3')},
-    {title:{ar:'الـ Dialing In المنهجي',en:'Systematic Dialing In'},img:svg('B3')}
+{id:'B3',level:'B',title:{ar:'متغيرات التحضير',en:'Advanced Brewing'},icon:'⚙️',desc:{ar:'الطحن والاستخلاص',en:'Grinding & Extraction'},img:imgPath('B3'),lessons:[
+    {title:{ar:'توزيع حجم الطحن',en:'Particle Size Distribution'},img:imgPath('B3')},
+    {title:{ar:'الاستخلاص المتقدم',en:'Advanced Extraction'},img:imgPath('barista')},
+    {title:{ar:'تحسين جودة الفنجان',en:'Cup Quality'},img:imgPath('cupping')},
+    {title:{ar:'تحضير الكميات الكبيرة',en:'Batch Brew & High Volume'},img:imgPath('cafe')},
+    {title:{ar:'أنواع الطواحين',en:'Grinder Burr Types'},img:imgPath('B3')},
+    {title:{ar:'الـ Dialing In المنهجي',en:'Systematic Dialing In'},img:imgPath('barista')}
 ]},
-{id:'C1',level:'C',title:{ar:'التقييم الحسي',en:'Sensory Science'},icon:'👃',desc:{ar:'تذوق وتحليل',en:'Taste & Analyze'},img:svg('C1'),lessons:[
-    {title:{ar:'الكابينج',en:'Cupping'},img:svg('C1')},
-    {title:{ar:'مصفوفة النكهات',en:'Flavor Wheel'},img:svg('C1')},
-    {title:{ar:'بروتوكول SCA',en:'SCA Protocol'},img:svg('C1')},
-    {title:{ar:'عيوب القهوة وتشخيصها',en:'Coffee Defects & Diagnosis'},img:svg('C1')},
-    {title:{ar:'التحليل الحسي',en:'Sensory Analysis'},img:svg('C1')},
-    {title:{ar:'حلول عيوب القهوة',en:'Defects Solutions'},img:svg('C1')}
+{id:'C1',level:'C',title:{ar:'التقييم الحسي',en:'Sensory Science'},icon:'👃',desc:{ar:'تذوق وتحليل',en:'Taste & Analyze'},img:imgPath('C1'),lessons:[
+    {title:{ar:'الكابينج',en:'Cupping'},img:imgPath('cupping')},
+    {title:{ar:'مصفوفة النكهات',en:'Flavor Wheel'},img:imgPath('C1')},
+    {title:{ar:'بروتوكول SCA',en:'SCA Protocol'},img:imgPath('cupping')},
+    {title:{ar:'عيوب القهوة وتشخيصها',en:'Coffee Defects & Diagnosis'},img:imgPath('beans')},
+    {title:{ar:'التحليل الحسي',en:'Sensory Analysis'},img:imgPath('C1')},
+    {title:{ar:'حلول عيوب القهوة',en:'Defects Solutions'},img:imgPath('cupping')}
 ]},
-{id:'C2',level:'C',title:{ar:'معالجة البن',en:'Coffee Processing'},icon:'🫘',desc:{ar:'طرق المعالجة',en:'Processing Methods'},img:svg('C2'),lessons:[
-    {title:{ar:'طبيعية',en:'Natural'},img:svg('C2')},
-    {title:{ar:'مغسولة',en:'Washed'},img:svg('C2')},
-    {title:{ar:'عسل وتجريبية',en:'Honey & Experimental'},img:svg('C2')},
-    {title:{ar:'تخزين البن ونضارته',en:'Storage & Freshness'},img:svg('C2')},
-    {title:{ar:'المعالجة التجريبية',en:'Experimental Processing'},img:svg('C2')},
-    {title:{ar:'المعالجة والنكهة',en:'Processing & Flavor'},img:svg('C2')}
+{id:'C2',level:'C',title:{ar:'معالجة البن',en:'Coffee Processing'},icon:'🫘',desc:{ar:'طرق المعالجة',en:'Processing Methods'},img:imgPath('C2'),lessons:[
+    {title:{ar:'طبيعية',en:'Natural'},img:imgPath('cherry')},
+    {title:{ar:'مغسولة',en:'Washed'},img:imgPath('C2')},
+    {title:{ar:'عسل وتجريبية',en:'Honey & Experimental'},img:imgPath('beans')},
+    {title:{ar:'تخزين البن ونضارته',en:'Storage & Freshness'},img:imgPath('C2')},
+    {title:{ar:'المعالجة التجريبية',en:'Experimental Processing'},img:imgPath('cherry')},
+    {title:{ar:'المعالجة والنكهة',en:'Processing & Flavor'},img:imgPath('cupping')}
 ]},
-  {id:'C3',level:'C',title:{ar:'إدارة المقهى',en:'Cafe Management'},icon:'🏪',desc:{ar:'من الباريستا إلى صاحب المقهى',en:'Barista to Owner'},img:svg('C3'),lessons:[
-    {title:{ar:'تخطيط المقهى',en:'Cafe Planning'},img:svg('C3')},
-    {title:{ar:'التكاليف والأرباح',en:'Cost & Profit'},img:svg('C3')},
-    {title:{ar:'خدمة العملاء',en:'Customer Service'},img:svg('C3')},
-    {title:{ar:'تطوير الفريق',en:'Team Development'},img:svg('C3')},
-    {title:{ar:'تسويق المقهى',en:'Marketing Your Cafe'},img:svg('C3')}
+  {id:'C3',level:'C',title:{ar:'إدارة المقهى',en:'Cafe Management'},icon:'🏪',desc:{ar:'من الباريستا إلى صاحب المقهى',en:'Barista to Owner'},img:imgPath('C3'),lessons:[
+    {title:{ar:'تخطيط المقهى',en:'Cafe Planning'},img:imgPath('map')},
+    {title:{ar:'التكاليف والأرباح',en:'Cost & Profit'},img:imgPath('cafe')},
+    {title:{ar:'خدمة العملاء',en:'Customer Service'},img:imgPath('team')},
+    {title:{ar:'تطوير الفريق',en:'Team Development'},img:imgPath('team')},
+    {title:{ar:'تسويق المقهى',en:'Marketing Your Cafe'},img:imgPath('cafe')}
   ]}
 ];
 
@@ -2196,7 +2196,7 @@ function sJourney(){
   h += '</div>';
   // === PRODUCING & CONSUMING COUNTRIES ===
   h += '<div class="hero" style="margin-top:30px"><div class="hero-glow"></div><h2>' + __({ar:'🌍 الدول المنتجة للبن',en:'🌍 Coffee Producing Countries'}) + '</h2><div class="gold-divider"></div><p>' + __({ar:'القهوة تنمو في أكثر من 70 دولة حول العالم — لكن 10 دول تنتج 90% من الإنتاج العالمي',en:'Coffee grows in over 70 countries worldwide — but 10 countries produce 90% of global output'}) + '</p></div>';
-  h += '<div class="img-c"><img src="' + svg('map') + '" alt=""><div class="cap">' + __({ar:'🗺️ حزام البن العالمي — Bean Belt',en:'🗺️ The Coffee Bean Belt'}) + '</div></div>';
+  h += '<div class="img-c"><img src="' + photo('map') + '" alt="" loading="lazy" style="width:100%;border-radius:var(--radius-lg)"><div class="cap">' + __({ar:'🗺️ حزام البن العالمي — Bean Belt',en:'🗺️ The Coffee Bean Belt'}) + '</div></div>';
   h += '<h3>' + __({ar:'☕ أهم 10 دول منتجة للبن',en:'☕ Top 10 Producing Countries'}) + '</h3>';
   h += '<div style="display:flex;flex-direction:column;gap:8px;margin:12px 0">';
   let prod = [
