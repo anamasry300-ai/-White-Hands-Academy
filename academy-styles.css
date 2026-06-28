@@ -1342,9 +1342,9 @@ header::after{
   position:relative;max-width:1100px;margin:0 auto;padding:30px 0 10px;
 }
 .jrny-track{
-  position:fixed;top:0;bottom:0;left:50%;
-  width:3px;transform:translateX(-50%);
-  background:linear-gradient(to bottom,var(--accent) 0%,rgba(201,168,76,.08) 100%);
+  position:absolute;top:24px;bottom:24px;left:50%;
+  width:2px;transform:translateX(-50%);
+  background:rgba(201,168,76,.15);
   z-index:0;pointer-events:none;
 }
 .jrny-stop{
