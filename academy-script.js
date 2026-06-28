@@ -2198,9 +2198,9 @@ function sJourney(){
     h += '<div class="jrny-stop"><div class="jrny-marker">' + (i+1) + '</div>';
     h += '<div class="jrny-card"><div class="jrny-img"><img src="' + photoSmall(m.img) + '" alt="" loading="lazy"><div class="jrny-img-ov"></div><div class="jrny-badge">' + (lang==='ar'?m.yr:m.enYr) + '</div><div class="jrny-ic">' + m.ic + '</div></div>';
     h += '<div class="jrny-body"><h3>' + __(m.title) + '</h3>';
-    __(m.story).forEach(p => { h += '<p>' + p + '</p>'; });
+    m.story.forEach(p => { h += '<p>' + __(p) + '</p>'; });
     h += '<div class="jrny-facts"><div class="jrny-facts-title">' + (lang==='ar'?'🔍 حقائق سريعة':'🔍 Quick Facts') + '</div>';
-    __(m.facts).forEach(f => { h += '<div class="jrny-fact"><span>✦</span> ' + f + '</div>'; });
+    m.facts.forEach(f => { h += '<div class="jrny-fact"><span>✦</span> ' + __(f) + '</div>'; });
     h += '</div></div></div></div>';
   });
   h += '</div>';
