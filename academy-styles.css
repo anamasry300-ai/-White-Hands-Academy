@@ -1228,6 +1228,9 @@ header::after{
   .ls-body .img-c img{height:240px}
   .ls-body .img-c .cap{font-size:1.05rem;padding:18px 20px;max-width:100%}
 }
+/* === Lazy loading image placeholder === */
+.ls-body .img-c img[loading="lazy"]{background:var(--warm)}
+.ls-body .img-c img[loading="lazy"] + .cap{background:linear-gradient(to top,rgba(0,0,0,.9),rgba(0,0,0,.5))}
 /* === Magazine-style section cards & pull quotes === */
 .ls-body .mag-card{
   background:var(--surface);border-radius:14px;overflow:hidden;
