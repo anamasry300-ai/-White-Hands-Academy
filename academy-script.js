@@ -657,6 +657,7 @@ L['A0-0'] = {
 <tr><td>6</td><td>⚙️ الطحن (Grinding)</td><td>Grinding</td><td>ثوانٍ — لحظات</td></tr>
 <tr><td>7</td><td>☕ التحضير (Brewing)</td><td>Brewing</td><td>2-5 دقائق</td></tr>
 <tr><td>8</td><td>👅 التذوق (Tasting)</td><td>Tasting</td><td>لحظات من المتعة</td></tr></table>
+<div class="img-c img-c-timeline"><img src="${photo('coffee_timeline')}" alt="" loading="lazy"><div class="cap">🗺️ خريطة القهوة عبر الزمن — من البذرة إلى فنجانك</div></div>
 <h3>🌱 1. زراعة البن — Coffee Farming</h3>
 <p>القهوة تنمو في <strong>حزام البن</strong> (Bean Belt) — المنطقة بين مداري السرطان والجدي. أفضل أنواع البن تنمو على <strong>ارتفاعات 1200-2000 متر</strong>، في تربة غنية وحرارة 15-24°م. شجرة البن تحتاج 3-4 سنوات لتثمر أول محصول. الزهرة البيضاء (تسمى "قهوة" في اليمن) تتحول إلى <strong>الكرزة الحمراء (Coffee Cherry)</strong> بعد 6-9 أشهر.</p>
 <div class="img-c"><img src="${photo('farm')}" alt="" loading="lazy"> loading="lazy"<div class="cap">🌱 حزام البن العالمي — بين مداري السرطان والجدي</div></div>
@@ -696,6 +697,7 @@ L['A0-0'] = {
 <tr><td>6</td><td>⚙️ Grinding</td><td>طحن</td><td>Seconds</td></tr>
 <tr><td>7</td><td>☕ Brewing</td><td>تحضير</td><td>2-5 minutes</td></tr>
 <tr><td>8</td><td>👅 Tasting</td><td>تذوق</td><td>Moments of pleasure</td></tr></table>
+<div class="img-c img-c-timeline"><img src="${photo('coffee_timeline')}" alt="" loading="lazy"><div class="cap">🗺️ Coffee Journey Map — From Seed to Your Cup</div></div>
 <h3>🌱 1. Coffee Farming</h3>
 <p>Coffee grows in the <strong>Bean Belt</strong> — between the Tropics of Cancer and Capricorn. The best coffee grows at <strong>1200-2000m altitude</strong>, in rich soil with 15-24°C temperatures. A coffee tree takes 3-4 years to produce its first crop. The white flower (called "qahwa" in Yemen) turns into the <strong>red coffee cherry</strong> after 6-9 months.</p>
 <div class="img-c"><img src="${photo('farm')}" alt="" loading="lazy"> loading="lazy"<div class="cap">🌱 The Coffee Bean Belt — Between the Tropics</div></div>

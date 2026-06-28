@@ -1223,10 +1223,16 @@ header::after{
   line-height:1.4;max-width:85%;
 }
 .ls-body .img-c .cap span{color:var(--accent)}
+.ls-body .img-c-timeline{min-height:520px}
+.ls-body .img-c-timeline img{height:520px}
+.ls-body .img-c-timeline .cap{font-size:1.7rem;max-width:90%}
 @media(max-width:600px){
   .ls-body .img-c{min-height:240px}
   .ls-body .img-c img{height:240px}
   .ls-body .img-c .cap{font-size:1.05rem;padding:18px 20px;max-width:100%}
+  .ls-body .img-c-timeline{min-height:300px}
+  .ls-body .img-c-timeline img{height:300px}
+  .ls-body .img-c-timeline .cap{font-size:1.2rem}
 }
 /* === Lazy loading image placeholder === */
 .ls-body .img-c img[loading="lazy"]{background:var(--warm)}
