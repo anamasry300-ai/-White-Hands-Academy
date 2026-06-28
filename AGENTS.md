@@ -5,41 +5,35 @@
 
 ## الإنجازات
 
-
 ### ✅ Completed
-
-### المحتوى والصور
-- كل `svg()` و `bgSVG()` استبدلت بـ `photo()` — 121 استبدال
-- 21 صورة محلية في `images/` + 18 صورة جديدة (إجمالي 39)
-- 18 صورة جديدة (blossom, grinder, brew, filter, moka, aroma, chemex, processing, aerial, sustainability, barista_work, coffee_bags, coffee_shop, plantation, fresh_roast, lab, harvest, cup)
-
-### تنسيق المجلة (Magazine CSS)
-- `.img-c` حوّل لماجازين هيرو: full-bleed عرض كامل، ارتفاع 340px (220px موبايل)، نص أبيض فوق الصورة مع gradient
-- كلاسيكس إضافية: `.mag-card` بطاقات، `.mag-quote` اقتباسات، `.mag-grid-2` شبكة صور، `.mag-table` جدول أكاديمي
-
-### التقنيات
-- PWA مع service worker (v2) يخزّن الصور محلياً
+- **كل `svg()` و `bgSVG()` استبدلت بـ `photo()`** — إجمالي 121+ استبدال
+- **39 صورة محلية** في `images/` (A0~A3, barista, barista_work, beans, beans_tree, blossom, brew, cafe, cherry, chemex, coffee_bags, coffee_shop, coldbrew, cup, cupping, espresso, farm, filter, fresh_roast, grinder, harvest, journey, lab, latte, map, moka, plantation, processing, roast, roastery, sustainability, team, v60, water + aerial, aroma)
+- **Magazine CSS**: `.img-c` → full-bleed hero 340px (220px mobile) مع gradient ونص أبيض متراكب
+- **كلاسات مجلة**: `.mag-card`, `.mag-quote`, `.mag-grid-2`, `.mag-table`
+- **دوال JS**: `magHero()`, `magSection()`, `magQuote()`, `magGrid2()` — جاهزين للاستخدام في محتوى الدروس
+- PWA مع service worker v2
 - تسجيل دخول offline بـ localStorage
-- Glass morphism، 3D tilt، magnetic buttons
-- Google Fonts عبر `<link>` في HTML (مش CSS @import)
+- AGENTS.md
 
-### ✅ Committed & Pushed
-`3b71bb6` — Magazine layout + 3 new photos
-`0d6456e` — Replace all SVG in lesson content with photos
-`9a56d5d` — Replace SVGs in module cards
+### Committed
+```
+d187142 — 18 new magazine photos + magHero/magSection/magQuote/magGrid2 helpers + AGENTS.md
+3b71bb6 — Magazine layout: replace all bgSVG() with photo()
+0d6456e — Replace all SVG in lesson content with photos
+```
 
-## 🔥 Pending (High Priority)
-- [ ] إضافة 18 صورة جديدة لـ PHOTOS + LOCAL_IMGS + sw.js
-- [ ] إنشاء دوال magazine layout في JS: `magSection()`, `magHero()`
-- [ ] تظبيط CSS الماجازين المتقدم (parallax, typography, transitions)
+### ✅ Pushed to GitHub Pages
+
+## 🔥 Pending
+- [ ] تأكيد أن الموقع شغال (فتح الرابط بعد الرفع)
 - [ ] إصلاح مشكلة navigation بين الدروس (modules مش مفتوحة)
-- [ ] تحسين تطابق الصور مع المحتوى (كل صورة تعبّر عن موضوع الدرس)
-- [ ] رفع على GitHub Pages واختبار الموقع
-- [ ] Firebase setup (محتاج من user يعمل مشروع)
+- [ ] تحسين تطابق الصور مع محتوى الدروس
+- [ ] تظبيط CSS متقدم: parallax, typography, transitions
+- [ ] Firebase setup (محتاج user يعمل مشروع)
 
-## Notes
+## Important Notes
 - Site: https://anamasry300-ai.github.io/-White-Hands-Academy/
 - Repo: https://github.com/anamasry300-ai/-White-Hands-Academy.git
 - Academy path: `C:\Users\Acer\OneDrive\Desktop\Academy`
-- Remote has token in URL (ghp_...)
-- Push كان بيتعمل force push بسبب timeout
+- Remote uses token auth (ghp_...)
+- Push method: direct push (not force push anymore)
