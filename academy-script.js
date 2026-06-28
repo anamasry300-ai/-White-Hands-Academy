@@ -584,10 +584,11 @@ const PHOTOS={
    lab:'photo-1762195657410-112fbc6f2d17',
    harvest:'photo-1764121454907-159d6323bb4f',
    cup:'photo-1766729401598-84f44cb03878',
-   chemex:'photo-1761393877623-4412d7060ba4'
+   chemex:'photo-1761393877623-4412d7060ba4',
+   kaldy:'photo-1509042239860-f550ce710b93'
  };
 // Local image path builder — checks images/ folder first, falls back to Unsplash
-const LOCAL_IMGS=new Set(['A0','A1','A2','A3','aerial','aroma','barista','barista_work','beans','beans_tree','blossom','brew','cafe','cherry','chemex','coffee_bags','coffee_shop','coldbrew','cup','cupping','espresso','farm','filter','fresh_roast','grinder','harvest','journey','lab','latte','map','moka','plantation','processing','roast','roastery','sustainability','team','v60','water']);
+const LOCAL_IMGS=new Set(['A0','A1','A2','A3','aerial','aroma','barista','barista_work','beans','beans_tree','blossom','brew','cafe','cherry','chemex','coffee_bags','coffee_shop','coldbrew','cup','cupping','espresso','farm','filter','fresh_roast','grinder','harvest','journey','kaldy','lab','latte','map','moka','plantation','processing','roast','roastery','sustainability','team','v60','water']);
 function imgPath(key,w=600,q=80){
   if(LOCAL_IMGS.has(key)) return 'images/'+key+'.jpg';
   let id=PHOTOS[key]||'photo-1509042239860-f550ce710b93';
@@ -756,7 +757,7 @@ L['A1-0'] = {
 <h3>📖 قصة اكتشاف القهوة — أسطورة كلد</h3>
 <p>تروي الأسطورة الإثيوبية أن راعياً اسمه <strong>كلد (Kaldi)</strong> كان يرعى أغنامه في مرتفعات إقليم <strong>كافا (Kaffa)</strong> جنوب غرب إثيوبيا، حوالي القرن التاسع الميلادي. لاحظ كلد أن أغنامه أصبحت <strong>نشيطة بشكل غير عادي</strong> بعد أن أكلت ثماراً حمراء من شجرة غريبة. كانت تقفز وتركض بحيوية لم يسبق لها مثيل.</p>
 <p>قرر كلد تجربة الثمار بنفسه، وشعر فوراً <strong>بانتعاش وتيقظ</strong> لم يعهدهما من قبل. أخذ بعض الثمار إلى <strong>الدير المجاور</strong>، حيث استقبله الرهبان بشك. لكنهم بعد تجربة الثمار، وجدوا أنها تساعدهم على السهر في الصلاة والعبادة طوال الليل. هكذا، حسب الأسطورة، بدأت رحلة القهوة مع البشرية.</p>
-<div class="img-c"><img src="${photo('journey')}" alt=""><div class="cap">🐐 أسطورة كلد — أول من اكتشف القهوة في مرتفعات إثيوبيا</div></div>
+<div class="img-c"><img src="${photo('kaldy')}" alt=""><div class="cap">🐐 أسطورة كلد — أول من اكتشف القهوة في مرتفعات إثيوبيا</div></div>
 <h3>🌿 طقوس القهوة الإثيوبية — تراث حي</h3>
 <p>في إثيوبيا اليوم، لا تزال <strong>طقوس القهوة (Buna Tetu)</strong> تمارس في كل بيت وقرية. عملية تحضير تستغرق ساعتين: تُحمص الحبوب الخضراء على النار في مقلاة مسطحة حتى تتصاعد رائحة البخور، ثم تطحن بقذائف الهاون، وتغلى في الإبريق الفخاري التقليدي (الجبانة). تُقدم للأب الروحي أولاً ثم للضيوف حسب الأهمية. الطقس يتكرر ثلاث مرات — الجولة الأولى تسمى "أوّل"، والثانية "كالى"، والثالثة "بركة". هذه الطقوس جسدت ثقافة الضيافة الإثيوبية لأكثر من ألف عام.</p>
 <h3>📜 الأدلة التاريخية — الحقيقة والخرافة</h3>
@@ -787,7 +788,7 @@ L['A1-0'] = {
 <h3>📖 The Story of Coffee Discovery — The Legend of Kaldi</h3>
 <p>The Ethiopian legend tells of a goat herder named <strong>Kaldi</strong> who lived in the highlands of <strong>Kaffa</strong> region, southwestern Ethiopia, around the 9th century AD. Kaldi noticed his goats became <strong>unusually energetic</strong> after eating red berries from a strange tree — they were jumping and running with remarkable vitality.</p>
 <p>Kaldi tried the berries himself and immediately felt <strong>alert and refreshed</strong>. He took some to a <strong>nearby monastery</strong>, where the monks were skeptical. But after trying the berries, they found they helped them stay awake during night prayers. Thus, according to legend, coffee's journey with humanity began.</p>
-<div class="img-c"><img src="${photo('journey')}" alt=""><div class="cap">🐐 The Legend of Kaldi — the first discovery of coffee in the Ethiopian highlands</div></div>
+<div class="img-c"><img src="${photo('kaldy')}" alt=""><div class="cap">🐐 The Legend of Kaldi — the first discovery of coffee in the Ethiopian highlands</div></div>
 <h3>🌿 The Ethiopian Coffee Ceremony — A Living Tradition</h3>
 <p>In Ethiopia today, the <strong>coffee ceremony (Buna Tetu)</strong> is still practiced in every home and village. A two-hour ritual: green beans are roasted over fire in a flat pan until incense-like scents rise, then ground with a mortar and pestle, and boiled in the traditional clay pot (jebena). It is served to the patriarch first, then to guests in order of importance. The ceremony repeats three times — the first round is called "awol," the second "kale," and the third "baraka." This tradition embodies Ethiopian hospitality culture spanning over a thousand years.</p>
 <h3>📜 Historical Evidence — Fact and Legend</h3>
