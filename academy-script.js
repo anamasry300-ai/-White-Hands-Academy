@@ -566,10 +566,28 @@ const PHOTOS={
    j10:'photo-1501339847302-ac426a4a7cbb',
    farm:'photo-1762686852371-763b689910b2',
    roastery:'photo-1741994043358-40d97f0be265',
-   beans_tree:'photo-1672851612794-6687bf0bf1a3'
+   beans_tree:'photo-1672851612794-6687bf0bf1a3',
+   processing:'photo-1754648293032-090b43f4e45b',
+   blossom:'photo-1762004456291-016c26cc59c9',
+   grinder:'photo-1561480337-2b9420a5e899',
+   brew:'photo-1779557123904-9e05a0b0323f',
+   aerial:'photo-1762686852371-763b689910b2',
+   sustainability:'photo-1746623691149-daeff6c67335',
+   barista_work:'photo-1769262122923-f7796ba58638',
+   coffee_bags:'photo-1770055592675-eeef95eeab25',
+   coffee_shop:'photo-1770062824236-2055ac54f662',
+   filter:'photo-1439242088854-0c76045f4124',
+   moka:'photo-1560642002-2cbc97e04a57',
+   aroma:'photo-1690980649878-d039eeeebd9a',
+   plantation:'photo-1626705363160-68661d96fea2',
+   fresh_roast:'photo-1768498855458-f6ce1068f02f',
+   lab:'photo-1762195657410-112fbc6f2d17',
+   harvest:'photo-1764121454907-159d6323bb4f',
+   cup:'photo-1766729401598-84f44cb03878',
+   chemex:'photo-1761393877623-4412d7060ba4'
  };
 // Local image path builder — checks images/ folder first, falls back to Unsplash
-const LOCAL_IMGS=new Set(['A0','A1','A2','A3','barista','beans','beans_tree','cafe','cherry','coldbrew','cupping','espresso','farm','journey','latte','map','roast','roastery','team','v60','water']);
+const LOCAL_IMGS=new Set(['A0','A1','A2','A3','aerial','aroma','barista','barista_work','beans','beans_tree','blossom','brew','cafe','cherry','chemex','coffee_bags','coffee_shop','coldbrew','cup','cupping','espresso','farm','filter','fresh_roast','grinder','harvest','journey','lab','latte','map','moka','plantation','processing','roast','roastery','sustainability','team','v60','water']);
 function imgPath(key,w=600,q=80){
   if(LOCAL_IMGS.has(key)) return 'images/'+key+'.jpg';
   let id=PHOTOS[key]||'photo-1509042239860-f550ce710b93';
@@ -1897,6 +1915,22 @@ function sModule(level, mi, li){
   setTimeout(()=>{initTilt();initMagnetic()},100);
   // Restore projector mode state
   if(localStorage.getItem('wha_projector')==='1') document.body.classList.add('projector-mode');
+}
+/* === Magazine layout helpers === */
+function magHero(key, caption, opt){
+  opt = opt || {};
+  let h = opt.h || 420;
+  let cls = opt.cls || '';
+  return '<div class="img-c mag-hero ' + cls + '" style="min-height:' + h + 'px"><img src="' + photo(key) + '" alt="" style="height:' + h + 'px"><div class="cap" style="font-size:' + (opt.fs || '1.4') + 'rem">' + caption + '</div></div>';
+}
+function magSection(key, title, bodyHTML){
+  return '<div class="mag-card"><div class="img-c" style="min-height:280px;margin:0;border-radius:14px 14px 0 0"><img src="' + photo(key) + '" alt="" style="height:280px"><div class="cap" style="font-size:1.2rem">' + title + '</div></div><div class="mag-card-body">' + bodyHTML + '</div></div>';
+}
+function magQuote(text, attr){
+  return '<div class="mag-quote">' + text + (attr ? '<span class="att">— ' + attr + '</span>' : '') + '</div>';
+}
+function magGrid2(leftKey, leftCap, rightKey, rightCap){
+  return '<div class="mag-grid-2"><div class="img-c" style="min-height:200px;margin:0"><img src="' + photo(leftKey) + '" alt="" style="height:200px"><div class="cap" style="font-size:.9rem;padding:12px">' + leftCap + '</div></div><div class="img-c" style="min-height:200px;margin:0"><img src="' + photo(rightKey) + '" alt="" style="height:200px"><div class="cap" style="font-size:.9rem;padding:12px">' + rightCap + '</div></div></div>';
 }
 function toggleProjector(){
   let on=document.body.classList.toggle('projector-mode');
