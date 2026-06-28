@@ -1342,10 +1342,10 @@ header::after{
   position:relative;max-width:1100px;margin:0 auto;padding:30px 0 10px;
 }
 .jrny-track{
-  position:absolute;top:20px;bottom:20px;left:50%;
+  position:fixed;top:0;bottom:0;left:50%;
   width:3px;transform:translateX(-50%);
   background:linear-gradient(to bottom,var(--accent) 0%,rgba(201,168,76,.08) 100%);
-  z-index:0;border-radius:4px;
+  z-index:0;pointer-events:none;
 }
 .jrny-stop{
   display:grid;grid-template-columns:1fr auto 1fr;gap:24px;
@@ -1390,7 +1390,7 @@ header::after{
   box-shadow:0 24px 60px rgba(0,0,0,.25);
 }
 .jrny-img{
-  position:relative;height:280px;overflow:hidden;
+  position:relative;height:360px;overflow:hidden;
   background:linear-gradient(135deg,#1a1a2e 0%,#2d1b00 35%,#1a1a2e 65%,#0d0d1a 100%);
 }
 .jrny-img img{

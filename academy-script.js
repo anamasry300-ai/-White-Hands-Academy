@@ -2192,10 +2192,11 @@ function sJourney(){
       facts:[{ar:'3 مستويات — A • B • C',en:'3 Levels — A • B • C'},{ar:'منهج متوافق مع SCA',en:'SCA-aligned curriculum'},{ar:'شهادات إتمام معتمدة',en:'Official completion certificates'}]}
   ];
   let h = '<div class="hero"><div class="hero-glow"></div><h2>' + __({ar:'☕ رحلة القهوة',en:'☕ Coffee Journey'}) + '</h2><div class="gold-divider"></div><p>' + __({ar:'ارتحل معنا عبر 1200 عام من تاريخ القهوة — من غابات إثيوبيا إلى فناجينكم',en:'Travel with us through 1,200 years of coffee history — from Ethiopian forests to your cup'}) + '</p></div>';
+  h += '<div class="img-c img-c-timeline" style="margin:0 0 40px"><img src="' + photo('coffee_timeline') + '" alt="" loading="lazy"><div class="cap">' + __({ar:'🗺️ خريطة القهوة عبر الزمن — من البذرة إلى فنجانك',en:'🗺️ Coffee Journey Map — From Seed to Your Cup'}) + '</div></div>';
   h += '<div class="jrny"><div class="jrny-track"></div>';
   ms.forEach((m, i) => {
     h += '<div class="jrny-stop"><div class="jrny-marker">' + (i+1) + '</div>';
-    h += '<div class="jrny-card"><div class="jrny-img"><img src="' + photoSmall(m.img) + '" alt="" loading="lazy"><div class="jrny-img-ov"></div><div class="jrny-badge">' + (lang==='ar'?m.yr:m.enYr) + '</div><div class="jrny-ic">' + m.ic + '</div></div>';
+    h += '<div class="jrny-card"><div class="jrny-img"><img src="' + photo(m.img) + '" alt="" loading="lazy"><div class="jrny-img-ov"></div><div class="jrny-badge">' + (lang==='ar'?m.yr:m.enYr) + '</div><div class="jrny-ic">' + m.ic + '</div></div>';
     h += '<div class="jrny-body"><h3>' + __(m.title) + '</h3>';
     __(m.story).forEach(p => { h += '<p>' + p + '</p>'; });
     h += '<div class="jrny-facts"><div class="jrny-facts-title">' + (lang==='ar'?'🔍 حقائق سريعة':'🔍 Quick Facts') + '</div>';
@@ -2203,7 +2204,6 @@ function sJourney(){
     h += '</div></div></div></div>';
   });
   h += '</div>';
-  h += '<div class="img-c img-c-timeline" style="margin:40px 0"><img src="' + photo('coffee_timeline') + '" alt="" loading="lazy"><div class="cap">' + __({ar:'🗺️ خريطة القهوة عبر الزمن — من البذرة إلى فنجانك',en:'🗺️ Coffee Journey Map — From Seed to Your Cup'}) + '</div></div>';
   // === PRODUCING & CONSUMING COUNTRIES ===
   h += '<div class="hero" style="margin-top:30px"><div class="hero-glow"></div><h2>' + __({ar:'🌍 الدول المنتجة للبن',en:'🌍 Coffee Producing Countries'}) + '</h2><div class="gold-divider"></div><p>' + __({ar:'القهوة تنمو في أكثر من 70 دولة حول العالم — لكن 10 دول تنتج 90% من الإنتاج العالمي',en:'Coffee grows in over 70 countries worldwide — but 10 countries produce 90% of global output'}) + '</p></div>';
   h += '<div class="img-c"><img src="' + photo('map') + '" alt="" loading="lazy" style="width:100%;border-radius:var(--radius-lg)"><div class="cap">' + __({ar:'🗺️ حزام البن العالمي — Bean Belt',en:'🗺️ The Coffee Bean Belt'}) + '</div></div>';
