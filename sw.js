@@ -7,7 +7,7 @@ const FILES = [
   'manifest.json'
 ];
 const LOCAL_IMGS = [
-  'A0','A1','A2','A3','aerial','aroma','barista','barista_work','beans','beans_tree','blossom','brew','cafe','cherry','chemex','coffee_bags','coffee_shop','coldbrew','cup','cupping','espresso','farm','filter','fresh_roast','grinder','harvest','journey','kaldy','lab','latte','map','moka','plantation','processing','roast','roastery','sustainability','team','v60','water'
+  'A0','A1','A2','A3','aerial','aroma','barista','barista_work','beans','beans_tree','blossom','brew','cafe','cherry','chemex','coffee_bags','coffee_shop','coldbrew','cup','cupping','espresso','ethiopian','ethiopian_ceremony','farm','filter','fresh_roast','grinder','harvest','journey','kaldy','lab','latte','map','moka','ottoman_cafe','plantation','processing','roast','roastery','sustainability','team','turkish','turkish_cup','turkish_delight','v60','water'
 ];
 const ALL_ASSETS = [...FILES, ...LOCAL_IMGS.map(k => 'images/'+k+'.jpg')];
 

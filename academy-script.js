@@ -585,10 +585,16 @@ const PHOTOS={
    harvest:'photo-1764121454907-159d6323bb4f',
    cup:'photo-1766729401598-84f44cb03878',
    chemex:'photo-1761393877623-4412d7060ba4',
-   kaldy:'photo-1509042239860-f550ce710b93'
+   kaldy:'photo-1509042239860-f550ce710b93',
+   turkish:'photo-1772135893358-fad3af1ae6ad',
+   ethiopian:'photo-1631166092523-026627fbd2d5',
+   ethiopian_ceremony:'photo-1774529233247-d3f34ed11994',
+   turkish_delight:'photo-1757079649052-a24c6ab32c64',
+   turkish_cup:'photo-1696590406209-811e378bd107',
+   ottoman_cafe:'photo-1560799262-3727e67f0c62'
  };
 // Local image path builder — checks images/ folder first, falls back to Unsplash
-const LOCAL_IMGS=new Set(['A0','A1','A2','A3','aerial','aroma','barista','barista_work','beans','beans_tree','blossom','brew','cafe','cherry','chemex','coffee_bags','coffee_shop','coldbrew','cup','cupping','espresso','farm','filter','fresh_roast','grinder','harvest','journey','kaldy','lab','latte','map','moka','plantation','processing','roast','roastery','sustainability','team','v60','water']);
+const LOCAL_IMGS=new Set(['A0','A1','A2','A3','aerial','aroma','barista','barista_work','beans','beans_tree','blossom','brew','cafe','cherry','chemex','coffee_bags','coffee_shop','coldbrew','cup','cupping','espresso','ethiopian','ethiopian_ceremony','farm','filter','fresh_roast','grinder','harvest','journey','kaldy','lab','latte','map','moka','ottoman_cafe','plantation','processing','roast','roastery','sustainability','team','turkish','turkish_cup','turkish_delight','v60','water']);
 function imgPath(key,w=600,q=80){
   if(LOCAL_IMGS.has(key)) return 'images/'+key+'.jpg';
   let id=PHOTOS[key]||'photo-1509042239860-f550ce710b93';
