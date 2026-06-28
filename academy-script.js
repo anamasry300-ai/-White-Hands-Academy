@@ -599,7 +599,7 @@ const PHOTOS={
    coffee_timeline:'photo-1509042239860-f550ce710b93'
  };
 // Local image path builder — checks images/ folder first, falls back to Unsplash
-const LOCAL_IMGS=new Set(['A0','A1','A2','A3','aerial','aroma','barista','barista_work','beans','beans_tree','blossom','brew','cafe','cherry','chemex','coffee_bags','coffee_shop','coffee_timeline','coldbrew','cup','cupping','espresso','ethiopian','ethiopian_ceremony','farm','filter','fresh_roast','grinder','harvest','journey','kaldy','kaldy_monk','lab','latte','map','mecca_cafe','moka','ottoman_cafe','plantation','processing','roast','roastery','sustainability','team','turkish','turkish_cup','turkish_delight','v60','water']);
+const LOCAL_IMGS=new Set(['A0','A1','A2','A3','aerial','aroma','barista','barista_work','beans','beans_tree','blossom','brew','cafe','cherry','chemex','coffee_bags','coffee_shop','coffee_timeline','coldbrew','comparison','cup','cupping','espresso','ethiopian','ethiopian_ceremony','farm','filter','fresh_roast','grinder','harvest','journey','kaldy','kaldy_monk','lab','latte','map','mecca_cafe','moka','ottoman_cafe','plantation','processing','roast','roastery','sustainability','team','turkish','turkish_cup','turkish_delight','v60','water']);
 function imgPath(key,w=600,q=80){
   if(LOCAL_IMGS.has(key)) return 'images/'+key+'.jpg';
   let id=PHOTOS[key]||'photo-1509042239860-f550ce710b93';
@@ -659,7 +659,7 @@ L['A0-0'] = {
 <tr><td>8</td><td>👅 التذوق (Tasting)</td><td>Tasting</td><td>لحظات من المتعة</td></tr></table>
 <h3>🌱 1. زراعة البن — Coffee Farming</h3>
 <p>القهوة تنمو في <strong>حزام البن</strong> (Bean Belt) — المنطقة بين مداري السرطان والجدي. أفضل أنواع البن تنمو على <strong>ارتفاعات 1200-2000 متر</strong>، في تربة غنية وحرارة 15-24°م. شجرة البن تحتاج 3-4 سنوات لتثمر أول محصول. الزهرة البيضاء (تسمى "قهوة" في اليمن) تتحول إلى <strong>الكرزة الحمراء (Coffee Cherry)</strong> بعد 6-9 أشهر.</p>
-<div class="img-c"><img src="${photo('farm')}" alt="" loading="lazy"> loading="lazy"<div class="cap">🌱 حزام البن العالمي — بين مداري السرطان والجدي</div></div>
+<div class="img-c"><img src="${photo('comparison')}" alt="" loading="lazy"> loading="lazy"<div class="cap">🌱 حزام البن العالمي — بين مداري السرطان والجدي</div></div>
 
 
 <h3>🍒 2. الحصاد — Harvesting</h3>
@@ -698,7 +698,7 @@ L['A0-0'] = {
 <tr><td>8</td><td>👅 Tasting</td><td>تذوق</td><td>Moments of pleasure</td></tr></table>
 <h3>🌱 1. Coffee Farming</h3>
 <p>Coffee grows in the <strong>Bean Belt</strong> — between the Tropics of Cancer and Capricorn. The best coffee grows at <strong>1200-2000m altitude</strong>, in rich soil with 15-24°C temperatures. A coffee tree takes 3-4 years to produce its first crop. The white flower (called "qahwa" in Yemen) turns into the <strong>red coffee cherry</strong> after 6-9 months.</p>
-<div class="img-c"><img src="${photo('farm')}" alt="" loading="lazy"> loading="lazy"<div class="cap">🌱 The Coffee Bean Belt — Between the Tropics</div></div>
+<div class="img-c"><img src="${photo('comparison')}" alt="" loading="lazy"> loading="lazy"<div class="cap">🌱 The Coffee Bean Belt — Between the Tropics</div></div>
 <h3>🍒 2. Harvesting</h3>
 <p>Hand-picking is the <strong>best harvesting method</strong> — workers select only ripe red cherries. A single tree needs 3-4 pickings per season since cherries ripen unevenly. Each worker collects 50-100kg of cherries daily — yielding only 10-20kg of green beans.</p>
 <h3>🧪 3. Processing</h3>
@@ -790,7 +790,7 @@ L['A1-1'] = {
   ar: `
 <h3>🔬 التصنيف النباتي للقهوة</h3>
 <p>القهوة تنتمي إلى <strong>المملكة النباتية (Plantae)</strong>، وتحديداً إلى <strong>الفصيلة الفُوْيَة (Rubiaceae)</strong>. <strong>جنس القهوة (Coffea)</strong> يضم حوالي 130 نوعاً، لكن <strong>نوعين فقط</strong> يسيطران على الإنتاج التجاري العالمي.</p>
-<div class="img-c"><img src="${photo('farm')}" alt="" loading="lazy"> loading="lazy"<div class="cap">🌱 أنواع البن الرئيسية — أرابيكا وروبوستا</div></div>
+<div class="img-c"><img src="${photo('comparison')}" alt="" loading="lazy"> loading="lazy"<div class="cap">🌱 أنواع البن الرئيسية — أرابيكا وروبوستا</div></div>
 <table><tr><th>المستوى التصنيفي</th><th>الاسم</th></tr><tr><td>المملكة</td><td>Plantae</td></tr><tr><td>الشعبة</td><td>Magnoliophyta</td></tr><tr><td>الطائفة</td><td>Magnoliopsida</td></tr><tr><td>الرتبة</td><td>Gentianales</td></tr><tr><td>الفصيلة</td><td>Rubiaceae</td></tr><tr><td>الجنس</td><td><em>Coffea</em></td></tr></table>
 <h3>🌱 أرابيكا (Coffea arabica)</h3>
 <p>يشكل <strong>60-70%</strong> من الإنتاج العالمي. يُعتقد أنه <strong>هجين طبيعي (tetraploid)</strong> بين <em>Coffea eugenioides</em> و <em>Coffea canephora</em>. نسبة الكافيين: 0.8-1.4%. ينمو على ارتفاع 600-2200 متر. نكهته: معقدة، زهرية، فاكهية.</p>
@@ -801,7 +801,7 @@ L['A1-1'] = {
   en: `
 <h3>🔬 Botanical Classification of Coffee</h3>
 <p>Coffee belongs to the <strong>Plantae kingdom</strong>, specifically the <strong>Rubiaceae family</strong>. The <strong>Coffea genus</strong> includes about 130 species, but only <strong>two species</strong> dominate global commercial production.</p>
-<div class="img-c"><img src="${photo('farm')}" alt="" loading="lazy"> loading="lazy"<div class="cap">🌱 Main Coffee Species — Arabica & Robusta</div></div>
+<div class="img-c"><img src="${photo('comparison')}" alt="" loading="lazy"> loading="lazy"<div class="cap">🌱 Main Coffee Species — Arabica & Robusta</div></div>
 <table><tr><th>Taxonomic Level</th><th>Name</th></tr><tr><td>Kingdom</td><td>Plantae</td></tr><tr><td>Division</td><td>Magnoliophyta</td></tr><tr><td>Class</td><td>Magnoliopsida</td></tr><tr><td>Order</td><td>Gentianales</td></tr><tr><td>Family</td><td>Rubiaceae</td></tr><tr><td>Genus</td><td><em>Coffea</em></td></tr></table>
 <h3>🌱 Arabica (Coffea arabica)</h3>
 <p>Accounts for <strong>60-70%</strong> of world production. A <strong>natural hybrid (tetraploid)</strong> between <em>Coffea eugenioides</em> and <em>Coffea canephora</em>. Caffeine content: 0.8-1.4%. Grows at 600-2200m elevation. Flavor: complex, floral, fruity with bright acidity.</p>

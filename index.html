@@ -26,14 +26,13 @@
 <meta name="twitter:image" content="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&h=630&fit=crop&q=85&auto=format">
 <!-- Canonical URL -->
 <link rel="canonical" href="https://anamasry300-ai.github.io/-White-Hands-Academy/">
-<!-- Favicon (inline SVG) -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 100'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23d4a85a'/%3E%3Cstop offset='100%25' stop-color='%23a88a30'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cellipse cx='40' cy='50' rx='18' ry='26' fill='url(%23f)' transform='rotate(-10,40,50)'/%3E%3Cellipse cx='36' cy='44' rx='8' ry='14' fill='%23e8c070' opacity='.3' transform='rotate(-10,36,44)'/%3E%3Cpath d='M34 38 C38 42,38 48,34 54' stroke='%233A1800' stroke-width='1.5' fill='none' opacity='.5'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="images/logo.png">
 <!-- PWA: Mobile App Support -->
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="White Hands Academy">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='fav' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%238B5A2B'/%3E%3Cstop offset='100%25' stop-color='%234A2810'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cellipse cx='60' cy='60' rx='24' ry='34' fill='url(%23fav)' transform='rotate(-10,60,60)'/%3E%3Cpath d='M52 48 C58 54,58 64,52 70' stroke='%233A1800' stroke-width='2' fill='none' opacity='.5'/%3E%3Cpath d='M64 50 C60 56,60 64,64 68' stroke='%233A1800' stroke-width='1' fill='none' opacity='.3'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="images/logo.png">
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -69,19 +68,7 @@
 <div class="noise-overlay"></div>
 <div id="loading-screen" class="loading-screen">
   <div class="loader-bean">
-    <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="lbg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#8B5A2B"/>
-          <stop offset="50%" stop-color="#6B3A1F"/>
-          <stop offset="100%" stop-color="#4A2810"/>
-        </linearGradient>
-      </defs>
-      <ellipse cx="40" cy="50" rx="18" ry="26" fill="url(#lbg)" transform="rotate(-10,40,50)"/>
-      <ellipse cx="36" cy="44" rx="8" ry="14" fill="#9B6A3B" opacity=".3" transform="rotate(-10,36,44)"/>
-      <path d="M34 38 C38 42,38 48,34 54" stroke="#3A1800" stroke-width="1.5" fill="none" opacity=".5"/>
-      <path d="M42 40 C39 44,39 50,42 52" stroke="#3A1800" stroke-width=".8" fill="none" opacity=".3"/>
-    </svg>
+    <img src="images/logo.png" alt="White Hands Academy" class="loader-img">
   </div>
   <div class="loader-text">
     <span class="loader-title" data-ar="أكاديمية الأيادي البيضاء" data-en="White Hands Academy">أكاديمية الأيادي البيضاء</span>
@@ -101,82 +88,7 @@
       <button id="ambientToggle" class="ambient-btn" onclick="toggleAmbient()" title="Ambient Coffee House">🎵</button>
     </div>
     <div class="logo-wrap">
-      <div class="logo-svg">
-        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="lg" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#d4a85a" stop-opacity=".12"/><stop offset="100%" stop-color="#d4a85a" stop-opacity="0"/></radialGradient>
-            <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e8e0d8"/></linearGradient>
-            <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#ddd5cc"/></linearGradient>
-            <linearGradient id="g3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#d4a85a"/><stop offset="50%" stop-color="#f0d080"/><stop offset="100%" stop-color="#d4a85a"/></linearGradient>
-            <linearGradient id="beanGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8B5A2B"/><stop offset="50%" stop-color="#6B3A1F"/><stop offset="100%" stop-color="#4A2810"/></linearGradient>
-            <linearGradient id="v60Grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a2a3e"/><stop offset="100%" stop-color="#1a1a2e"/></linearGradient>
-          </defs>
-          <!-- Outer rings -->
-          <circle cx="60" cy="60" r="57" stroke="#d4a85a" stroke-width=".8" fill="none" opacity=".15"/>
-          <circle cx="60" cy="60" r="48" stroke="#d4a85a" stroke-width=".5" fill="none" opacity=".08"/>
-          <!-- Glow behind logo -->
-          <circle cx="60" cy="40" r="45" fill="url(#lg)"/>
-          <!-- ===== LEFT GLOVE ===== -->
-          <!-- Arm -->
-          <path d="M34 16 C30 16,26 20,26 28 L28 48 C28 52,32 54,36 54 L44 54 C46 54,48 52,48 48 L46 36 C46 30,44 22,42 16Z" fill="url(#g1)" opacity=".95" stroke="#ccc5bc" stroke-width=".3"/>
-          <!-- Thumb -->
-          <path d="M28 30 C22 28,18 34,22 38 C24 40,28 40,30 38" fill="url(#g2)" opacity=".9" stroke="#ccc5bc" stroke-width=".3"/>
-          <!-- Gold band (cuff) -->
-          <path d="M26 42 L48 42" stroke="url(#g3)" stroke-width="2.5" stroke-linecap="round" opacity=".85"/>
-          <path d="M27 46 L47 46" stroke="#d4a85a" stroke-width="1" stroke-linecap="round" opacity=".4"/>
-          <!-- Highlight on glove -->
-          <path d="M36 20 C38 26,38 32,36 38" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".5"/>
-          <!-- Glove fingers subtle lines -->
-          <path d="M33 16 C33 16,32 18,32 22" stroke="#ddd5bc" stroke-width=".5" fill="none" opacity=".4"/>
-          <path d="M37 16 C37 16,36 19,36 23" stroke="#ddd5bc" stroke-width=".5" fill="none" opacity=".4"/>
-          <path d="M41 16 C41 16,40 19,40 23" stroke="#ddd5bc" stroke-width=".5" fill="none" opacity=".4"/>
-          <!-- ===== RIGHT GLOVE ===== -->
-          <!-- Arm -->
-          <path d="M86 16 C90 16,94 20,94 28 L92 48 C92 52,88 54,84 54 L76 54 C74 54,72 52,72 48 L74 36 C74 30,76 22,78 16Z" fill="url(#g1)" opacity=".95" stroke="#ccc5bc" stroke-width=".3"/>
-          <!-- Thumb -->
-          <path d="M92 30 C98 28,102 34,98 38 C96 40,92 40,90 38" fill="url(#g2)" opacity=".9" stroke="#ccc5bc" stroke-width=".3"/>
-          <!-- Gold band (cuff) -->
-          <path d="M94 42 L72 42" stroke="url(#g3)" stroke-width="2.5" stroke-linecap="round" opacity=".85"/>
-          <path d="M93 46 L73 46" stroke="#d4a85a" stroke-width="1" stroke-linecap="round" opacity=".4"/>
-          <!-- Highlight on glove -->
-          <path d="M84 20 C82 26,82 32,84 38" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".5"/>
-          <!-- Glove fingers subtle lines -->
-          <path d="M87 16 C87 16,88 18,88 22" stroke="#ddd5bc" stroke-width=".5" fill="none" opacity=".4"/>
-          <path d="M83 16 C83 16,84 19,84 23" stroke="#ddd5bc" stroke-width=".5" fill="none" opacity=".4"/>
-          <path d="M79 16 C79 16,80 19,80 23" stroke="#ddd5bc" stroke-width=".5" fill="none" opacity=".4"/>
-          <!-- ===== COFFEE BEAN ===== -->
-          <!-- Bean shadow -->
-          <ellipse cx="61" cy="52" rx="11" ry="15" fill="#4A2810" opacity=".3" transform="rotate(-8,61,52)"/>
-          <!-- Bean body -->
-          <ellipse cx="60" cy="50" rx="10" ry="14" fill="url(#beanGrad)" transform="rotate(-8,60,50)"/>
-          <!-- Bean highlight -->
-          <ellipse cx="57" cy="45" rx="5" ry="8" fill="#9B6A3B" opacity=".4" transform="rotate(-8,57,45)"/>
-          <!-- Center crack -->
-          <path d="M55 40 C58 44,58 50,55 56" stroke="#4A2810" stroke-width="1.2" fill="none" opacity=".6"/>
-          <path d="M62 42 C59 46,59 52,62 54" stroke="#3A1800" stroke-width=".6" fill="none" opacity=".4"/>
-          <!-- ===== DRIP LINE ===== -->
-          <path d="M60 64 C60 66,58 70,59 74" stroke="#d4a85a" stroke-width="1.5" stroke-linecap="round" opacity=".45"/>
-          <!-- Drip droplets -->
-          <ellipse cx="59" cy="68" rx="2" ry="3" fill="#d4a85a" opacity=".3"/>
-          <ellipse cx="59.5" cy="74" rx="1.5" ry="2.5" fill="#d4a85a" opacity=".2"/>
-          <!-- ===== V60 POUR-OVER ===== -->
-          <path d="M30 72 L38 100 C40 106,46 108,60 108 C74 108,80 106,82 100 L90 72Z" fill="url(#v60Grad)" opacity=".92" stroke="#d4a85a" stroke-width=".6"/>
-          <path d="M36 76 L42 92 C46 98,52 100,60 100 C68 100,74 98,78 92 L84 76Z" fill="#4A2810" opacity=".45"/>
-          <rect x="26" y="70" width="68" height="4" rx="2" fill="#d4a85a" opacity=".5"/>
-          <rect x="28" y="72" width="64" height="2" rx="1" fill="#f0d080" opacity=".3"/>
-          <path d="M34 78 C40 80,48 79,54 80 C60 81,68 80,74 78" stroke="#d4a85a" stroke-width=".6" fill="none" opacity=".2"/>
-          <path d="M36 82 C42 84,48 83,54 84 C60 85,66 84,72 82" stroke="#d4a85a" stroke-width=".6" fill="none" opacity=".18"/>
-          <path d="M38 86 C44 88,50 87,56 88 C62 89,68 88,74 86" stroke="#d4a85a" stroke-width=".6" fill="none" opacity=".16"/>
-          <path d="M40 90 C46 92,52 91,56 92 C60 93,66 92,72 90" stroke="#d4a85a" stroke-width=".6" fill="none" opacity=".14"/>
-          <path d="M42 94 C46 96,52 95,56 96 C60 97,64 96,68 94" stroke="#d4a85a" stroke-width=".6" fill="none" opacity=".12"/>
-          <ellipse cx="60" cy="106" rx="5" ry="1.8" fill="#0d0d1a" stroke="#d4a85a" stroke-width=".4" opacity=".5"/>
-          <ellipse cx="56" cy="82" rx="1" ry="1.5" fill="#d4a85a" opacity=".15"/>
-          <ellipse cx="62" cy="88" rx=".8" ry="1.2" fill="#d4a85a" opacity=".1"/>
-          <path d="M46 66 C42 60,48 54,44 48" stroke="#d4a85a" stroke-width=".6" fill="none" opacity=".12"/>
-          <path d="M60 66 C56 60,62 54,58 48" stroke="#d4a85a" stroke-width=".6" fill="none" opacity=".1"/>
-          <path d="M74 66 C70 60,76 54,72 48" stroke="#d4a85a" stroke-width=".6" fill="none" opacity=".12"/>
-        </svg>
-      </div>
+      <img src="images/logo.png" alt="White Hands Academy" class="logo-img">
       <div class="logo-text">
         <h1 class="logo-title-ar" data-ar="أكاديمية الأيادي البيضاء" data-en="White Hands Academy">أكاديمية الأيادي البيضاء</h1>
         <p class="logo-sub" data-ar="تدريب الباريستا — من البداية إلى الاحتراف" data-en="Barista Training — From Start to Mastery">تدريب الباريستا — من البداية إلى الاحتراف</p>
