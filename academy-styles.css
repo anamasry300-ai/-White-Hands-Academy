@@ -1764,7 +1764,7 @@ header::after{
 /* ===== Responsive ===== */
 @media(max-width:768px){
   .hdr-inner{padding: 20px 16px 16px;gap:12px}
-  .logo-img{width: 44px;height:44px;padding:4px}
+  .logo-img{width: 34px;height:34px;padding:3px}
   .logo-title-ar{font-size:1.15rem}
   [dir="ltr"] .logo-title-ar{font-size:1rem}
   .lang-switch{position:static;align-self:flex-start}
