@@ -1234,8 +1234,6 @@ header::after{
 .ls-body .img-c-timeline .cap{font-size:1.7rem;max-width:90%}
 .img-c-timeline{position:relative;border-radius:16px;overflow:hidden;margin:32px 0;box-shadow:0 16px 48px rgba(0,0,0,.18)}
 .img-c-timeline img{width:100%;display:block}
-.img-c-timeline::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.5) 25%,rgba(0,0,0,.15) 50%,transparent 70%);pointer-events:none;z-index:1}
-.img-c-timeline .cap{position:absolute;bottom:0;inset-inline:0;padding:32px 36px;border:none;background:none;color:#fff;font-size:1.7rem;font-weight:700;text-align:start;text-shadow:0 3px 20px rgba(0,0,0,.6);z-index:2;font-family:var(--font-display);line-height:1.4;max-width:90%}
 @media(max-width:600px){
   .ls-body .img-c{min-height:240px}
   .ls-body .img-c img{height:240px}
