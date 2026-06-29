@@ -1765,7 +1765,7 @@ header::after{
 @media(max-width:768px){
   .hdr-inner{padding: 16px 12px 12px;gap:8px}
   .logo-wrap{gap:10px}
-  .logo-img{display:none}
+  .logo-img{width: 32px;height:32px;padding:2px}
   .logo-title-ar{font-size:.95rem}
   [dir="ltr"] .logo-title-ar{font-size:.85rem}
   .logo-sub{display:none}
