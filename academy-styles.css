@@ -77,11 +77,10 @@ body::before{
   opacity:0;transform:scale(1.05);pointer-events:none;
 }
 .loader-bean{
-  width:80px;height:80px;animation:loaderSpin 1.6s ease-in-out infinite;
+  width:80px;height:100px;animation:loaderSpin 1.6s ease-in-out infinite;
   filter:drop-shadow(0 0 40px rgba(201,168,76,.2));
-  border-radius:50%;overflow:hidden;
 }
-.loader-img{width:100%;height:100%;object-fit:contain}
+.loader-bean svg{width:100%;height:100%}
 @keyframes loaderSpin{
   0%,100%{transform:rotate(-15deg) scale(1)}
   25%{transform:rotate(5deg) scale(1.05)}
@@ -552,14 +551,14 @@ header::after{
   gap: 20px;
 }
 .logo-img{
-  width: 100px;
-  height: 100px;
+  width: 54px;
+  height: 54px;
   flex-shrink: 0;
-  border-radius: 18px;
+  border-radius: 10px;
   object-fit: contain;
   background: rgba(255,255,255,.06);
-  padding: 8px;
-  box-shadow: 0 0 40px rgba(201,168,76,.2), inset 0 1px 0 rgba(255,255,255,.1);
+  padding: 4px;
+  box-shadow: 0 0 20px rgba(201,168,76,.15), inset 0 1px 0 rgba(255,255,255,.08);
   animation: logoPulse 4s ease-in-out infinite;
 }
 @keyframes logoPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.85;transform:scale(.97)}}
@@ -1764,7 +1763,7 @@ header::after{
 /* ===== Responsive ===== */
 @media(max-width:768px){
   .hdr-inner{padding:20px 16px 16px;gap:12px}
-  .logo-img{display:none}
+  .logo-img{width:28px;height:28px;padding:2px}
   .logo-title-ar{font-size:1.15rem}
   [dir="ltr"] .logo-title-ar{font-size:1rem}
   .logo-sub{display:block}
