@@ -550,6 +550,16 @@ header::after{
   align-items: center;
   gap: 20px;
 }
+.logo-img{
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  object-fit: contain;
+  background: rgba(255,255,255,.04);
+  padding: 4px;
+  box-shadow: 0 0 12px rgba(201,168,76,.12);
+}
 .logo-title-ar{
   font-family: var(--font-display);
   font-size: 1.6rem;
@@ -1751,6 +1761,7 @@ header::after{
 /* ===== Responsive ===== */
 @media(max-width:768px){
   .hdr-inner{padding:20px 16px 16px;gap:12px}
+  .logo-img{width:24px;height:24px;padding:3px}
   .logo-title-ar{font-size:1.15rem}
   [dir="ltr"] .logo-title-ar{font-size:1rem}
   .logo-sub{display:block}
