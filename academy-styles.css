@@ -1763,12 +1763,11 @@ header::after{
 
 /* ===== Responsive ===== */
 @media(max-width:768px){
-  .hdr-inner{padding: 16px 12px 12px;gap:8px}
-  .logo-wrap{gap:10px}
-  .logo-img{width: 32px;height:32px;padding:2px}
-  .logo-title-ar{font-size:.95rem}
-  [dir="ltr"] .logo-title-ar{font-size:.85rem}
-  .logo-sub{display:none}
+  .hdr-inner{padding:20px 16px 16px;gap:12px}
+  .logo-img{display:none}
+  .logo-title-ar{font-size:1.15rem}
+  [dir="ltr"] .logo-title-ar{font-size:1rem}
+  .logo-sub{display:block}
   .lang-switch{position:static;align-self:flex-start}
   .lang-btn{padding:2px 10px;font-size:.65rem}
   .tabs{padding:12px 12px 0;gap:2px;overflow-x:auto}
