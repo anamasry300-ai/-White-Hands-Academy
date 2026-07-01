@@ -597,7 +597,7 @@ const PHOTOS={
     affogato:'photo-1509042239860-f550ce710b93'
   };
 // Local image path builder — checks images/ folder first, falls back to Unsplash
-const LOCAL_IMGS=new Set(['A0','A1','A2','A3','aerial','affogato','aroma','B1','B2','B3','barista','barista_work','beans','beans_tree','blossom','brew','C1','C2','C3','cafe','cappuccino','chemex','cherry','coffee_bags','coffee_shop','coffee_story','coffee_timeline','coldbrew','comparison','cortado','cup','cupping','espresso','espresso_gen','espresso_mod','espresso_success','ethiopian','ethiopian_ceremony','farm','filter','flatwhite','fresh_roast','grinder','harvest','j0','j1','j10','j2','j3','j4','j5','j6','j7','j8','j9','journey','kaldy','kaldy_monk','lab','latte','macchiato','map','mecca_cafe','mocha_drink','moka','ottoman_cafe','plantation','processing','roast','roastery','sustainability','team','turkish','turkish_cup','turkish_delight','v60','water']);
+const LOCAL_IMGS=new Set(['A0','A1','A2','A3','aerial','affogato','aroma','B1','B2','B3','barista','barista_work','beans','beans_tree','blossom','brew','C1','C2','C3','cafe','cappuccino','chemex','cherry','coffee_bags','coffee_map','coffee_shop','coffee_story','coffee_timeline','coldbrew','comparison','cortado','cup','cupping','espresso','espresso_gen','espresso_mod','espresso_success','ethiopian','ethiopian_ceremony','farm','filter','flatwhite','fresh_roast','grinder','harvest','j0','j1','j10','j2','j3','j4','j5','j6','j7','j8','j9','journey','kaldy','kaldy_monk','lab','latte','macchiato','map','mecca_cafe','mocha_drink','moka','ottoman_cafe','plantation','processing','roast','roastery','sustainability','team','turkish','turkish_cup','turkish_delight','v60','water']);
 function imgPath(key,w=600,q=80){
   if(LOCAL_IMGS.has(key)) return 'images/'+key+'.jpg';
   let id=PHOTOS[key]||'photo-1509042239860-f550ce710b93';
@@ -815,7 +815,7 @@ L['A1-2'] = {
   ar: `
 <h3>🌍 رحلة القهوة حول العالم</h3>
 <p>قصة انتشار القهوة من غابات إثيوبيا إلى كل ركن من أركان العالم هي <strong>أعظم قصص التجارة والثقافة</strong> في التاريخ البشري.</p>
-<div class="img-c"><img src="${photo('map')}" alt="" loading="lazy"><div class="cap">🌍 انتشار القهوة من إثيوبيا إلى العالم</div></div>
+<div class="img-c"><img src="${photo('coffee_map')}" alt="" loading="lazy"><div class="cap">🌍 خريطة الدول المنتجة للقهوة — من إثيوبيا إلى العالم</div></div>
 <h3>🇪🇹 إثيوبيا — مهد القهوة</h3>
 <p>الموطن الأصلي للبن العربي هو <strong>غابات كافا (Kaffa)</strong> في جنوب غرب إثيوبيا. لا تزال أشجار البن البري تنمو طبيعياً تحت ظل الأشجار العملاقة.</p>
 <h3>🇾🇪 اليمن — بوابة التجارة</h3>
@@ -829,7 +829,7 @@ L['A1-2'] = {
   en: `
 <h3>🌍 Coffee's Journey Around the World</h3>
 <p>The spread of coffee from Ethiopian forests to every corner of the world is one of the <strong>greatest trade and culture stories</strong> in human history.</p>
-<div class="img-c"><img src="${photo('map')}" alt="" loading="lazy"><div class="cap">🌍 Coffee's Spread from Ethiopia Across the World</div></div>
+<div class="img-c"><img src="${photo('coffee_map')}" alt="" loading="lazy"><div class="cap">🌍 Coffee-Producing Countries Map — From Ethiopia to the World</div></div>
 <h3>🇪🇹 Ethiopia — The Birthplace</h3>
 <p>The original home of Arabica coffee is the <strong>Kaffa forests</strong> in southwestern Ethiopia. Wild coffee trees still grow naturally under the canopy of giant forest trees.</p>
 <h3>🇾🇪 Yemen — The Trade Gateway</h3>
@@ -2196,7 +2196,7 @@ function sJourney(){
   h += '</div>';
   // === PRODUCING & CONSUMING COUNTRIES ===
   h += '<div class="hero" style="margin-top:30px"><div class="hero-glow"></div><h2>' + __({ar:'🌍 الدول المنتجة للبن',en:'🌍 Coffee Producing Countries'}) + '</h2><div class="gold-divider"></div><p>' + __({ar:'القهوة تنمو في أكثر من 70 دولة حول العالم — لكن 10 دول تنتج 90% من الإنتاج العالمي',en:'Coffee grows in over 70 countries worldwide — but 10 countries produce 90% of global output'}) + '</p></div>';
-  h += '<div class="img-c"><img src="' + photo('map') + '" alt="" loading="lazy" style="width:100%;border-radius:var(--radius-lg)"><div class="cap">' + __({ar:'🗺️ حزام البن العالمي — Bean Belt',en:'🗺️ The Coffee Bean Belt'}) + '</div></div>';
+  h += '<div class="img-c"><img src="' + photo('coffee_map') + '" alt="" loading="lazy" style="width:100%;border-radius:var(--radius-lg)"><div class="cap">' + __({ar:'🗺️ خريطة الدول المنتجة للقهوة — Bean Belt',en:'🗺️ Coffee Producing Countries — Bean Belt'}) + '</div></div>';
   h += '<h3>' + __({ar:'☕ أهم 10 دول منتجة للبن',en:'☕ Top 10 Producing Countries'}) + '</h3>';
   h += '<div style="display:flex;flex-direction:column;gap:8px;margin:12px 0">';
   let prod = [
