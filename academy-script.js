@@ -597,7 +597,7 @@ const PHOTOS={
     affogato:'photo-1509042239860-f550ce710b93'
   };
 // Local image path builder — checks images/ folder first, falls back to Unsplash
-const LOCAL_IMGS=new Set(['A0','A1','A2','A3','aerial','affogato','aroma','B1','B2','B3','barista','barista_work','beans','beans_tree','blossom','brew','C1','C2','C3','cafe','cappuccino','chemex','cherry','coffee_bags','coffee_map','coffee_shop','coffee_story','coffee_timeline','coldbrew','comparison','cortado','cup','cupping','espresso','espresso_gen','espresso_mod','espresso_success','ethiopian','ethiopian_ceremony','farm','filter','flatwhite','fresh_roast','grinder','harvest','j0','j1','j10','j2','j3','j4','j5','j6','j7','j8','j9','journey','kaldy','kaldy_monk','lab','latte','macchiato','map','mecca_cafe','mocha_drink','moka','ottoman_cafe','plantation','processing','roast','roastery','sustainability','team','turkish','turkish_cup','turkish_delight','v60','water']);
+const LOCAL_IMGS=new Set(['A0','A1','A2','A3','aerial','affogato','aroma','B1','B2','B3','barista','barista_work','beans','beans_tree','blossom','brew','C1','C2','C3','cafe','cappuccino','chemex','cherry','coffee_bags','coffee_map','coffee_shop','coffee_story','coffee_timeline','coldbrew','comparison','cortado','cup','cupping','espresso','espresso_gen','espresso_mod','espresso_success','ethiopian','ethiopian_ceremony','farm','filter','flatwhite','fresh_roast','grinder','harvest','j0','j1','j10','j2','j3','j4','j5','j6','j7','j8','j9','journey','kaldy','kaldy_monk','lab','latte','macchiato','map','mecca_cafe','mocha_drink','moka','ottoman_cafe','plantation','processing','processing_methods','roast','roastery','sustainability','team','turkish','turkish_cup','turkish_delight','v60','water']);
 function imgPath(key,w=600,q=80){
   if(LOCAL_IMGS.has(key)) return 'images/'+key+'.jpg';
   let id=PHOTOS[key]||'photo-1509042239860-f550ce710b93';
@@ -1084,7 +1084,7 @@ L['C1-2'] = {ar:`<h3>📊 بروتوكول SCA للتقييم — من 0 إلى 
 
 L['C2-0'] = {ar:`<h3>🫘 المعالجة الطبيعية (Natural) — أقدم تقنية في التاريخ</h3>
 <p>المعالجة الطبيعية هي <strong>أقدم طريقة لمعالجة البن</strong>، استُخدمت في إثيوبيا واليمن منذ قرون دون تغيير جوهري. اسمها الآخر: <strong>Dry Process</strong>. الفكرة بسيطة: تجفف الثمرة كاملة — بقشرتها ولبها — تحت أشعة الشمس.</p>
-<div class="img-c"><img src="${photo('beans_tree')}" alt="" loading="lazy"><div class="cap">🫘 المعالجة الطبيعية — أبسط طرق تحضير البن</div></div>
+<div class="img-c"><img src="${photo('processing_methods')}" alt="" loading="lazy"><div class="cap">🫘 طرق معالجة البن — من الطبيعية إلى التجريبية</div></div>
 <h3>🔬 خطوات المعالجة الطبيعية</h3>
 <ol><li><strong>القطف:</strong> تقطف الكرزات الحمراء الناضجة فقط (يدوياً أو ميكانيكياً)</li>
 <li><strong>الفرز:</strong> تطفو الكرزات في الماء — الكرزات الناضجة تغوص، غير الناضجة تطفو (تُرفض)</li>
@@ -1098,7 +1098,7 @@ L['C2-0'] = {ar:`<h3>🫘 المعالجة الطبيعية (Natural) — أقد
 <div class="err-box"><strong>❌ خطأ شائع:</strong> ظن أن المعالجة الطبيعية أسهل من المغسولة. الحقيقة: المعالجة الطبيعية تتطلب مهارة عالية في التحكم بعملية التجفيف — خطأ بسيط يسبب تعفن الكرزات بالكامل.</div>
 <div class="ok-box"><strong>🎯 نشاط:</strong> اشتر بناً طبيعياً ومغسولاً من نفس الأصل (مثلاً: إثيوبي ييرغاشيفي طبيعي ومغسول). حضّر بنفس الطريقة وتذوق الفرق. الطبيعي سيكون أحلى وأفاكهي، المغسول أنظف وأزهري.</div>`, en:`<h3>🫘 Natural Processing — The Oldest Technique in History</h3>
 <p>Natural processing is the <strong>oldest coffee processing method</strong>, used in Ethiopia and Yemen for centuries without fundamental change. Also called <strong>Dry Process</strong>. The idea is simple: dry the whole cherry — skin, pulp and all — under the sun.</p>
-<div class="img-c"><img src="${photo('beans_tree')}" alt="" loading="lazy"><div class="cap">🫘 Natural Processing — The Simplest Coffee Preparation Method</div></div>
+<div class="img-c"><img src="${photo('processing_methods')}" alt="" loading="lazy"><div class="cap">🫘 Coffee Processing Methods — From Natural to Experimental</div></div>
 <h3>🔬 Natural Processing Steps</h3>
 <ol><li><strong>Harvest:</strong> Pick only ripe red cherries (hand or machine)</li>
 <li><strong>Sorting:</strong> Float cherries in water — ripe ones sink, unripe float (rejected)</li>

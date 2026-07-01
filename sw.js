@@ -7,7 +7,7 @@ const FILES = [
   'manifest.json'
 ];
 const LOCAL_IMGS = [
-  'A0','A1','A2','A3','aerial','affogato','aroma','B1','B2','B3','barista','barista_work','beans','beans_tree','blossom','brew','C1','C2','C3','cafe','cappuccino','chemex','cherry','coffee_bags','coffee_map','coffee_shop','coffee_story','coffee_timeline','coldbrew','comparison','cortado','cup','cupping','espresso','espresso_gen','espresso_mod','espresso_success','ethiopian','ethiopian_ceremony','farm','filter','flatwhite','fresh_roast','grinder','harvest','j0','j1','j10','j2','j3','j4','j5','j6','j7','j8','j9','journey','kaldy','kaldy_monk','lab','latte','macchiato','map','mecca_cafe','mocha_drink','moka','ottoman_cafe','plantation','processing','roast','roastery','sustainability','team','turkish','turkish_cup','turkish_delight','v60','water'
+  'A0','A1','A2','A3','aerial','affogato','aroma','B1','B2','B3','barista','barista_work','beans','beans_tree','blossom','brew','C1','C2','C3','cafe','cappuccino','chemex','cherry','coffee_bags','coffee_map','coffee_shop','coffee_story','coffee_timeline','coldbrew','comparison','cortado','cup','cupping','espresso','espresso_gen','espresso_mod','espresso_success','ethiopian','ethiopian_ceremony','farm','filter','flatwhite','fresh_roast','grinder','harvest','j0','j1','j10','j2','j3','j4','j5','j6','j7','j8','j9','journey','kaldy','kaldy_monk','lab','latte','macchiato','map','mecca_cafe','mocha_drink','moka','ottoman_cafe','plantation','processing','processing_methods','roast','roastery','sustainability','team','turkish','turkish_cup','turkish_delight','v60','water'
 ];
 const ALL_ASSETS = [...FILES, ...LOCAL_IMGS.map(k => 'images/'+k+'.jpg')];
 
