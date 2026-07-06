@@ -275,6 +275,9 @@ function getCurUser(){
   }
   return curUser
 }
+function clearOldSessions(){
+  try { localStorage.removeItem('wha_curUser') } catch(e){}
+}
 function saveCurUser(u){
   if(!u) return;
   curUser = u;
@@ -2514,8 +2517,20 @@ document.addEventListener('keydown',function(e){
   initFirebase();
   let ua = navigator.language || navigator.userLanguage || 'en';
   setLang(ua.startsWith('ar') ? 'ar' : 'en');
-  // If Firebase is not configured, use offline localStorage mode
+    // If Firebase is not configured, use offline localStorage mode
   if(!firebaseReady){
+    // Force re-login for all users (new approval system)
+    let ver=localStorage.getItem('wha_auth_v');
+    if(ver!=='2'){
+      clearOldSessions();
+      // Reset old active users to pending
+      try {
+        let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
+        all.forEach(u=>{if(u.role!=='admin')u.role='pending'});
+        localStorage.setItem('wha_users',JSON.stringify(all));
+      } catch(e){}
+      localStorage.setItem('wha_auth_v','2');
+    }
     let u=getCurUser();
     updateHeaderUser();
     if(!u||u.role==='pending'||u.role==='banned'){
