@@ -228,6 +228,7 @@ const BADGE_DEFS = [
 
 /* --- User Data Management (Firebase) --- */
 let curUser = null;
+const ADMIN_EMAIL = 'ana.masry300@gmail.com';
 let db = null;
 function todayStr(){return new Date().toISOString().slice(0,10)}
 function yesterday(){
@@ -292,9 +293,11 @@ async function registerUser(name,email,pass){
     let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
     if(users.find(u=>u.email===email.trim().toLowerCase())) return {err:__({ar:'البريد مسجل بالفعل',en:'Email already registered'})};
     if(pass.length<3) return {err:__({ar:'كلمة المرور قصيرة جداً',en:'Password too short'})};
+    let e=email.trim().toLowerCase();
+    let isAdminEmail = e===ADMIN_EMAIL;
     let isFirst = users.length===0;
     let u = {
-      id:'u_'+Date.now(), name:name.trim(), email:email.trim().toLowerCase(), role:isFirst?'admin':'pending',
+      id:'u_'+Date.now(), name:name.trim(), email:e, role:isAdminEmail?'admin':(isFirst?'admin':'pending'),
       xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[],
       passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:[]
     };
@@ -342,7 +345,8 @@ async function loginUser(email,pass){
     let u = users.find(x=>x.email===email.trim().toLowerCase());
     if(!u) return {err:__({ar:'البريد غير مسجل',en:'Email not found'})};
     if(u.role==='banned') return {err:__({ar:'🚫 تم حظر حسابك.',en:'🚫 Your account has been banned.'})};
-    if(u.role==='pending') return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})};
+    if(u.role==='pending' && u.email!==ADMIN_EMAIL) return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})};
+    if(u.email===ADMIN_EMAIL && u.role!=='admin'){u.role='admin';localStorage.setItem('wha_users',JSON.stringify(JSON.parse(localStorage.getItem('wha_users')||'[]').map(x=>x.id===u.id?u:x)))}
     saveCurUser(u);
     let today=todayStr(), addedXP=false;
     if(u.lastLogin!==today){
@@ -2526,10 +2530,10 @@ document.addEventListener('keydown',function(e){
       // Reset old active users to pending
       try {
         let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
-        all.forEach(u=>{if(u.role!=='admin')u.role='pending'});
+        all.forEach(u=>{if(u.role!=='admin' && u.email!==ADMIN_EMAIL)u.role='pending'});
         localStorage.setItem('wha_users',JSON.stringify(all));
       } catch(e){}
-      localStorage.setItem('wha_auth_v','2');
+      localStorage.setItem('wha_auth_v','3');
     }
     let u=getCurUser();
     updateHeaderUser();
