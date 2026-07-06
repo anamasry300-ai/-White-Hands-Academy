@@ -246,7 +246,7 @@ async function getUserFromFirestore(uid){
   } catch(e){console.error('Firestore read err',e); return null}
 }
 async function getAllUsersFromFirestore(){
-  if(!db) return [];
+  if(!db) return getLocalUsers().filter(u=>u.role!=='admin');
   try {
     let snap = await db.collection('users').get();
     let arr=[];
@@ -255,13 +255,16 @@ async function getAllUsersFromFirestore(){
   } catch(e){console.error('Firestore get all err',e); return []}
 }
 async function getPendingUsersFromFirestore(){
-  if(!db) return [];
+  if(!db) return getLocalUsers().filter(u=>u.role==='pending');
   try {
     let snap = await db.collection('users').where('role','==','pending').get();
     let arr=[];
     snap.forEach(d=>arr.push({id:d.id,...d.data()}));
     return arr;
   } catch(e){console.error('Firestore get pending err',e); return []}
+}
+function getLocalUsers(){
+  try { return JSON.parse(localStorage.getItem('wha_users')||'[]') } catch(e){return []}
 }
 function getCurUser(){
   if(!curUser){
@@ -288,15 +291,15 @@ async function registerUser(name,email,pass){
     if(pass.length<3) return {err:__({ar:'كلمة المرور قصيرة جداً',en:'Password too short'})};
     let isFirst = users.length===0;
     let u = {
-      id:'u_'+Date.now(), name:name.trim(), email:email.trim().toLowerCase(), role:isFirst?'admin':'active',
+      id:'u_'+Date.now(), name:name.trim(), email:email.trim().toLowerCase(), role:isFirst?'admin':'pending',
       xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[],
       passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:[]
     };
-    saveCurUser(u);
+    if(isFirst){ saveCurUser(u); }
     users.push(u);
     localStorage.setItem('wha_users', JSON.stringify(users));
     if(isFirst) return {ok:true, u, msg:__({ar:'🎉 تم إنشاء حساب المسؤول!',en:'🎉 Admin account created!'})};
-    return {ok:true, u, msg:__({ar:'🎉 تم التسجيل بنجاح!',en:'🎉 Registered successfully!'})};
+    return {pending:true, msg:__({ar:'📋 تم التسجيل! في انتظار موافقة المشرف.',en:'📋 Registered! Waiting for admin approval.'})};
   }
   try {
     let cred = await firebase.auth().createUserWithEmailAndPassword(email.trim().toLowerCase(), pass);
@@ -379,20 +382,44 @@ async function logoutUser(){
   curUser = null;
 }
 async function approveUser(id){
-  if(!db||!id) return false;
+  if(!id) return false;
+  if(!db) return localUpdateUser(id,{role:'active'});
   try { await db.collection('users').doc(id).update({role:'active'}); return true } catch(e){return false}
 }
 async function rejectUser(id){
-  if(!db||!id) return false;
+  if(!id) return false;
+  if(!db) return localDeleteUser(id);
   try { await db.collection('users').doc(id).delete(); return true } catch(e){return false}
 }
 async function banUser(id){
-  if(!db||!id) return false;
+  if(!id) return false;
+  if(!db) return localUpdateUser(id,{role:'banned'});
   try { await db.collection('users').doc(id).update({role:'banned'}); return true } catch(e){return false}
 }
 async function unbanUser(id){
-  if(!db||!id) return false;
+  if(!id) return false;
+  if(!db) return localUpdateUser(id,{role:'active'});
   try { await db.collection('users').doc(id).update({role:'active'}); return true } catch(e){return false}
+}
+function localUpdateUser(id,data){
+  try {
+    let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
+    let idx=all.findIndex(x=>x.id===id);
+    if(idx<0) return false;
+    Object.assign(all[idx],data);
+    localStorage.setItem('wha_users',JSON.stringify(all));
+    return true;
+  } catch(e){return false}
+}
+function localDeleteUser(id){
+  try {
+    let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
+    let idx=all.findIndex(x=>x.id===id);
+    if(idx<0) return false;
+    all.splice(idx,1);
+    localStorage.setItem('wha_users',JSON.stringify(all));
+    return true;
+  } catch(e){return false}
 }
 
 /* --- XP & Level --- */
@@ -466,9 +493,9 @@ function showAuthForm(mode){
   let btn=$('authBody').querySelector('.btn-accent');
   if(mode==='reg'){
     $('authName').style.display='block';
-    btn.textContent=__({ar:'إنشاء حساب',en:'Register'})+ ' 🚀';
+    btn.textContent=__({ar:'تسجيل',en:'Register'})+ ' 🚀';
     $('authBody').querySelector('h2').textContent=__({ar:'إنشاء حساب جديد',en:'Create Account'});
-    $('authBody').querySelector('.auth-p').textContent=__({ar:'ابدأ رحلتك في عالم القهوة',en:'Start your coffee journey'});
+    $('authBody').querySelector('.auth-p').textContent=__({ar:'سجل حسابك — أول مسؤول يوافق على الطلبات الجديدة',en:'Register — admin must approve new accounts'});
   } else {
     $('authName').style.display='none';
     btn.textContent=__({ar:'دخول',en:'Login'})+ ' 🔓';
@@ -483,12 +510,12 @@ async function doAuth(){
   if(btn){btn.disabled=true;btn.textContent='⏳...'}
   if(isReg){
     let name=$('authName'), r=await registerUser(name.value,email.value,pass.value);
-    if(r.err){err.textContent=r.err;err.style.display='block';if(btn){btn.disabled=false;btn.textContent=__({ar:'إنشاء حساب',en:'Register'})+' 🚀'};return}
+    if(r.err){err.textContent=r.err;err.style.display='block';if(btn){btn.disabled=false;btn.textContent=__({ar:'تسجيل',en:'Register'})+' 🚀'};return}
     if(r.pending){
       err.innerHTML=r.msg;err.style.display='block';err.style.color='var(--accent-dark)';
       err.style.background='rgba(201,168,76,.1)';
       if(pass)pass.value='';if(name)name.value='';email.value='';
-      if(btn){btn.disabled=false;btn.textContent=__({ar:'إنشاء حساب',en:'Register'})+' 🚀'}
+      if(btn){btn.disabled=false;btn.textContent=__({ar:'تسجيل',en:'Register'})+' 🚀'}
       return;
     }
     finishAuth(r.u,false,r.msg);
