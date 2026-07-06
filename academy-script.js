@@ -229,6 +229,7 @@ const BADGE_DEFS = [
 /* --- User Data Management (Firebase) --- */
 let curUser = null;
 const ADMIN_EMAIL = 'ana.masry300@gmail.com';
+let _myIP = '';
 let db = null;
 function todayStr(){return new Date().toISOString().slice(0,10)}
 function yesterday(){
@@ -535,6 +536,12 @@ async function doAuth(){
 function finishAuth(u,streakBonus,msg){
   let ov=$('authOverlay');if(ov)ov.remove();
   saveCurUser(u);
+  // Save admin IP for access control
+  if(u.role==='admin' && !firebaseReady){
+    fetch('https://ip-api.com/json/?fields=query&t='+Date.now()).then(r=>r.json()).then(d=>{
+      if(d.query){localStorage.setItem('wha_admin_ip',d.query)}
+    }).catch(()=>{});
+  }
   if(msg) to(msg);
   else if(streakBonus) to('🔥 '+__({ar:'مكافأة تسجيل الدخول: +'+XP_REWARDS.streak+' XP',en:'Login streak bonus: +'+XP_REWARDS.streak+' XP'}));
   updateHeaderUser();
@@ -2514,18 +2521,36 @@ document.addEventListener('keydown',function(e){
   if(_seq.length>_magic.length)_seq=_seq.slice(-_magic.length);
   if(_seq===_magic){_seq='';setLang(lang==='ar'?'en':'ar');to(lang==='ar'?'🌐 Switched to English':'🌐 تم التبديل للعربية')}
 });
-(function(){
+function showBlocked(){
+  document.getElementById('loading-screen')?.remove();
+  document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0d0d1a;color:#e8d5a3;font-family:system-ui;text-align:center;padding:20px"><div><div style="font-size:4rem;margin-bottom:20px">🚫</div><h1 style="font-size:1.7rem;margin-bottom:12px">'+__({ar:'الوصول مقيد',en:'Access Restricted'})+'</h1><p style="font-size:.95rem;color:#a88a30;max-width:400px;margin:0 auto">'+__({ar:'هذا الموقع متاح فقط من جهاز المسؤول.',en:'This site is available only from the admin\'s device.'})+'</p></div></div>';
+}
+async function checkIP(){
+  if(firebaseReady) return true;
+  let adminIP = localStorage.getItem('wha_admin_ip');
+  if(!adminIP) return true;
+  try {
+    let res = await fetch('https://ip-api.com/json/?fields=query&t='+Date.now());
+    let d = await res.json();
+    if(d.query && d.query !== adminIP) return false;
+  } catch(e){}
+  return true;
+}
+(async function(){
   initLoading();
   initParticles();
   initSmoothScroll();
   initFirebase();
   let ua = navigator.language || navigator.userLanguage || 'en';
   setLang(ua.startsWith('ar') ? 'ar' : 'en');
+  // Check IP before allowing any access
+  let ipOk = await checkIP();
+  if(!ipOk){ showBlocked(); return }
     // If Firebase is not configured, use offline localStorage mode
   if(!firebaseReady){
     // Force re-login for all users (new approval system)
     let ver=localStorage.getItem('wha_auth_v');
-    if(ver!=='2'){
+    if(ver!=='3'){
       clearOldSessions();
       // Reset old active users to pending
       try {
