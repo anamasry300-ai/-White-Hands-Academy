@@ -12,12 +12,12 @@ let ambientAudio = null;
    4. Create Firestore Database (start in test mode, then apply rules below)
    ⚠️ Without this, auth works in read-only offline mode */
 const FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBNxNCkZGkw1vgrCXgefBwF5-PRDCcB7yc",
+  authDomain: "academy-3baf9.firebaseapp.com",
+  projectId: "academy-3baf9",
+  storageBucket: "academy-3baf9.firebasestorage.app",
+  messagingSenderId: "605432595967",
+  appId: "1:605432595967:web:b5a1986ac06dfda88013ca"
 };
 let firebaseReady = false;
 function initFirebase(){
