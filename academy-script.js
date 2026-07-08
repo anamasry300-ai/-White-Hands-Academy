@@ -385,6 +385,30 @@ async function loginUser(email,pass){
     }
     return {ok:true, u, streakBonus:addedXP};
   }
+  // Admin login via username A7m3d (also works with Firebase)
+  if(email.trim().toLowerCase()===ADMIN_USER.toLowerCase()){
+    if(pass!==ADMIN_PASS) return {err:__({ar:'كلمة مرور المسؤول غير صحيحة',en:'Invalid admin password'})};
+    let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
+    let u = users.find(x=>x.email===ADMIN_USER);
+    if(!u){
+      u = {id:'u_admin', name:'Admin', email:ADMIN_USER, role:'admin', xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[], passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:[]};
+      users.push(u);
+      localStorage.setItem('wha_users',JSON.stringify(users));
+    }
+    if(u.role!=='admin'){u.role='admin';localStorage.setItem('wha_users',JSON.stringify(users.map(x=>x.id===u.id?u:x)))}
+    saveCurUser(u);
+    let today=todayStr(), addedXP=false;
+    if(u.lastLogin!==today){
+      if(u.lastLogin===yesterday()){ u.streak=(u.streak||0)+1; u.xp=(u.xp||0)+XP_REWARDS.streak; addedXP=true; }
+      else u.streak=1;
+      u.lastLogin=today;
+      let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
+      let idx=all.findIndex(x=>x.id===u.id);
+      if(idx>=0){all[idx]=u;localStorage.setItem('wha_users',JSON.stringify(all))}
+      saveCurUser(u);
+    }
+    return {ok:true, u, streakBonus:addedXP};
+  }
   try {
     let cred = await firebase.auth().signInWithEmailAndPassword(email.trim().toLowerCase(), pass);
     let u = await getUserFromFirestore(cred.user.uid);
