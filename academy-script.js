@@ -228,7 +228,8 @@ const BADGE_DEFS = [
 
 /* --- User Data Management (Firebase) --- */
 let curUser = null;
-const ADMIN_EMAIL = 'ana.masry300@gmail.com';
+const ADMIN_USER = 'A7m3d';
+const ADMIN_PASS = 'A7m3d3wad';
 let db = null;
 function todayStr(){return new Date().toISOString().slice(0,10)}
 function yesterday(){
@@ -294,10 +295,10 @@ async function registerUser(name,email,pass){
     if(users.find(u=>u.email===email.trim().toLowerCase())) return {err:__({ar:'البريد مسجل بالفعل',en:'Email already registered'})};
     if(pass.length<3) return {err:__({ar:'كلمة المرور قصيرة جداً',en:'Password too short'})};
     let e=email.trim().toLowerCase();
-    let isAdminEmail = e===ADMIN_EMAIL;
+    if(e===ADMIN_USER.toLowerCase()) return {err:__({ar:'هذا البريد محجوز للمسؤول',en:'This email is reserved for admin'})};
     let isFirst = users.length===0;
     let u = {
-      id:'u_'+Date.now(), name:name.trim(), email:e, role:isAdminEmail?'admin':(isFirst?'admin':'pending'),
+      id:'u_'+Date.now(), name:name.trim(), email:e, role:isFirst?'admin':'pending',
       xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[],
       passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:[]
     };
@@ -341,19 +342,42 @@ async function loginUser(email,pass){
   // Offline mode (no Firebase)
   if(!firebaseReady){
     if(!email||!pass) return {err:__({ar:'البريد وكلمة المرور مطلوبان',en:'Email and password required'})};
+    // Admin login via username A7m3d
+    if(email.trim().toLowerCase()===ADMIN_USER.toLowerCase()){
+      if(pass!==ADMIN_PASS) return {err:__({ar:'كلمة مرور المسؤول غير صحيحة',en:'Invalid admin password'})};
+      let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
+      let u = users.find(x=>x.email===ADMIN_USER);
+      if(!u){
+        u = {id:'u_admin', name:'Admin', email:ADMIN_USER, role:'admin', xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[], passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:[]};
+        users.push(u);
+        localStorage.setItem('wha_users',JSON.stringify(users));
+      }
+      if(u.role!=='admin'){u.role='admin';localStorage.setItem('wha_users',JSON.stringify(users.map(x=>x.id===u.id?u:x)))}
+      saveCurUser(u);
+      let today=todayStr(), addedXP=false;
+      if(u.lastLogin!==today){
+        if(u.lastLogin===yesterday()){ u.streak=(u.streak||0)+1; u.xp=(u.xp||0)+XP_REWARDS.streak; addedXP=true; }
+        else u.streak=1;
+        u.lastLogin=today;
+        let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
+        let idx=all.findIndex(x=>x.id===u.id);
+        if(idx>=0){all[idx]=u;localStorage.setItem('wha_users',JSON.stringify(all))}
+        saveCurUser(u);
+      }
+      return {ok:true, u, streakBonus:addedXP};
+    }
+    // Normal user login
     let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
     let u = users.find(x=>x.email===email.trim().toLowerCase());
     if(!u) return {err:__({ar:'البريد غير مسجل',en:'Email not found'})};
     if(u.role==='banned') return {err:__({ar:'🚫 تم حظر حسابك.',en:'🚫 Your account has been banned.'})};
-    if(u.role==='pending' && u.email!==ADMIN_EMAIL) return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})};
-    if(u.email===ADMIN_EMAIL && u.role!=='admin'){u.role='admin';localStorage.setItem('wha_users',JSON.stringify(JSON.parse(localStorage.getItem('wha_users')||'[]').map(x=>x.id===u.id?u:x)))}
+    if(u.role==='pending') return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})};
     saveCurUser(u);
     let today=todayStr(), addedXP=false;
     if(u.lastLogin!==today){
       if(u.lastLogin===yesterday()){ u.streak=(u.streak||0)+1; u.xp=(u.xp||0)+XP_REWARDS.streak; addedXP=true; }
       else u.streak=1;
       u.lastLogin=today;
-      // Update in localStorage
       let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
       let idx=all.findIndex(x=>x.id===u.id);
       if(idx>=0){all[idx]=u;localStorage.setItem('wha_users',JSON.stringify(all))}
@@ -2319,27 +2343,56 @@ function renderAdminHTML(){
     allUsers.forEach(p=>{
       let statusCls=p.role==='active'?'active':p.role==='banned'?'banned':'pending';
       let statusTxt=__({ar:p.role==='active'?'نشط':p.role==='banned'?'محظور':'معلق',en:p.role==='active'?'Active':p.role==='banned'?'Banned':'Pending'});
-      h+='<div class="admin-user-item '+statusCls+'">'+
+      let modsDone=(p.completedModules||[]).length;
+      let examsPassed=(p.passedExams||[]).length;
+      let badgeCount=(p.badges||[]).length;
+      let lastSeen=p.lastLogin?p.lastLogin:'—';
+      h+='<div class="admin-user-item '+statusCls+'" onclick="toggleUserDetail(\''+p.id+'\')" style="cursor:pointer">'+
         '<div class="admin-user-ava">'+p.name[0].toUpperCase()+'</div>'+
         '<div class="admin-user-info"><div class="admin-user-name">'+p.name+'</div><div class="admin-user-email">'+p.email+'</div>'+
         '<div class="admin-user-meta">'+
         '<span>🎯 '+(p.xp||0)+' XP</span><span>🔥 '+(p.streak||0)+'</span><span>📚 '+(p.completedLessons||[]).length+'</span>'+
-        '</div></div>'+
+        '<span>📦 '+modsDone+'</span><span>📝 '+examsPassed+'</span><span>🏅 '+badgeCount+'</span>'+
+        '</div><div class="admin-user-last">'+__({ar:'آخر دخول:',en:'Last login:'})+' '+lastSeen+'</div></div>'+
         '<div class="admin-user-status '+statusCls+'">'+statusTxt+'</div>'+
-        '<div class="admin-user-actions">'+
+        '<div class="admin-user-actions" onclick="event.stopPropagation()">'+
         (p.role==='active'?'<button class="btn btn-sm btn-ghost" style="color:#e74c3c" onclick="banUser(\''+p.id+'\').then(()=>loadAdminData())">🚫 '+__({ar:'حظر',en:'Ban'})+'</button>':'')+
         (p.role==='banned'?'<button class="btn btn-sm btn-success" onclick="unbanUser(\''+p.id+'\').then(()=>loadAdminData())">✓ '+__({ar:'إلغاء الحظر',en:'Unban'})+'</button>':'')+
         (p.role==='pending'?'<button class="btn btn-sm btn-success" onclick="approveUser(\''+p.id+'\').then(()=>loadAdminData())">✓ '+__({ar:'موافقة',en:'Approve'})+'</button>':'')+
-        ' <button class="btn btn-sm btn-ghost" style="color:#e74c3c" onclick="rejectUser(\''+p.id+'\').then(()=>loadAdminData())">✕</button></div></div>';
+        ' <button class="btn btn-sm btn-ghost" style="color:#e74c3c" onclick="rejectUser(\''+p.id+'\').then(()=>loadAdminData())">✕</button></div></div>'+
+        '<div class="admin-user-detail" id="detail_'+p.id+'" style="display:none;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:8px;margin-top:-8px;margin-bottom:8px;font-size:.82rem;color:var(--text-muted)"></div>';
     });
     h+='</div>';
   }
   h+='</div>';
   h+='<div class="profile-section" style="text-align:center;color:var(--text-muted);font-size:.82rem">'+
-    '<p>🔐 '+__({ar:'أنت مسؤول النظام. أول مستخدم مسجل يصبح مسؤولاً تلقائياً.',en:'You are the system admin. The first registered user becomes admin automatically.'})+'</p>'+
+    '<p>🔐 '+__({ar:'أنت المسؤول. اضغط على أي متدرب لرؤية تفاصيل تقدمه.',en:'You are the admin. Click any trainee to see their progress details.'})+'</p>'+
     '<p>🛡️ '+__({ar:'يمكنك الموافقة على المستخدمين الجدد، حظرهم، أو حذفهم.',en:'You can approve new users, ban them, or remove them.'})+'</p></div>';
   h+='</div>';
   return h;
+}
+function toggleUserDetail(id){
+  let el=document.getElementById('detail_'+id);
+  if(!el) return;
+  if(el.style.display!=='none'){el.style.display='none';return}
+  // Build detail from localStorage
+  try {
+    let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
+    let u=all.find(x=>x.id===id);
+    if(!u){el.innerHTML='—';el.style.display='block';return}
+    let less=u.completedLessons||[], mods=u.completedModules||[], exam=u.passedExams||[];
+    let h='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">'+
+      '<span>📚 '+__({ar:'الدروس المكتملة:',en:'Lessons done:'})+' '+less.length+'</span>'+
+      '<span>📦 '+__({ar:'الوحدات:',en:'Modules:'})+' '+mods.length+'</span>'+
+      '<span>📝 '+__({ar:'الاختبارات:',en:'Exams:'})+' '+exam.length+'</span>'+
+      '<span>🏅 '+__({ar:'الأوسمة:',en:'Badges:'})+' '+(u.badges||[]).length+'</span>'+
+      '<span>🎯 XP: '+(u.xp||0)+'</span>'+
+      '<span>🔥 '+__({ar:'التسلسل:',en:'Streak:'})+' '+(u.streak||0)+'</span></div>';
+    if(less.length>0) h+='<div style="margin-top:8px;font-size:.78rem;opacity:.7">'+__({ar:'الدروس:',en:'Lessons:'})+' '+less.join(', ')+'</div>';
+    if(mods.length>0) h+='<div style="margin-top:4px;font-size:.78rem;opacity:.7">'+__({ar:'الوحدات:',en:'Modules:'})+' '+mods.join(', ')+'</div>';
+    el.innerHTML=h;
+  } catch(e){el.innerHTML='—'}
+  el.style.display='block';
 }
 function sAdmin(){
   if(!curUser||!isAdmin()) return '<p>'+__({ar:'غير مصرح',en:'Unauthorized'})+'</p>';
@@ -2525,15 +2578,15 @@ document.addEventListener('keydown',function(e){
   if(!firebaseReady){
     // Force re-login for all users (new approval system)
     let ver=localStorage.getItem('wha_auth_v');
-    if(ver!=='3'){
+    if(ver!=='4'){
       clearOldSessions();
       // Reset old active users to pending
       try {
         let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
-        all.forEach(u=>{if(u.role!=='admin' && u.email!==ADMIN_EMAIL)u.role='pending'});
+        all.forEach(u=>{if(u.role!=='admin' && u.email!==ADMIN_USER)u.role='pending'});
         localStorage.setItem('wha_users',JSON.stringify(all));
       } catch(e){}
-      localStorage.setItem('wha_auth_v','3');
+      localStorage.setItem('wha_auth_v','4');
     }
     let u=getCurUser();
     updateHeaderUser();
