@@ -1840,7 +1840,6 @@ const CM = [
 ];
 
 function rT(tab){
-  if(curTab===tab) return;
   curTab = tab || 'home';
   document.body.classList.remove('projector-mode');
   localStorage.removeItem('wha_projector');
