@@ -1971,3 +1971,48 @@ body.projector-mode .ls-body li{margin-bottom:8px;color:#e0dcd4}
   .stat-card .num{font-size:1.8rem}
   .sec-title{font-size:1.3rem}
 }
+
+/* ===== Drink Recipe Cards ===== */
+.drink-card{
+  background:var(--surface-glass);
+  border-radius:var(--radius-lg);
+  padding:24px;
+  margin-bottom:24px;
+  border:1px solid var(--glass-border);
+}
+.drink-card:last-child{margin-bottom:0}
+.drink-header{margin-bottom:16px}
+.drink-name{font-family:var(--font-display);font-size:1.3rem;margin:0 0 8px}
+.drink-classification{display:flex;flex-wrap:wrap;gap:6px}
+.drink-tag{
+  display:inline-block;padding:3px 10px;border-radius:20px;
+  background:var(--accent-light);color:var(--accent-dark);
+  font-size:.7rem;font-weight:600;letter-spacing:.3px;
+}
+.drink-section{margin-bottom:20px}
+.drink-sec-title{
+  font-family:var(--font-display);font-size:.9rem;
+  margin:0 0 8px;color:var(--accent-dark);
+}
+.drink-sec-body{font-size:.85rem;line-height:1.7;color:var(--text)}
+.drink-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+@media(max-width:480px){.drink-grid-2{grid-template-columns:1fr}}
+.drink-flav-item{display:flex;justify-content:space-between;padding:4px 10px;background:var(--bg-warm);border-radius:8px;font-size:.8rem}
+.flav-lbl{font-weight:600}
+.flav-val{color:var(--accent-dark)}
+.drink-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.drink-table td,.drink-table th{padding:6px 10px;border-bottom:1px solid var(--border);text-align:start}
+.drink-table th{background:var(--bg-warm);font-weight:600}
+.rt-lbl{font-weight:600;color:var(--text-muted);width:40%}
+.rt-val{color:var(--text)}
+.drink-list{padding-inline-start:20px;margin:4px 0}
+.drink-list li{margin-bottom:4px;font-size:.82rem;line-height:1.5}
+.drink-quiz{padding-inline-start:0;list-style:none}
+.drink-q{margin-bottom:16px;padding:12px;background:var(--bg-warm);border-radius:var(--radius)}
+.drink-q-text{font-weight:600;margin-bottom:8px;font-size:.85rem}
+.drink-q-opts{padding-inline-start:20px}
+.drink-q-opts li{margin-bottom:4px;font-size:.8rem}
+.drink-q-opts .q-correct{color:green;font-weight:600}
+.drink-q-opts .q-correct::after{content:' ✓';font-weight:bold}
+.drink-refs{font-size:.75rem;color:var(--text-muted);line-height:1.6}
+.drink-refs li{margin-bottom:2px}

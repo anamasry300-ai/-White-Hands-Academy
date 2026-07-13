@@ -1783,14 +1783,14 @@ const CM = [
     {title:{ar:'انتشار القهوة حول العالم',en:'Coffee Spread Around the World'},img:imgPath('map')},
     {title:{ar:'تشريح حبة البن',en:'Anatomy of the Coffee Bean'},img:imgPath('beans')},
     {title:{ar:'القهوة في الثقافة والدين',en:'Coffee in Culture & Religion'},img:imgPath('A1')}
-  ]},
+  ],recipes:['turkish-coffee','ethiopian-ceremony']},
   {id:'A2',level:'A',title:{ar:'أساسيات التحضير',en:'Brewing Fundamentals'},icon:'⚗️',desc:{ar:'علم الاستخلاص',en:'Extraction Science'},img:imgPath('A2'),lessons:[
     {title:{ar:'فيزياء وكيمياء الاستخلاص',en:'Physics & Chemistry of Extraction'},img:imgPath('A2')},
     {title:{ar:'المعدات والأدوات',en:'Equipment & Tools'},img:imgPath('barista')},
     {title:{ar:'المقاييس والنسب الذهبية',en:'Golden Ratios'},img:imgPath('v60')},
     {title:{ar:'تحضير V60',en:'V60 Brewing'},img:imgPath('v60')},
     {title:{ar:'القهوة الباردة وطرقها',en:'Cold Brew & Iced Coffee'},img:imgPath('coldbrew')}
-  ]},
+  ],recipes:['v60','french-press','cold-brew','aeropress']},
 {id:'A3',level:'A',title:{ar:'مشروبات الإسبريسو',en:'Espresso Drinks'},icon:'☕',desc:{ar:'من الإسبريسو إلى اللاتيه',en:'From Espresso to Latte'},img:imgPath('A3'),lessons:[
     {title:{ar:'ما هو الإسبريسو؟',en:'What is Espresso?'},img:imgPath('espresso')},
     {title:{ar:'لاتيه — فن الحليب',en:'Latte — The Art of Milk'},img:imgPath('latte')},
@@ -1798,7 +1798,7 @@ const CM = [
     {title:{ar:'ماكياتو, أفوجاتو, فلات وايت',en:'Macchiato, Affogato & Flat White'},img:imgPath('latte')},
     {title:{ar:'أساسيات اللاتيه أرت',en:'Latte Art Basics'},img:imgPath('latte')},
     {title:{ar:'صيانة آلة الإسبريسو',en:'Espresso Machine Maintenance'},img:imgPath('barista')}
-]},
+],recipes:['espresso','cappuccino','latte','flat-white','americano','mocha','macchiato','affogato']},
 {id:'B1',level:'B',title:{ar:'أسرار التحميص',en:'Roasting Secrets'},icon:'🔥',desc:{ar:'من الأخضر إلى المحمص',en:'Green to Brown'},img:imgPath('B1'),lessons:[
     {title:{ar:'كيمياء التحميص',en:'Roasting Chemistry'},img:imgPath('roast')},
     {title:{ar:'منحنيات التحميص',en:'Roast Curves'},img:imgPath('roast')},
@@ -1822,7 +1822,7 @@ const CM = [
     {title:{ar:'تحضير الكميات الكبيرة',en:'Batch Brew & High Volume'},img:imgPath('cafe')},
     {title:{ar:'أنواع الطواحين',en:'Grinder Burr Types'},img:imgPath('B3')},
     {title:{ar:'الـ Dialing In المنهجي',en:'Systematic Dialing In'},img:imgPath('barista')}
-]},
+],recipes:['iced-latte','cortado','batch-brew','espresso-martini']},
 {id:'C1',level:'C',title:{ar:'التقييم الحسي',en:'Sensory Science'},icon:'👃',desc:{ar:'تذوق وتحليل',en:'Taste & Analyze'},img:imgPath('C1'),lessons:[
     {title:{ar:'الكابينج',en:'Cupping'},img:imgPath('cupping')},
     {title:{ar:'مصفوفة النكهات',en:'Flavor Wheel'},img:imgPath('C1')},
@@ -1845,8 +1845,634 @@ const CM = [
     {title:{ar:'خدمة العملاء',en:'Customer Service'},img:imgPath('team')},
     {title:{ar:'تطوير الفريق',en:'Team Development'},img:imgPath('team')},
     {title:{ar:'تسويق المقهى',en:'Marketing Your Cafe'},img:imgPath('cafe')}
-  ]}
+  ],recipes:['frappe']}
 ];
+
+/* ===== Drink Recipes ===== */
+const DRINKS = {};
+function defDrink(id, d){ DRINKS[id] = d }
+
+// Helper: render a drink card from structured data
+function renderDrinkCard(d){
+  let cls = d.classification || {};
+  let rcp = d.recipe || {};
+  let tips = d.baristaTips || [];
+  let mistakes = d.commonMistakes || [];
+  let fixes = d.fixes || [];
+  let funs = d.funFacts || [];
+  let qs = d.questions || [];
+  let refs = d.references || [];
+  let flav = d.flavorProfile || {};
+  let beans = d.recommendedBeans || {};
+  let l = lang;
+  let ar = l === 'ar';
+  let h = '<article class="drink-card" id="drink-' + d.id + '">';
+  h += '<div class="drink-header"><h2 class="drink-name">☕ ' + __(d.name) + '</h2>';
+  h += '<div class="drink-classification">';
+  if(cls.category) h += '<span class="drink-tag">' + (typeof cls.category === 'object' ? __(cls.category) : cls.category) + '</span>';
+  if(cls.temp) h += '<span class="drink-tag">' + (typeof cls.temp === 'object' ? __(cls.temp) : cls.temp) + '</span>';
+  if(cls.milk !== undefined) h += '<span class="drink-tag">' + (cls.milk ? __('@:بحليب','With Milk') : __('@:بدون حليب','Black')) + '</span>';
+  if(cls.base) h += '<span class="drink-tag">' + (typeof cls.base === 'object' ? __(cls.base) : cls.base) + '</span>';
+  h += '</div></div>';
+  // History
+  h += '<div class="drink-section"><h3 class="drink-sec-title">📜 ' + __({ar:'القصة التاريخية',en:'Historical Story'}) + '</h3><div class="drink-sec-body">' + __(d.history) + '</div></div>';
+  // Description
+  h += '<div class="drink-section"><h3 class="drink-sec-title">📖 ' + __({ar:'الوصف الاحترافي',en:'Professional Description'}) + '</h3><div class="drink-sec-body">' + __(d.description) + '</div></div>';
+  // Flavor Profile
+  h += '<div class="drink-section"><h3 class="drink-sec-title">👃 ' + __({ar:'ملف النكهة',en:'Flavor Profile'}) + '</h3><div class="drink-grid-2">';
+  let flKeys = [{k:'sweetness',ar:'الحلاوة',en:'Sweetness'},{k:'acidity',ar:'الحموضة',en:'Acidity'},{k:'bitterness',ar:'المرارة',en:'Bitterness'},{k:'body',ar:'القوام',en:'Body'},{k:'aroma',ar:'الرائحة',en:'Aroma'},{k:'aftertaste',ar:'الطعم الباقي',en:'Aftertaste'}];
+  flKeys.forEach(fk => {
+    if(flav[fk.k]) h += '<div class="drink-flav-item"><span class="flav-lbl">' + __({ar:fk.ar,en:fk.en}) + '</span><span class="flav-val">' + (typeof flav[fk.k] === 'object' ? __(flav[fk.k]) : flav[fk.k]) + '</span></div>';
+  });
+  h += '</div></div>';
+  // Recipe
+  h += '<div class="drink-section"><h3 class="drink-sec-title">⚗️ ' + __({ar:'الوصفة القياسية',en:'Standard Recipe'}) + '</h3><table class="drink-table">';
+  let rcpRows = [
+    {k:'dose',ar:'جرعة القهوة',en:'Coffee Dose'},
+    {k:'yield',ar:'الناتج',en:'Yield'},
+    {k:'ratio',ar:'نسبة الاستخلاص',en:'Brew Ratio'},
+    {k:'waterTemp',ar:'درجة حرارة الماء',en:'Water Temperature'},
+    {k:'pressure',ar:'الضغط',en:'Pressure'},
+    {k:'time',ar:'وقت الاستخلاص',en:'Extraction Time'},
+    {k:'grind',ar:'درجة الطحن',en:'Grind Size'},
+    {k:'tds',ar:'TDS',en:'TDS'},
+    {k:'extractionYield',ar:'نسبة الاستخلاص',en:'Extraction Yield'},
+    {k:'servingTemp',ar:'حرارة التقديم',en:'Serving Temperature'},
+    {k:'cupSize',ar:'حجم الكوب',en:'Cup Size'},
+    {k:'milkTemp',ar:'حرارة الحليب',en:'Milk Temperature'},
+    {k:'foamTexture',ar:'قوام الرغوة',en:'Foam Texture'}
+  ];
+  rcpRows.forEach(rk => {
+    if(rcp[rk.k]) h += '<tr><td class="rt-lbl">' + __({ar:rk.ar,en:rk.en}) + '</td><td class="rt-val">' + rcp[rk.k] + '</td></tr>';
+  });
+  h += '</table></div>';
+  // Procedure
+  h += '<div class="drink-section"><h3 class="drink-sec-title">👨‍🍳 ' + __({ar:'طريقة التحضير',en:'Brewing Procedure'}) + '</h3><div class="drink-sec-body">' + __(d.procedure) + '</div></div>';
+  // Tips
+  if(tips.length){
+    h += '<div class="drink-section"><h3 class="drink-sec-title">💡 ' + __({ar:'نصائح الباريستا',en:'Barista Tips'}) + '</h3><ul class="drink-list">';
+    (tips[l] || tips.en || []).forEach(t => { h += '<li>' + t + '</li>' });
+    h += '</ul></div>';
+  }
+  // Mistakes & Fixes
+  if(mistakes.length && fixes.length){
+    let ms = mistakes[l] || mistakes.en || [];
+    let fs = fixes[l] || fixes.en || [];
+    let max = Math.min(ms.length, fs.length);
+    if(max){
+      h += '<div class="drink-section"><h3 class="drink-sec-title">⚠️ ' + __({ar:'الأخطاء الشائعة والحلول',en:'Common Mistakes & Fixes'}) + '</h3><table class="drink-table"><thead><tr><th>' + __({ar:'الخطأ',en:'Mistake'}) + '</th><th>' + __({ar:'الحل',en:'Fix'}) + '</th></tr></thead><tbody>';
+      for(let i=0;i<max;i++) h += '<tr><td>' + ms[i] + '</td><td>' + fs[i] + '</td></tr>';
+      h += '</tbody></table></div>';
+    }
+  }
+  // Recommended Beans
+  if(beans.origin || beans.process || beans.roast){
+    h += '<div class="drink-section"><h3 class="drink-sec-title">🫘 ' + __({ar:'القهوة الموصى بها',en:'Recommended Coffee'}) + '</h3><div class="drink-sec-body">';
+    if(beans.origin) h += '<p><strong>' + __({ar:'المنشأ:',en:'Origin:'}) + '</strong> ' + (typeof beans.origin === 'object' ? __(beans.origin) : beans.origin) + '</p>';
+    if(beans.process) h += '<p><strong>' + __({ar:'المعالجة:',en:'Process:'}) + '</strong> ' + (typeof beans.process === 'object' ? __(beans.process) : beans.process) + '</p>';
+    if(beans.roast) h += '<p><strong>' + __({ar:'التحميص:',en:'Roast:'}) + '</strong> ' + (typeof beans.roast === 'object' ? __(beans.roast) : beans.roast) + '</p>';
+    h += '</div></div>';
+  }
+  // Food Pairing
+  if(d.foodPairing) h += '<div class="drink-section"><h3 class="drink-sec-title">🍰 ' + __({ar:'الاقتران بالطعام',en:'Food Pairing'}) + '</h3><div class="drink-sec-body">' + __(d.foodPairing) + '</div></div>';
+  // Variations
+  if(d.variations) h += '<div class="drink-section"><h3 class="drink-sec-title">🌍 ' + __({ar:'اختلافات حول العالم',en:'Variations Around the World'}) + '</h3><div class="drink-sec-body">' + __(d.variations) + '</div></div>';
+  // Fun Facts
+  if(funs.length){
+    h += '<div class="drink-section"><h3 class="drink-sec-title">😲 ' + __({ar:'حقائق ممتعة',en:'Fun Facts'}) + '</h3><ul class="drink-list">';
+    (funs[l] || funs.en || []).forEach(f => { h += '<li>' + f + '</li>' });
+    h += '</ul></div>';
+  }
+  // Quiz
+  if(qs.length){
+    h += '<div class="drink-section"><h3 class="drink-sec-title">📝 ' + __({ar:'أسئلة مراجعة',en:'Review Questions'}) + '</h3><ol class="drink-quiz">';
+    qs.forEach((q,qi) => {
+      let opts = (q.options[l] || q.options.en || []);
+      h += '<li class="drink-q"><p class="drink-q-text">' + (q.q[l] || q.q.en) + '</p><ol class="drink-q-opts" type="a">';
+      opts.forEach((o,oi) => {
+        h += '<li' + (oi === q.answer ? ' class="q-correct"' : '') + '>' + o + '</li>';
+      });
+      h += '</ol></li>';
+    });
+    h += '</ol></div>';
+  }
+  // References
+  if(refs.length){
+    h += '<div class="drink-section"><h3 class="drink-sec-title">📚 ' + __({ar:'المراجع',en:'References'}) + '</h3><ol class="drink-refs">';
+    refs.forEach(r => { h += '<li>' + r + '</li>' });
+    h += '</ol></div>';
+  }
+  h += '</article>';
+  return h;
+}
+
+function renderDrinksPage(level, mi){
+  let mods = CM.filter(x => x.level === level);
+  let m = mods[mi];
+  let lv = LV[level];
+  let total = m.lessons.length;
+  let u2 = getCurUser();
+  let drinks = m.recipes || [];
+  let doneCount = u2 ? m.lessons.filter((_,i)=>isLessonDone(u2,level,mi,i)).length : 0;
+  let pctCirc = 2*Math.PI*12;
+  let pctOff = pctCirc - (doneCount/total)*pctCirc;
+  let allDone = doneCount === total;
+  // Sidebar
+  let side = '<div class="ls-side"><div class="ls-side-top">' +
+    '<button class="btn btn-sm btn-ghost" data-nav="sModules" data-level="'+level+'">⬅ ' + __({ar:'الوحدات',en:'Modules'}) + '</button>' +
+    '<div class="ls-ring"><svg viewBox="0 0 28 28"><circle class="ls-rt" cx="14" cy="14" r="12"/><circle class="ls-rf" cx="14" cy="14" r="12" stroke-dasharray="' + pctCirc + '" stroke-dashoffset="' + pctOff + '"/></svg><span>' + doneCount + '/' + total + '</span></div>' +
+    '<h4>' + lv.ic + ' ' + __(m.title) + '</h4>' +
+    '<div class="ls-prog"><div class="ls-prog-bar"><div class="ls-prog-fill" style="width:'+ (allDone ? 100 : Math.round(doneCount/total*100)) +'%"></div></div><span>🍹 ' + __({ar:'المشروبات',en:'Drinks'}) + '</span></div>' +
+    '</div><div class="ls-side-list">' +
+    m.lessons.map((l2,i)=>{
+      let done=isLessonDone(u2,level,mi,i);
+      return '<div class="ls-item'+(done?' ls-done':'')+'" data-nav="sModule" data-level="'+level+'" data-mi="'+mi+'" data-li="'+i+'"><div class="ls-node"><div class="ls-dot'+(done?' done':'')+'"></div>'+(i<total-1?'<div class="ls-line'+(done?' done':'')+'"></div>':'')+'</div><div class="ls-tit">'+(i+1)+'. '+__(l2.title)+'</div><div class="ls-done-badge">✓</div></div>';
+    }).join('') +
+    '<div class="ls-item act" data-nav="sModule" data-level="'+level+'" data-mi="'+mi+'" data-li="'+total+'"><div class="ls-node"><div class="ls-dot"></div></div><div class="ls-tit">🍹 ' + __({ar:'المشروبات',en:'Drinks'}) + '</div><div class="ls-done-badge">✓</div></div>' +
+    '</div></div>';
+  // Main
+  let main = '<div class="ls-main"><div class="ls-hero" style="background-image:url('+m.img+');background-size:cover;background-position:center"><div class="ls-hero-ov"></div><div class="ls-hero-inner"><div class="ls-badge">' + lv.ic + ' ' + __(lv.name) + ' / ' + __(m.title) + '</div><h2>🍹 ' + __({ar:'قسم المشروبات — وصفات احترافية',en:'Drinks Section — Professional Recipes'}) + '</h2></div></div>' +
+    '<div class="ls-body">' +
+    drinks.map(did => {
+      let d = DRINKS[did];
+      return d ? renderDrinkCard(d) : '<div class="empty-msg">' + __({ar:'وصفة غير متوفرة',en:'Recipe not available'}) + '</div>';
+    }).join('') +
+    '</div>' +
+    '<div class="ls-nav"><div class="ls-nav-inner">' +
+    '<button class="btn btn-sm" data-nav="sModule" data-level="'+level+'" data-mi="'+mi+'" data-li="'+(total-1)+'">⬅ ' + __({ar:'الدرس الأخير',en:'Last Lesson'}) + '</button>' +
+    '<span class="ls-pg">🍹 ' + __({ar:'المشروبات',en:'Drinks'}) + '</span>' +
+    '<button class="projector-toggle" onclick="toggleProjector()">📽️ ' + __({ar:'بروجيكتور',en:'Projector'}) + '</button>' +
+    (allDone ? '<div style="display:flex;gap:8px"><button class="btn btn-sm btn-success" data-nav="finish" data-level="'+level+'" data-mi="'+mi+'" data-li="'+total+'">✓ ' + __({ar:'إتمام الوحدة',en:'Complete Module'}) + '</button><button class="btn btn-sm btn-accent" onclick="showCertificate(\''+level+'\','+mi+')">🎓 ' + __({ar:'الشهادة',en:'Certificate'}) + '</button></div>' : '<button class="btn btn-sm btn-accent" data-nav="finish" data-level="'+level+'" data-mi="'+mi+'" data-li="'+total+'">✓ ' + __({ar:'إتمام الوحدة',en:'Complete Module'}) + '</button>') +
+    '</div></div></div>';
+  $('root').innerHTML = '<div class="lesson-split">' + side + main + '</div>';
+  window.scrollTo(0,0);
+  setTimeout(initUI,100);
+  if(localStorage.getItem('wha_projector')==='1') document.body.classList.add('projector-mode');
+}
+
+/* ===== Drink Data ===== */
+// ----- A1: Coffee Culture Drinks -----
+defDrink('turkish-coffee',{
+  id:'turkish-coffee',
+  name:{ar:'قهوة تركية',en:'Turkish Coffee'},
+  classification:{category:__({ar:'القهوة التقليدية',en:'Traditional Coffee'}),temp:__({ar:'ساخن',en:'Hot'}),milk:false,base:__({ar:'فلتر',en:'Filter'})},
+  history:{ar:'نشأت القهوة التركية في اليمن خلال القرن الخامس عشر، حيث كانت تُحضّر بغلي البن المطحون ناعماً مع الماء والسكر والبهارات في إبريق نحاسي يُعرف بـ"الجزوة" أو "الإبريك". انتشرت إلى إسطنبول في عهد السلطان سليمان القانوني (1520-1566)، حيث أُفتتح أول مقهى في التاريخ — "قهوة خانه" — عام 1554 في تقسيم. سُميت "تركية" لأن العثمانيين نشروها عالمياً. في عام 2013، أدرجت اليونسكو القهوة التركية في قائمة التراث الثقافي غير المادي. كانت القهوة التركية تستخدم في الطقوس الاجتماعية والسياسية; رفض تقديمها كان إهانة دبلوماسية.',en:'Turkish coffee originated in Yemen during the 15th century, prepared by boiling finely ground coffee with water, sugar, and spices in a copper pot called "Cezve" or "Ibrik". It spread to Istanbul under Sultan Suleiman the Magnificent (1520-1566), where the first coffeehouse in history — "Kiva Han" — opened in 1554 in Taksim. It was named "Turkish" because the Ottomans spread it worldwide. In 2013, UNESCO inscribed Turkish coffee on the Intangible Cultural Heritage list. It was used in social and political rituals; refusing to serve it was a diplomatic insult.'},
+  description:{ar:'القهوة التركية هي أقدم طرق تحضير القهوة المستمرة حتى اليوم. تتميز بقوام كثيف ورغوة علوية تُعرف بـ"الوجه". تُقدّم مع الفناجين الصغيرة دون ترشيح، مما يعني شرب المسحوق الناعم مع السائل. تُستخدم أحياناً في قراءة الطالع (تاسيوغرافيا) حيث تُقلب الفنجان ويُفسر شكل الرواسب.',en:'Turkish coffee is the oldest continuously practiced coffee brewing method. It has a thick texture and a top foam layer called "وجه" (face). It is served in small cups without filtration, meaning the fine grounds are consumed with the liquid. It is sometimes used for fortune-telling (tasseography) where the cup is overturned and the ground patterns are interpreted.'},
+  flavorProfile:{sweetness:{ar:'متوسطة-عالية حسب السكر',en:'Medium-High depending on sugar'},acidity:{ar:'منخفضة جداً',en:'Very Low'},bitterness:{ar:'عالية',en:'High'},body:{ar:'كامل جداً',en:'Very Full'},aroma:{ar:'غني بالتوابل',en:'Rich with Spices'},aftertaste:{ar:'طويل ومكثف',en:'Long and Intense'}},
+  recipe:{dose:'8-10g',yield:'60-70ml',ratio:'1:7',waterTemp:'غليان (100°C)',pressure:'-',time:'2-3 دقائق غليان',grind:__({ar:'ناعم جداً (مثل الدقيق)',en:'Extra Fine (like flour)'}),servingTemp:'65-70°C',cupSize:'60-90ml'},
+  procedure:{ar:'1. ضع الماء البارد في الإبريك النحاسي.\n2. أضف القهوة المطحونة ناعماً جداً (8-10g لكل 60-70ml).\n3. أضف السكر حسب الرغبة (لا يُحرّك بعد إضافة السكر).\n4. قلب برفق على نار هادئة.\n5. عندما تبدأ الرغوة في الارتفاع وقبل الغليان الكامل، ارفع الإبريك عن النار.\n6. اكشط الرغوة واسكبها في الفنجان.\n7. أعد الإبريك للنار وكرر عملية الرفع مرة ثانية.\n8. اسكب الباقي في الفنجان بهدوء.\n9. انتظر 30 ثانية حتى تستقر الرواسب.',en:'1. Place cold water in the copper cezve.\n2. Add very finely ground coffee (8-10g per 60-70ml).\n3. Add sugar to taste (do not stir after adding sugar).\n4. Stir gently over low heat.\n5. When foam rises and before full boiling, remove from heat.\n6. Scoop the foam and distribute into the cup.\n7. Return cezve to heat and repeat the rising process once more.\n8. Pour the rest gently into the cup.\n9. Wait 30 seconds for grounds to settle.'},
+  baristaTips:{ar:['استخدم ماء مثلج لبداية أفضل للاستخلاص','لا تحرك القهوة بعد وضعها على النار','الرغوة الجيدة = قهوة طازة مطحونة حديثاً'],en:['Use ice-cold water for better extraction start','Do not stir once placed on heat','Good foam = freshly ground coffee']},
+  commonMistakes:{ar:['غلي القهوة بقوة وقتل الرغوة','طحن خشن جداً','استخدام قهوة قديمة'],en:['Boiling aggressively kills the foam','Grind too coarse','Using stale coffee']},
+  fixes:{ar:['استخدم حرارة هادئة وارفع الإبريك قبل الغليان','اطحن ناعماً جداً بحجم الدقيق','استخدم قهوة محمصة حديثاً بأسبوعين'],en:['Use low heat and lift before full boil','Grind to flour-like fineness','Use coffee roasted within 2 weeks']},
+  recommendedBeans:{origin:{ar:'اليمن أو البرازيل',en:'Yemen or Brazil'},process:{ar:'طبيعية (غير مغسولة)',en:'Natural (Unwashed)'},roast:{ar:'محمصة غامقة',en:'Dark Roast'}},
+  foodPairing:{ar:'الحلويات الشرقية مثل البقلاوة والكنافة، الشوكولاتة الداكنة، التمر، والمكسرات.',en:'Middle Eastern pastries like baklava and kunafa, dark chocolate, dates, and nuts.'},
+  variations:{ar:'• القهوة العربية: تُحضّر بالهيل والزعفران.\n• القهوة اليونانية: مشابهة لكن تُقدّم مع رغوة أكثر.\n• القهوة على الرمل: تُطهى في رمل ساخن لتوزيع الحرارة بالتساوي.',en:'• Arabic Coffee: Prepared with cardamom and saffron.\n• Greek Coffee: Similar but served with more foam.\n• Sand Coffee: Cooked in hot sand for even heat distribution.'},
+  funFacts:{ar:['القهوة التركية كانت سبباً لحرب — رفض السلطان مراد الرابع تقديمها لسفير فارسي كان سبباً في نزاع دبلوماسي عام 1633','قراءة الطالع في فنجان القهوة (تاسيوغرافيا) تقليد عمره 500 عام','الإبريك النحاسي التقليدي يُسمى "الجزوة" أو "الأصيل"'],en:['Turkish coffee once caused a war — Sultan Murad IV refused to serve it to a Persian ambassador, sparking a diplomatic conflict in 1633','Fortune-telling from coffee grounds (tasseography) is a 500-year-old tradition','The traditional copper pot is called "Cezve" or "Ibrik"']},
+  questions:[
+    {q:{ar:'ما اسم الإبريق النحاسي لتحضير القهوة التركية؟',en:'What is the copper pot for Turkish coffee called?'},options:{ar:['جزوة / إبريك','فنجان','كولد برو','مكبس فرنسي'],en:['Cezve / Ibrik','Cup','Cold Brew','French Press']},answer:0},
+    {q:{ar:'في أي عام أدرجت اليونسكو القهوة التركية؟',en:'When did UNESCO recognize Turkish coffee?'},options:{ar:['2005','2010','2013','2018'],en:['2005','2010','2013','2018']},answer:2},
+    {q:{ar:'ما درجة طحن القهوة التركية؟',en:'What grind size for Turkish coffee?'},options:{ar:['خشن','متوسط','ناعم','ناعم جداً مثل الدقيق'],en:['Coarse','Medium','Fine','Extra Fine like flour']},answer:3}
+  ],
+  references:[
+    'UNESCO. (2013). Turkish coffee culture and tradition. Inscribed in 2013 on the Representative List of the Intangible Cultural Heritage of Humanity.',
+    'Ukers, W. H. (1922). All About Coffee. New York: The Tea and Coffee Trade Journal Company.',
+    'Ellis, M. (2004). The Coffee-House: A Cultural History. London: Weidenfeld & Nicolson.'
+  ]
+});
+
+defDrink('ethiopian-ceremony',{
+  id:'ethiopian-ceremony',
+  name:{ar:'طقوس القهوة الإثيوبية',en:'Ethiopian Coffee Ceremony'},
+  classification:{category:__({ar:'القهوة التقليدية',en:'Traditional Coffee'}),temp:__({ar:'ساخن',en:'Hot'}),milk:false,base:__({ar:'فلتر',en:'Filter'})},
+  history:{ar:'طقوس القهوة الإثيوبية هي أقدم تقاليد القهوة في العالم، تعود إلى القرن التاسع الميلادي في مرتفعات كافا (Kaffa) — موطن البن العربي البري. تؤدى الطقوس ثلاث مرات يومياً (صباح، ظهر، مساء) وتستغرق من ساعة إلى ثلاث ساعات. تبدأ بتحميص البن الأخضر على النار أمام الضيوف، ثم طحنه بالهاوند والمدقة، ثم تحضيره في الـ"جبانة" (إبريق فخاري أسود). تُقدّم ثلاث جولات: الأولى (أول) للطاقة، الثانية (توالي) للبركة، الثالثة (بركة) للأمل.',en:'The Ethiopian coffee ceremony is the oldest coffee tradition in the world, dating back to the 9th century in the highlands of Kaffa — the birthplace of wild Arabica. The ceremony is performed three times daily (morning, noon, evening) and lasts one to three hours. It begins with roasting green beans over fire in front of guests, then grinding with mortar and pestle, then brewing in the "Jebena" (black clay pot). Three rounds are served: first (Abol) for energy, second (Tona) for blessing, third (Baraka) for hope.'},
+  description:{ar:'ليست مجرد طريقة تحضير — إنها طقس اجتماعي وروحي. تجتمع العائلة والجيران، وتُحرق البخور (اللبان أو المر) لتطهير المكان. تقدم القهوة مع الفشار أو الخبز المحمص. أصغر فرد في العائلة يخدم الحضور.',en:'Not just a brewing method — it is a social and spiritual ritual. Family and neighbors gather, incense (frankincense or myrrh) is burned to purify the space. Coffee is served with popcorn or toasted bread. The youngest family member serves the attendees.'},
+  flavorProfile:{sweetness:{ar:'متوسطة',en:'Medium'},acidity:{ar:'عالية',en:'High'},bitterness:{ar:'منخفضة-متوسطة',en:'Low-Medium'},body:{ar:'خفيف-متوسط',en:'Light-Medium'},aroma:{ar:'زهري مع البخور',en:'Floral with Incense'},aftertaste:{ar:'نظيف',en:'Clean'}},
+  recipe:{dose:'15-20g',yield:'150-200ml',ratio:'1:10',waterTemp:'90-95°C',time:'5-7 دقائق تخمير',grind:__({ar:'متوسط-خشن',en:'Medium-Coarse'}),servingTemp:'65-70°C',cupSize:'60-90ml'},
+  procedure:{ar:'1. اغسل البن الأخضر وصفّه.\n2. حمص البن في مقلاة على النار أمام الضيوف حتى يصبح بنياً ذهبياً.\n3. اطحن البن المحمص بالهاوند والمدقة.\n4. ضع البن المطحون في الجبانة (الإبريق الفخاري).\n5. أضف الماء واتركه يغلي.\n6. ارفع الجبانة واتركها تهدأ قليلاً.\n7. اسكب القهوة من ارتفاع منخفض لتكوين رغوة.\n8. قدّم الجولة الأولى (أول) ثم أعد استخدام نفس البن للجولتين الثانية (توالي) والثالثة (بركة).',en:'1. Wash and drain green beans.\n2. Roast beans in a pan over fire in front of guests until golden brown.\n3. Grind roasted beans with mortar and pestle.\n4. Place ground coffee in the Jebena (clay pot).\n5. Add water and bring to boil.\n6. Remove Jebena and let it settle briefly.\n7. Pour from low height to create foam.\n8. Serve first round (Abol), then reuse the same grounds for second (Tona) and third (Baraka) rounds.'},
+  baristaTips:{ar:['التحميص أمام الضيوف جزء أساسي من التجربة','استخدم البخور لإكمال الأجواء','الجبانة الأصلية من الطين الأسود الإثيوبي'],en:['Roasting in front of guests is essential to the experience','Use incense to complete the atmosphere','Traditional Jebena is made of Ethiopian black clay']},
+  commonMistakes:{ar:['تخطي طقوس حرق البخور','تحميص البن بشكل غير متساوٍ','استخدام بن محمص مسبقاً'],en:['Skipping the incense ritual','Uneven roasting','Using pre-roasted coffee']},
+  fixes:{ar:['أضف اللبان أو المر للبخور قبل التقديم','حرك البن باستمرار أثناء التحميص','ابدأ ببن أخضر طازج'],en:['Add frankincense or myrrh incense before serving','Stir beans constantly while roasting','Start with fresh green beans']},
+  recommendedBeans:{origin:{ar:'إثيوبيا — سيدامو أو ييرغاشيفي',en:'Ethiopia — Sidamo or Yirgacheffe'},process:{ar:'طبيعية',en:'Natural'},roast:{ar:'خفيفة-متوسطة',en:'Light-Medium'}},
+  foodPairing:{ar:'القهوة الإثيوبية التقليدية تُقدّم مع الفشار (فرفش)، الخبز المحمص، والمكسرات.',en:'Traditional Ethiopian coffee is served with popcorn (furfesh), toasted bread, and nuts.'},
+  variations:{ar:'• في بعض المناطق، يُضاف الزبدة أو الزنجبيل أو العسل.\n• في السودان وجيبوتي، تُعرف بـ"القهوة البدوية" وتُحضّر بطريقة مشابهة.\n• في المناطق الحضرية، اختُصرت الطقوس إلى 30 دقيقة.',en:'• In some regions, butter, ginger, or honey is added.\n• In Sudan and Djibouti, known as "Bedouin Coffee" with a similar method.\n• In urban areas, the ceremony has been shortened to 30 minutes.'},
+  funFacts:{ar:['كلمة "قهوة" مشتقة من اسم منطقة "كافا" الإثيوبية','القهوة في إثيوبيا تسمى "بونا" (Buna)','أصغر فرد في العائلة يخدم القهوة — علامة على التواضع'],en:['The word "coffee" derives from the region "Kaffa" in Ethiopia','Coffee is called "Buna" in Ethiopia','The youngest family member serves — a sign of humility']},
+  questions:[
+    {q:{ar:'ما اسم الإبريق الفخاري لتحضير القهوة الإثيوبية؟',en:'What is the clay pot used in Ethiopian coffee ceremony?'},options:{ar:['جبانة','إبريك','جزوة','مازن'],en:['Jebena','Cezve','Ibrik','Mazen']},answer:0},
+    {q:{ar:'كم جولة تُقدّم في طقوس القهوة الإثيوبية؟',en:'How many rounds are served in the Ethiopian coffee ceremony?'},options:{ar:['جولتان','ثلاث جولات','أربع جولات','جولة واحدة'],en:['Two','Three','Four','One']},answer:1}
+  ],
+  references:[
+    'Ukers, W. H. (1922). All About Coffee. New York: The Tea and Coffee Trade Journal Company.',
+    'Weinberg, B. A., & Bealer, B. K. (2001). The World of Caffeine: The Science and Culture of the World\'s Most Popular Drug. New York: Routledge.',
+    'Pendergrast, M. (2010). Uncommon Grounds: The History of Coffee and How It Transformed Our World. New York: Basic Books.'
+  ]
+});
+
+// ----- A2: Brewing Fundamentals Drinks -----
+defDrink('v60',{
+  id:'v60',
+  name:{ar:'V60',en:'V60 Pour Over'},
+  classification:{category:__({ar:'قهوة فلتر يدوي',en:'Manual Pour Over'}),temp:__({ar:'ساخن',en:'Hot'}),milk:false,base:__({ar:'فلتر',en:'Filter'})},
+  history:{ar:'ابتكرت شركة Hario اليابانية الـ V60 عام 1980. التصميم الحلزوني مستوحى من التضاريس اليابانية. الاسم V60 نسبة للزاوية 60 درجة للمخروط. فازت Hario بجائزة التصميم الياباني عام 1981. انتشرت عالمياً مع موجة القهوة الثالثة في التسعينيات وأصبحت الأداة الأكثر استخداماً في مسابكات الباريستا.',en:'The V60 was invented by Japanese company Hario in 1980. The spiral design is inspired by Japanese topography. The name V60 comes from the 60-degree cone angle. Hario won the Japanese Design Award in 1981. It spread globally with the Third Wave coffee movement in the 1990s and became the most used tool in barista competitions.'},
+  description:{ar:'طريقة تحضير تعتمد على الترشيح بالجاذبية. المخروط الحلزوني يسمح بتدفق ماء مثالي. تتحكم بكل متغير — حرارة الماء، سرعة الصب، حجم الطحن. أفضل طريقة لإبراز النكهات الزهرية والفاكهية.',en:'A gravity-based pour-over method. The spiral cone allows optimal water flow. You control every variable — water temperature, pour speed, grind size. The best method to highlight floral and fruity notes.'},
+  flavorProfile:{sweetness:{ar:'عالية',en:'High'},acidity:{ar:'عالية',en:'High'},bitterness:{ar:'منخفضة',en:'Low'},body:{ar:'خفيف-متوسط',en:'Light-Medium'},aroma:{ar:'واضح ونظيف',en:'Clean and Bright'},aftertaste:{ar:'نظيف',en:'Clean'}},
+  recipe:{dose:'15g',yield:'250ml',ratio:'1:16.7',waterTemp:'92-94°C',time:'2:30-3:00 دقيقة',grind:__({ar:'متوسط (حجم سكر البودرة)',en:'Medium (powdered sugar size)'}),tds:'1.3-1.4%',extractionYield:'19-21%',servingTemp:'65-70°C',cupSize:'300ml'},
+  procedure:{ar:'1. سخن الماء إلى 92-94°C.\n2. ضع فلتر V60 في المخروط واشطفه بالماء الساخن (يزيل طعم الورق ويسخن الكوب).\n3. أضف 15g قهوة مطحونة متوسط.\n4. صب 30g ماء للـ Bloom (30 ثانية).\n5. صب حتى 150g بحركة دائرية.\n6. بعد نزول الماء، صب حتى 250g.\n7. إجمالي وقت الاستخلاص: 2:30-3:00.',en:'1. Heat water to 92-94°C.\n2. Place V60 filter and rinse with hot water (removes paper taste and warms cup).\n3. Add 15g medium-ground coffee.\n4. Pour 30g water for Bloom (30 seconds).\n5. Pour in circles until 150g.\n6. After water draws down, pour until 250g.\n7. Total extraction time: 2:30-3:00.'},
+  baristaTips:{ar:['استخدم ميزان لضبط النسب','صب الماء بشكل حلزوني من المركز للخارج','لا تصب على الفلتر مباشرة'],en:['Use a scale for accurate ratios','Pour in spirals from center outward','Do not pour directly on the filter']},
+  commonMistakes:{ar:['الطحن خشن جداً — استخلاص سريع جداً','طحن ناعم جداً — انسداد الفلتر','صب الماء بسرعة ثابتة — خلل في الاستخلاص'],en:['Grind too coarse — extraction too fast','Grind too fine — filter clogs','Constant pour speed — uneven extraction']},
+  fixes:{ar:['اطحن أدق قليلاً إذا كان الوقت أقل من 2:30','اطحن أخشن إذا كان الوقت أكثر من 3:30','استخدم تقنية صب 4:6 — صب بكميات متفاوتة'],en:['Grind finer if time < 2:30','Grind coarser if time > 3:30','Use 4:6 method — varying pour volumes']},
+  recommendedBeans:{origin:{ar:'إثيوبيا, كينيا, كولومبيا',en:'Ethiopia, Kenya, Colombia'},process:{ar:'مغسولة',en:'Washed'},roast:{ar:'خفيفة-متوسطة',en:'Light-Medium'}},
+  foodPairing:{ar:'الفواكه الطازجة، الكرواسون، الحلويات الخفيفة، الشوكولاتة البيضاء.',en:'Fresh fruits, croissants, light pastries, white chocolate.'},
+  variations:{ar:'• V60 02: حجم أكبر للتحضير العائلي.\n• V60 01: كوب واحد فقط.\n• V60 Metal: فلتر معدني — قوام أثقل.',en:'• V60 02: Larger size for batch brewing.\n• V60 01: Single cup only.\n• V60 Metal: Metal filter — heavier body.'},
+  funFacts:{ar:['Hario تعني "ملك الزجاج" باليابانية','أكثر أداة استخداماً في مسابقات الباريستا العالمية','زاوية 60 درجة تسمح بتدفق ماء متساوٍ'],en:['Hario means "King of Glass" in Japanese','The most used tool in World Barista Championships','The 60° angle ensures even water flow']},
+  questions:[
+    {q:{ar:'متى اخترعت Hario V60؟',en:'When was the Hario V60 invented?'},options:{ar:['1975','1980','1985','1990'],en:['1975','1980','1985','1990']},answer:1},
+    {q:{ar:'كم نسبة القهوة:الماء المثالية لـ V60؟',en:'What is the ideal brew ratio for V60?'},options:{ar:['1:10','1:12','1:16-1:17','1:20'],en:['1:10','1:12','1:16-1:17','1:20']},answer:2}
+  ],
+  references:[
+    'Hario Co., Ltd. (1980). V60 Dripper Patent. Tokyo: Japan Patent Office.',
+    'Rao, S. (2017). The Professional Barista\'s Handbook. 2nd ed. Scott Rao.',
+    'Hoffmann, J. (2018). The World Atlas of Coffee. 2nd ed. London: Mitchell Beazley.'
+  ]
+});
+
+defDrink('french-press',{
+  id:'french-press',name:{ar:'مكبس فرنسي',en:'French Press'},
+  classification:{category:__({ar:'قهوة غمر',en:'Immersion Coffee'}),temp:__({ar:'ساخن',en:'Hot'}),milk:false,base:__({ar:'فلتر',en:'Filter'})},
+  history:{ar:'يرجع تاريخ أول براءة اختراع للمكبس الفرنسي إلى عام 1852 من قبل ماير وديلمي في فرنسا. لكن التصميم الحديث سُجّل براءة اختراعه عام 1929 من قبل الإيطالي أتليو كاليماني. انتشر في الخمسينيات بفضل شركة "ميلور" الإنجليزية. الاسم الفرنسي "cafetière à piston" وصله بالثقافة الفرنسية.',en:'The first French Press patent dates to 1852 by Mayer and Delforge in France. But the modern design was patented in 1929 by Italian Attilio Calimani. It spread in the 1950s thanks to English company "Mellor". Its French name "cafetière à piston" ties it to French culture.'},
+  description:{ar:'طريقة الغمر الكامل: القهوة منقوعة في الماء طوال وقت الاستخلاص، ثم يُضغط الفلتر لفصل الرواسب. تنتج قهوة بقوام كامل ونكهة غنية لأن الزيوت تمر عبر الفلتر المعدني.',en:'Full immersion method: coffee steeps in water for the entire extraction time, then a filter is pressed to separate grounds. Produces full-bodied coffee with rich flavor as oils pass through the metal mesh.'},
+  flavorProfile:{sweetness:{ar:'متوسطة',en:'Medium'},acidity:{ar:'متوسطة',en:'Medium'},bitterness:{ar:'منخفضة-متوسطة',en:'Low-Medium'},body:{ar:'كامل',en:'Full'},aroma:{ar:'غني',en:'Rich'},aftertaste:{ar:'معتدل',en:'Moderate'}},
+  recipe:{dose:'15g',yield:'250ml',ratio:'1:16.7',waterTemp:'93-96°C',time:'4 دقائق',grind:__({ar:'خشن (حجم ملح البحر)',en:'Coarse (sea salt size)'}),servingTemp:'65-70°C',cupSize:'250ml'},
+  procedure:{ar:'1. سخن الماء إلى 93-96°C.\n2. أضف القهوة في المكبس.\n3. صب الماء بالكامل.\n4. قلب برفق.\n5. انتظر 4 دقائق بالضبط.\n6. اضغط المكبس ببطء وبثبات.\n7. اسكب القهوة فوراً — لا تتركها في المكبس.',en:'1. Heat water to 93-96°C.\n2. Add coffee to the press.\n3. Pour all the water.\n4. Stir gently.\n5. Wait exactly 4 minutes.\n6. Press plunger down slowly and steadily.\n7. Pour immediately — do not leave in the press.'},
+  baristaTips:{ar:['اطحن خشن — الطحن الناعم يسد الفلتر','اسكب القهوة فور الضغط — تستمر في الاستخلاص','قلب برفق بعد الصب لتوحيد الاستخلاص'],en:['Grind coarse — fine grind clogs the mesh','Pour immediately after pressing — extraction continues','Stir gently after pouring for even extraction']},
+  commonMistakes:{ar:['طحن ناعم — طمي في الفنجان','ترك القهوة بعد الضغط — مرارة زائدة','ماء ساخن جداً >96°C — إفراط في الاستخلاص'],en:['Grind too fine — sludge in cup','Leaving coffee after pressing — over-extraction','Water too hot >96°C — bitter extraction']},
+  fixes:{ar:['اطحن بحجم ملح البحر','انقل القهوة لكوب آخر فور الضغط','حافظ على 93-96°C'],en:['Grind to sea salt size','Transfer coffee immediately after pressing','Keep water at 93-96°C']},
+  recommendedBeans:{origin:{ar:'البرازيل, كولومبيا, غواتيمالا',en:'Brazil, Colombia, Guatemala'},process:{ar:'طبيعية أو مغسولة',en:'Natural or Washed'},roast:{ar:'متوسطة-غامقة',en:'Medium-Dark'}},
+  foodPairing:{ar:'الإفطار الكامل — البيض، الجبن، اللحوم الباردة، الكرواسون.',en:'Full breakfast — eggs, cheese, cold cuts, croissants.'},
+  variations:{ar:'• Cold Brew French Press: استخدم ماء بارد واتركه 12-24 ساعة.\n• French Press Latte: أضف حليب ساخن مخفوق.',en:'• Cold Brew French Press: Use cold water and steep 12-24 hours.\n• French Press Latte: Add frothed hot milk.'},
+  funFacts:{ar:['الفلتر المعدني يسمح بمرور الزيوت — قوام أغنى','طريقة جيمس هوفمان (James Hoffmann) الشهيرة: أزل الرغوة بعد 4 دقائق، انتظر 8 دقائق إضافية','في فرنسا، 40% من المنازل تملك مكبساً فرنسياً'],en:['Metal filter lets oils through — richer texture','James Hoffmann\'s famous method: remove crust after 4 min, wait 8 more minutes','40% of French households own a French Press']},
+  questions:[
+    {q:{ar:'كم وقت استخلاص المكبس الفرنسي القياسي؟',en:'Standard French Press extraction time?'},options:{ar:['دقيقتين','4 دقائق','6 دقائق','8 دقائق'],en:['2 minutes','4 minutes','6 minutes','8 minutes']},answer:1},
+    {q:{ar:'أي درجة طحن تناسب المكبس الفرنسي؟',en:'What grind size for French Press?'},options:{ar:['ناعم جداً','ناعم','متوسط','خشن'],en:['Extra Fine','Fine','Medium','Coarse']},answer:3}
+  ],
+  references:[
+    'Calimani, A. (1929). French Press Patent. Italy.',
+    'Hoffmann, J. (2018). The World Atlas of Coffee. 2nd ed. London: Mitchell Beazley.',
+    'Rao, S. (2017). The Professional Barista\'s Handbook. 2nd ed. Scott Rao.'
+  ]
+});
+
+defDrink('cold-brew',{
+  id:'cold-brew',name:{ar:'كولد برو',en:'Cold Brew'},
+  classification:{category:__({ar:'قهوة باردة',en:'Cold Coffee'}),temp:__({ar:'بارد',en:'Cold'}),milk:false,base:__({ar:'فلتر',en:'Filter'})},
+  history:{ar:'الكولد برو ليس ابتكاراً حديثاً — سجله الهولنديون في القرن السابع عشر عندما كانوا يسافرون إلى جزر الهند الشرقية ويحتاجون قهوة لا تفسد خلال الرحلة. يُعرف بـ"القهوة الهولندية" (Dutch Coffee) في اليابان. شهدت طفرة عالمية في العقد الماضي — في أمريكا وحدها، زادت مبيعات الكولد برو 580% بين 2011-2021.',en:'Cold brew is not a modern invention — it was recorded by the Dutch in the 17th century when traveling to the East Indies, needing coffee that would not spoil during the voyage. It is known as "Dutch Coffee" in Japan. It saw a global boom in the last decade — in the US alone, cold brew sales grew 580% between 2011-2021.'},
+  description:{ar:'القهوة المنقوعة في ماء بارد لمدة 12-24 ساعة. النتيجة: قهوة أقل حموضة وأكثر حلاوة، بتركيز عالٍ يُخفف بالماء أو الحليب.',en:'Coffee steeped in cold water for 12-24 hours. Result: lower acidity, sweeter taste, high concentration that is diluted with water or milk.'},
+  flavorProfile:{sweetness:{ar:'عالية جداً',en:'Very High'},acidity:{ar:'منخفضة جداً',en:'Very Low'},bitterness:{ar:'منخفضة',en:'Low'},body:{ar:'كامل وناعم',en:'Full and Smooth'},aroma:{ar:'شوكولاتي',en:'Chocolatey'},aftertaste:{ar:'نظيف وحلو',en:'Clean and Sweet'}},
+  recipe:{dose:'100g',yield:'800ml',ratio:'1:8',waterTemp:__({ar:'بارد (20°C)',en:'Cold (20°C)'}),time:'16-24 ساعة',grind:__({ar:'خشن جداً',en:'Extra Coarse'}),tds:'1.25-1.5% بعد التخفيف',servingTemp:'4-8°C',cupSize:'200-300ml'},
+  procedure:{ar:'1. اطحن القهوة خشناً جداً.\n2. أضف القهوة والماء في وعاء زجاجي.\n3. قلب جيداً لتشبع القهوة.\n4. غط الوعاء وضعه في الثلاجة.\n5. انتظر 16-24 ساعة.\n6. صفّ القهوة عبر فلتر قماشي أو V60.\n7. خفف بنسبة 1:1 أو 2:1 ماء:مركز.\n8. قدم مع ثلج.',en:'1. Grind coffee extra coarse.\n2. Add coffee and water in a glass container.\n3. Stir well to saturate coffee.\n4. Cover and place in fridge.\n5. Wait 16-24 hours.\n6. Filter through cloth filter or V60.\n7. Dilute 1:1 or 2:1 water:concentrate.\n8. Serve over ice.'},
+  baristaTips:{ar:['استخدم بن واحد (Single Origin) لتذوق الفروقات','الطحن الخشن جداً ضروري — الطحن الناعم يسبب مرارة','الترشيح المزدوج يعطي نقاءً أفضل'],en:['Use single origin to taste differences','Extra coarse grind is essential — fine grind causes bitterness','Double filtering gives better clarity']},
+  commonMistakes:{ar:['طحن ناعم — استخلاص زائد ومرارة','وقت قصير جداً <12 ساعة — ضعف الاستخلاص','تخفيف غير صحيح — قهوة ضعيفة أو قوية جداً'],en:['Grind too fine — over-extraction and bitterness','Time too short <12 hours — weak extraction','Wrong dilution ratio — too weak or too strong']},
+  fixes:{ar:['اطحن بحجم فتات الخبز','اترك 16 ساعة على الأقل','ابدأ بنسبة 1:1 ماء:مركز واضبطها'],en:['Grind to breadcrumb size','Steep at least 16 hours','Start with 1:1 water:concentrate and adjust']},
+  recommendedBeans:{origin:{ar:'البرازيل, كولومبيا, السلفادور',en:'Brazil, Colombia, El Salvador'},process:{ar:'طبيعية',en:'Natural'},roast:{ar:'متوسطة-غامقة',en:'Medium-Dark'}},
+  foodPairing:{ar:'الشوكولاتة الداكنة، المكسرات المحمصة، التيراميسو، آيس كريم الفانيليا.',en:'Dark chocolate, roasted nuts, tiramisu, vanilla ice cream.'},
+  variations:{ar:'• Nitro Cold Brew: يُمرر عبر نيتروجين لرغوة كريمية (أطلقه ستاربكس 2015).\n• Kyoto-style: تقطير بطيء قطرة قطرة لساعات (مقاس 40 نقطة/دقيقة).\n• Cold Brew Tonic: كولد برو + تونيك.',en:'• Nitro Cold Brew: Infused with nitrogen for creamy foam (popularized by Starbucks 2015).\n• Kyoto-style: Slow drip, drop-by-drop for hours (~40 drops/min).\n• Cold Brew Tonic: Cold brew + tonic water.'},
+  funFacts:{ar:['الكولد برو أقل حموضة من القهوة الساخنة بنسبة 67%','ستاربكس بدأت بيع Nitro Cold Brew 2015','يمكن تخزين الكولد برو في الثلاجة حتى أسبوعين'],en:['Cold brew has 67% less acidity than hot coffee','Starbucks launched Nitro Cold Brew in 2015','Can store cold brew in fridge for up to 2 weeks']},
+  questions:[
+    {q:{ar:'كم نسبة التخفيف المثالية للكولد برو؟',en:'Ideal cold brew dilution ratio?'},options:{ar:['1:1','2:1','3:1','نشربها مركزة'],en:['1:1','2:1','3:1','Drink it concentrated']},answer:0},
+    {q:{ar:'لماذا الكولد برو أقل حموضة من القهوة الساخنة؟',en:'Why is cold brew less acidic than hot coffee?'},options:{ar:['لأن الماء البارد لا يستخلص الأحماض','لأنه يُخمر','لأنه يُصفّى مرتين','لأن البن مختلف'],en:['Cold water does not extract acids','Because it ferments','Because it is filtered twice','Different beans']},answer:0}
+  ],
+  references:[
+    'National Coffee Association USA. (2021). Cold Brew Coffee: A Comprehensive Guide.',
+    'Rao, S. (2017). The Professional Barista\'s Handbook. 2nd ed. Scott Rao.',
+    'Perfect Daily Grind. (2019). The History and Science of Cold Brew Coffee.'
+  ]
+});
+
+defDrink('aeropress',{
+  id:'aeropress',name:{ar:'إيروبرس',en:'AeroPress'},
+  classification:{category:__({ar:'قهوة ضغط هوائي',en:'Air Pressure Coffee'}),temp:__({ar:'ساخن',en:'Hot'}),milk:false,base:__({ar:'فلتر',en:'Filter'})},
+  history:{ar:'اخترعها ألان أدلر (Alan Adler) عام 2005 — مهندس أمريكي ومخترع القرص الطائر الشهير "Aerobie". صممها لحل مشكلة المرارة في القهوة. أصبحت الأداة الأكثر مبيعاً على أمازون في فئة معدات القهوة. تُقام بطولات العالم للـ AeroPress (WAC) سنوياً منذ 2008 — أول فائز: Tim Wendelboe.',en:'Invented by Alan Adler in 2005 — an American engineer and inventor of the famous "Aerobie" flying ring. Designed to solve bitterness in coffee. Became the best-selling coffee equipment on Amazon. World AeroPress Championships (WAC) held annually since 2008 — first winner: Tim Wendelboe.'},
+  description:{ar:'جهاز تحضير سريع يجمع بين الغمر والضغط. يستخدم ضغط هواء يدوي لدفع الماء عبر القهوة. سريع (1-2 دقيقة)، محمول، سهل التنظيف، وينتج قهوة نظيفة ومتوازنة.',en:'A fast brewing device combining immersion and pressure. Uses manual air pressure to push water through coffee. Fast (1-2 min), portable, easy to clean, produces clean and balanced coffee.'},
+  flavorProfile:{sweetness:{ar:'عالية',en:'High'},acidity:{ar:'متوسطة-عالية',en:'Medium-High'},bitterness:{ar:'منخفضة',en:'Low'},body:{ar:'نظيف-متوسط',en:'Clean-Medium'},aroma:{ar:'واضح',en:'Bright'},aftertaste:{ar:'نظيف',en:'Clean'}},
+  recipe:{dose:'14-18g',yield:'200-250ml',ratio:'1:14-1:16',waterTemp:'85-92°C',time:'1:30-2:00 دقيقة',grind:__({ar:'ناعم-متوسط (أقل من V60)',en:'Fine-Medium (finer than V60)'}),servingTemp:'65-70°C',cupSize:'200ml'},
+  procedure:{ar:'الطريقة التقليدية:\n1. ضع فلتر في الغطاء واشطفه.\n2. ثبت الغطاء على الأنبوب وضع الجهاز على الكوب.\n3. أضف القهوة.\n4. صب ماء ساخن حتى الخط 2 (حوالي 200ml).\n5. قلب لمدة 10 ثوانٍ.\n6. انتظر 30 ثانية.\n7. ضع المكبس واضغط بثبات لمدة 20-30 ثانية.\n8. اسمع صوت الهسهسة — توقف.',en:'Traditional method:\n1. Place filter in cap and rinse.\n2. Attach cap and place brewer on cup.\n3. Add coffee.\n4. Pour hot water to line 2 (~200ml).\n5. Stir for 10 seconds.\n6. Wait 30 seconds.\n7. Insert plunger and press steadily for 20-30 seconds.\n8. You hear hissing — stop.'},
+  baristaTips:{ar:['الطريقة المقلوبة (Inverted): ضع الجهاز مقلوباً لمنع التسريب قبل الضغط','جرب أبطال العالم — Tim Wendelboe وSttumphius طرق مختلفة','الماء 85-90°C يعطي حلاوة أكثر'],en:['Inverted method: flip the brewer to prevent dripping before pressing','Try world champions — Wendelboe and Sttumphius different recipes','Water 85-90°C gives more sweetness']},
+  commonMistakes:{ar:['طحن ناعم جداً — صعوبة الضغط','ماء ساخن جداً >95°C — مرارة','الضغط بقوة غير منتظمة'],en:['Grind too fine — impossible to press','Water too hot >95°C — bitter','Uneven pressing pressure']},
+  fixes:{ar:['اطحن كـ V60 أو أخشن قليلاً','استخدم 85-92°C','اضغط بثبات — 15-20 ثانية'],en:['Grind like V60 or slightly coarser','Use 85-92°C','Press steadily over 15-20 seconds']},
+  recommendedBeans:{origin:{ar:'أي منشأ — الإيروبرس متعدد الاستخدامات',en:'Any origin — AeroPress is versatile'},process:{ar:'أي معالجة',en:'Any process'},roast:{ar:'خفيفة-غامقة',en:'Light-Dark'}},
+  foodPairing:{ar:'مناسب مع أي شيء — الإيروبرس ينتج قهوة متوازنة تناسب الإفطار والحلويات.',en:'Goes with anything — balanced brew suitable for breakfast and desserts.'},
+  variations:{ar:'• الطريقة المقلوبة (Inverted): كلاسيك الأبطال.\n• طريقة ألان أدلر الأصلية: ملعقة صغيرة قهوة، ماء قريب من الغليان.\n• Ultra-fast: 1 دقيقة فقط.',en:'• Inverted method: champion classic.\n• Alan Adler original: 1 scoop, near-boiling water.\n• Ultra-fast: 1 minute only.'},
+  funFacts:{ar:['ألان أدلر كان عمره 79 عاماً عند اختراع الإيروبرس','يُعقد بطولة العالم سنوياً في دول مختلفة','أكثر من 40,000 وصفة مختلفة مقدمة من المشاركين'],en:['Alan Adler was 79 years old when he invented the AeroPress','World Championship held annually in different countries','Over 40,000 different recipes submitted by participants']},
+  questions:[
+    {q:{ar:'من اخترع AeroPress؟',en:'Who invented the AeroPress?'},options:{ar:['جيمس هوفمان','ألان أدلر','سكوت راو','هايرو'],en:['James Hoffmann','Alan Adler','Scott Rao','Hario']},answer:1},
+    {q:{ar:'أي درجة حرارة ماء تناسب الإيروبرس؟',en:'What water temperature for AeroPress?'},options:{ar:['100°C','95-98°C','85-92°C','70-80°C'],en:['100°C','95-98°C','85-92°C','70-80°C']},answer:2}
+  ],
+  references:[
+    'Adler, A. (2005). AeroPress Patent. United States Patent and Trademark Office.',
+    'World AeroPress Championship. (2008-present). Official Rules and Winning Recipes.',
+    'Hoffmann, J. (2018). The World Atlas of Coffee. 2nd ed. London: Mitchell Beazley.'
+  ]
+});
+
+// ----- A3: Espresso Drinks -----
+defDrink('espresso',{
+  id:'espresso',name:{ar:'إسبريسو',en:'Espresso'},
+  classification:{category:__({ar:'إسبريسو',en:'Espresso'}),temp:__({ar:'ساخن',en:'Hot'}),milk:false,base:__({ar:'إسبريسو',en:'Espresso'})},
+  history:{ar:'اخترع لويجي بزيرا (Luigi Bezzera) أول ماكينة إسبريسو في ميلانو عام 1901. في 1946، أحدث أكيلي جاجيا (Achille Gaggia) ثورة باختراع نظام الرافعة الذي يولد 9 بار وينتج أول كريما في تاريخ القهوة. كلمة "إسبريسో" إيطالية تعني "معصور" أو "سريع" — الضغط العالي يمرر الماء عبر القهوة في 25-30 ثانية فقط. في إيطاليا، الإسبريسو أسلوب حياة — 94% من الإيطاليين يشربون إسبريسو يومياً.',en:'Luigi Bezzera invented the first espresso machine in Milan in 1901. In 1946, Achille Gaggia revolutionized with the lever system generating 9 bar and producing the first crema in coffee history. The word "espresso" is Italian for "pressed out" or "express" — high pressure forces water through coffee in just 25-30 seconds. In Italy, espresso is a lifestyle — 94% of Italians drink espresso daily.'},
+  description:{ar:'الإسبريسو قلب عالم القهوة الاحترافي. 25-30 مل من السائل المركز يُستخلص من 18 جرام بن مطحون ناعم تحت ضغط 9 بار وماء 93°C. الكريما — الطبقة الذهبية-البندقية على الوجه — علامة الجودة. قياسات SCA الذهبية: 18-22% نسبة استخلاص، TDS 8-12%.',en:'Espresso is the heart of professional coffee. 25-30ml of concentrated liquid extracted from 18g finely ground coffee under 9 bar pressure and 93°C water. Crema — the golden-hazel layer on top — is a quality marker. SCA gold standards: 18-22% extraction yield, 8-12% TDS.'},
+  flavorProfile:{sweetness:{ar:'متوسطة',en:'Medium'},acidity:{ar:'منخفضة-متوسطة',en:'Low-Medium'},bitterness:{ar:'متوسطة',en:'Medium'},body:{ar:'كامل',en:'Full'},aroma:{ar:'معقد',en:'Complex'},aftertaste:{ar:'طويل',en:'Long'}},
+  recipe:{dose:'18g',yield:'36g',ratio:'1:2',waterTemp:'93°C',pressure:'9 bar',time:'25-30 ثانية',grind:__({ar:'ناعم (مثل السكر الناعم)',en:'Fine (like fine sugar)'}),tds:'8-12%',extractionYield:'18-22%',servingTemp:'65-70°C',cupSize:'60ml'},
+  procedure:{ar:'1. سخن الماكينة (15-30 دقيقة حتى استقرار درجة الحرارة).\n2. اوزن 18g بن.\n3. اطحن ناعماً.\n4. وزّع البن بالتساوي في البورتافلتر.\n5. استخدم الموزع (Distributor) إن وُجد.\n6. دمك البن بقوة 15-20kg.\n7. ضع البورتافلتر في مجموعة الماكينة.\n8. ضع الفنجان تحته.\n9. ابدأ الاستخلاص فوراً.\n10. استهدف 36g في 25-30 ثانية.\n11. ارفع الفنجان عند اكتمال الوزن.\n12. قدم فوراً.',en:'1. Warm up the machine (15-30 min for temperature stability).\n2. Weigh 18g coffee.\n3. Grind fine.\n4. Distribute evenly in the portafilter.\n5. Use a distributor if available.\n6. Tamp with 15-20kg pressure.\n7. Lock portafilter into the group head.\n8. Place cup underneath.\n9. Start extraction immediately.\n10. Aim for 36g in 25-30 seconds.\n11. Stop when target weight is reached.\n12. Serve immediately.'},
+  baristaTips:{ar:['استخدم ميزان أسفل الفنجان لقياس الناتج بالجرام','عدّل الطحن حسب النتيجة — إذا أسرع من 20 ثانية، اطحن أدق','نظف مجموعة الماكينة بين كل شوت وآخر'],en:['Use a scale under the cup to measure yield in grams','Adjust grind based on timing — faster than 20s, grind finer','Clean the group head between each shot']},
+  commonMistakes:{ar:['الدمك غير المتساوي — Channeling','درجة حرارة غير مستقرة','بن قديم جداً — كريما رقيقة'],en:['Uneven tamping — channeling','Unstable temperature','Stale coffee — thin crema']},
+  fixes:{ar:['وزّع البن جيداً قبل الدمك','سخن الماكينة كافياً (30 دقيقة)','استخدم بن محمص خلال 2-4 أسابيع'],en:['Distribute well before tamping','Warm machine sufficiently (30 min)','Use coffee roasted within 2-4 weeks']},
+  recommendedBeans:{origin:{ar:'برازيل + إثيوبيا (بلند), أي إسبريسو بلند عالي الجودة',en:'Brazil + Ethiopia (blend), any high-quality espresso blend'},process:{ar:'طبيعية لمزيد من الحلاوة',en:'Natural for more sweetness'},roast:{ar:'متوسطة',en:'Medium'}},
+  foodPairing:{ar:'الإسبريسو يُشرب بمفرده بعد الوجبات. يقدم مع قطعة صغيرة من الشوكولاتة الداكنة أو البسكويت.',en:'Espresso is drunk alone after meals. Served with a small piece of dark chocolate or biscuit.'},
+  variations:{ar:'• Ristretto: 18g → 18-22g فقط (نسبة 1:1.2).\n• Lungo: 18g → 54-72g (نسبة 1:3-1:4).\n• Doppio: شوت مزدوج (36g من 36g).\n• Espresso Romano: يُقدّم مع شريحة ليمون.',en:'• Ristretto: 18g → 18-22g only (1:1.2 ratio).\n• Lungo: 18g → 54-72g (1:3-1:4 ratio).\n• Doppio: Double shot (36g from 36g).\n• Espresso Romano: Served with a lemon slice.'},
+  funFacts:{ar:['الكريما تحتوي على زيوت وغازات — 22% من حجم الإسبريسو','في إيطاليا، سعر الإسبريسو محدّد حكومياً — حوالي 1 يورو','أغلى إسبريسو بالعالم: 100 دولار — في مقهى "Beach Comber" بدبي'],en:['Crema contains oils and gases — 22% of espresso volume','In Italy, espresso price is government-regulated — about 1 Euro','World\'s most expensive espresso: $100 — at "Beach Comber" in Dubai']},
+  questions:[
+    {q:{ar:'من اخترع أول ماكينة إسبريسو؟',en:'Who invented the first espresso machine?'},options:{ar:['أكيلي جاجيا','لويجي بزيرا','إرنست إيلي','جيمس هوفمان'],en:['Achille Gaggia','Luigi Bezzera','Ernst Illy','James Hoffmann']},answer:1},
+    {q:{ar:'ما الضغط القياسي لاستخلاص الإسبريسو؟',en:'Standard pressure for espresso extraction?'},options:{ar:['5 بار','7 بار','9 بار','12 بار'],en:['5 bar','7 bar','9 bar','12 bar']},answer:2},
+    {q:{ar:'كم نسبة الاستخلاص المثالية SCA؟',en:'SCA ideal extraction yield?'},options:{ar:['15-18%','18-22%','22-26%','26-30%'],en:['15-18%','18-22%','22-26%','26-30%']},answer:1}
+  ],
+  references:[
+    'Illy, A., & Viani, R. (2005). Espresso Coffee: The Science of Quality. 2nd ed. London: Elsevier Academic Press.',
+    'Rao, S. (2017). The Professional Barista\'s Handbook. 2nd ed. Scott Rao.',
+    'SCA. (2020). Espresso Brewing Standards. Specialty Coffee Association.',
+    'Hoffmann, J. (2018). The World Atlas of Coffee. 2nd ed. London: Mitchell Beazley.'
+  ]
+});
+
+defDrink('cappuccino',{
+  id:'cappuccino',name:{ar:'كابتشينو',en:'Cappuccino'},
+  classification:{category:__({ar:'مشروبات إسبريسو بالحليب',en:'Espresso Milk Drinks'}),temp:__({ar:'ساخن',en:'Hot'}),milk:true,base:__({ar:'إسبريسو',en:'Espresso'})},
+  history:{ar:'اسم "كابتشينو" مشتق من الرهبان الكبوشيين (Capuchin) في إيطاليا القرن السادس عشر — تشابه لون القهوة مع الحليب إلى لون أرديتهم البني الفاتح. أول ذكر مسجل في قاموس إيطالي عام 1930. لكن شكله الحديث — إسبريسو + حليب مبخر + رغوة كثيفة — ظهر مع تطور ماكينات الإسبريسو في الخمسينيات. في الثمانينيات، انتشر بأمريكا بفضل ستاربكس ونسبرسو.',en:'The name "cappuccino" derives from Capuchin monks in 16th century Italy — the coffee-with-milk color resembled their light brown habits. First recorded in an Italian dictionary in 1930. But its modern form — espresso + steamed milk + thick foam — emerged with espresso machine development in the 1950s. In the 1980s, it spread in America thanks to Starbucks and Nespresso.'},
+  description:{ar:'الكابتشينو التقليدي: ثلث إسبريسو، ثلث حليب مبخر، ثلث رغوة حليب كثيفة (ميكروفوم). الفرق عن اللاتيه: رغوة أكثر (طبقة جافة) وحجم أقل. يُقدّم في كوب 160-180 مل. حرارة التقديم 60-65°C — حرق الحليب يفسد الطعم.',en:'Traditional cappuccino: one-third espresso, one-third steamed milk, one-third dense milk foam (microfoam). Difference from latte: more foam (dry layer) and smaller volume. Served in a 160-180ml cup. Serving temperature 60-65°C — burning milk ruins the taste.'},
+  flavorProfile:{sweetness:{ar:'متوسطة-عالية',en:'Medium-High'},acidity:{ar:'منخفضة',en:'Low'},bitterness:{ar:'منخفضة-متوسطة',en:'Low-Medium'},body:{ar:'متوسط-كامل بفضل الرغوة',en:'Medium-Full due to foam'},aroma:{ar:'حليبي مع نوتات القهوة',en:'Milky with coffee undertones'},aftertaste:{ar:'معتدل',en:'Moderate'}},
+  recipe:{dose:'18g إسبريسو (مزدوج)',yield:'36g إسبريسو + 100-120ml حليب',ratio:'1:1:1 (إسبريسو:حليب:رغوة)',waterTemp:'93°C',pressure:'9 bar',time:'25-30 ثانية إسبريسو',grind:__({ar:'ناعم (للإسبريسو)',en:'Fine (for espresso)'}),servingTemp:'60-65°C',cupSize:'160-180ml',milkTemp:'60-65°C',foamTexture:__({ar:'رغوة كثيفة جافة (ميكروفوم)',en:'Thick dry microfoam'})},
+  procedure:{ar:'1. حضّر شوت إسبريسو مزدوج (36g) في كوب 160-180ml.\n2. اسكب الحليب البارد في إبريق التبخير.\n3. ضع البخاخ تحت سطح الحليب قليلاً.\n4. افتح البخاخ لتكوين رغوة — أسمع صوت "ششش" خفيف.\n5. اخفض الإبريق عندما يصل الحليب لـ 35°C.\n6. استمر في التبخير حتى 60-65°C.\n7. امسح فوهة البخاخ.\n8. اسكب الحليب على الإسبريسو ببطء.\n9. استخدم ملعقة لحجز الرغوة وتوزيعها.\n10. قدّم فوراً.',en:'1. Pull a double espresso shot (36g) into a 160-180ml cup.\n2. Pour cold milk into the steaming pitcher.\n3. Submerge steam wand just below milk surface.\n4. Open steam to create foam — a gentle "hissing" sound.\n5. Lower pitcher when milk reaches 35°C.\n6. Continue steaming to 60-65°C.\n7. Wipe the steam wand.\n8. Pour milk over espresso slowly.\n9. Use a spoon to hold back foam and distribute it.\n10. Serve immediately.'},
+  baristaTips:{ar:['استخدم حليب كامل الدسم لرغوة أفضل','ابدأ التبخير بالهواء (Aeration) لـ 3-5 ثوانٍ فقط','درجة الحرارة 60-65°C — لا تتجاوز 68°C'],en:['Use whole milk for best foam','Aerate for only 3-5 seconds','Temperature 60-65°C — do not exceed 68°C']},
+  commonMistakes:{ar:['رغوة جافة جداً (طبقة سميكة منفصلة)','حليب ساخن جداً >70°C','نسبة رغوة أكثر من اللازم'],en:['Foam too dry (thick separate layer)','Milk too hot >70°C','Too much foam']},
+  fixes:{ar:['أدر الهواء لوقت أقل','راقب الحرارة بميزان حرارة','اتبع نسبة 1:1:1'],en:['Aerate for less time','Use a thermometer','Follow the 1:1:1 ratio']},
+  recommendedBeans:{origin:{ar:'برازيل + إثيوبيا (بلند)',en:'Brazil + Ethiopia (blend)'},process:{ar:'طبيعية',en:'Natural'},roast:{ar:'متوسطة-غامقة',en:'Medium-Dark'}},
+  foodPairing:{ar:'الكابتشينو إفطار كلاسيكي — يناسب الكرواسون، البسكويت الإيطالي (بيسكوتي)، والفطائر.',en:'Cappuccino is a classic breakfast drink — pairs with croissants, biscotti, and pastries.'},
+  variations:{ar:'• Cappuccino Scuro: إسبريسو أكثر، مشروب أقوى.\n• Cappuccino Chiaro: حليب أكثر، أخف.\n• Cappuccino Freddo: كابتشينو بارد — يُشرب صيفاً في إيطاليا.',en:'• Cappuccino Scuro: More espresso, stronger.\n• Cappuccino Chiaro: More milk, lighter.\n• Cappuccino Freddo: Cold cappuccino — popular in Italian summers.'},
+  funFacts:{ar:['الإيطاليون لا يشربون الكابتشينو بعد الساعة 11 صباحاً — يعتبرونه مشروب إفطار','أول كابتشينو بالعالم يبيع 300 كوب يومياً في فيينا','اليوم العالمي للكابتشينو: 8 نوفمبر'],en:['Italians do not drink cappuccino after 11 AM — it is a breakfast drink','World\'s first cappuccino shop sells 300 cups daily in Vienna','International Cappuccino Day: November 8']},
+  questions:[
+    {q:{ar:'نسبة الكابتشينو التقليدية (إسبريسو:حليب:رغوة)؟',en:'Traditional cappuccino ratio?'},options:{ar:['1:2:1','1:3:0','1:1:1','2:1:0'],en:['1:2:1','1:3:0','1:1:1','2:1:0']},answer:2},
+    {q:{ar:'حرارة تقديم الكابتشينو المثالية؟',en:'Ideal serving temperature for cappuccino?'},options:{ar:['50-55°C','60-65°C','70-75°C','80-85°C'],en:['50-55°C','60-65°C','70-75°C','80-85°C']},answer:1}
+  ],
+  references:[
+    'Hoffmann, J. (2018). The World Atlas of Coffee. 2nd ed. London: Mitchell Beazley.',
+    'Illy, A., & Viani, R. (2005). Espresso Coffee: The Science of Quality. 2nd ed. London: Elsevier Academic Press.',
+    'Rao, S. (2017). The Professional Barista\'s Handbook. 2nd ed. Scott Rao.'
+  ]
+});
+
+defDrink('latte',{
+  id:'latte',name:{ar:'لاتيه',en:'Latte'},
+  classification:{category:__({ar:'مشروبات إسبريسو بالحليب',en:'Espresso Milk Drinks'}),temp:__({ar:'ساخن',en:'Hot'}),milk:true,base:__({ar:'إسبريسو',en:'Espresso'})},
+  history:{ar:'"لاتيه" اختصار "كافيه لاتيه" — إيطالية تعني "قهوة بالحليب". في إيطاليا، يُشرب في المنزل صباحاً. لكن شكل "اللاتيه الأمريكي" — كوب كبير من الحليب المبخر مع إسبريسو — وُلد في أمريكا بفضل ستاربكس في الثمانينيات. بيضة اللاتيه أرت (Latte Art) بدأت في سياتل في التسعينيات مع ديفيد شومر وبدأت كرة الثلج.',en:'"Latte" is short for "Caffè Latte" — Italian for "coffee with milk". In Italy, it is a home breakfast drink. But the "American Latte" form — large cup of steamed milk with espresso — was born in America thanks to Starbucks in the 1980s. Latte Art began in Seattle in the 1990s with David Schomer and started the worldwide trend.'},
+  description:{ar:'اللاتيه: جرعة إسبريسو + حليب مبخر بطبقة رقيقة من الرغوة. يختلف عن الكابتشينو بكمية حليب أكبر ورغوة أقل. يُقدّم في كوب 240-300ml. قمة اللاتيه أرت — رسم على الرغوة بالحليب — أصبحت أساس مسابقات الباريستا.',en:'Latte: espresso shot + steamed milk with a thin layer of microfoam. Differs from cappuccino in larger milk volume and thinner foam. Served in a 240-300ml cup. Latte art — drawing on foam with milk — has become fundamental in barista competitions.'},
+  flavorProfile:{sweetness:{ar:'عالية',en:'High'},acidity:{ar:'منخفضة جداً',en:'Very Low'},bitterness:{ar:'منخفضة',en:'Low'},body:{ar:'ناعم',en:'Smooth'},aroma:{ar:'حليبي',en:'Milky'},aftertaste:{ar:'معتدل',en:'Moderate'}},
+  recipe:{dose:'18g إسبريسو (مزدوج)',yield:'36g إسبريسو + 200ml حليب',ratio:'1:6 (إسبريسو:حليب)',waterTemp:'93°C',pressure:'9 bar',time:'25-30 ثانية إسبريسو + 30 ثانية تبخير حليب',grind:__({ar:'ناعم (للإسبريسو)',en:'Fine (for espresso)'}),servingTemp:'60-65°C',cupSize:'240-300ml',milkTemp:'60-65°C',foamTexture:__({ar:'رغوة ناعمة رقيقة 3-5mm',en:'Thin microfoam 3-5mm'})},
+  procedure:{ar:'1. حضّر شوت إسبريسو مزدوج في كوب لاتيه.\n2. اسكب حليب بارد في إبريق كبير (500-600ml).\n3. بخر الحليب — بداية الصوت الخفيف لـ 2-3 ثوانٍ.\n4. استمر في التسخين حتى 60-65°C.\n5. امسح فوهة البخاخ.\n6. صب الحليب من ارتفاع 15-20cm.\n7. اخفض الإبريق قرب النهاية لرسم اللاتيه أرت.\n8. هز الإبريق برفق أثناء الصب.',en:'1. Pull a double espresso into a latte cup.\n2. Pour cold milk into a large pitcher (500-600ml).\n3. Steam milk — gentle hissing for 2-3 seconds.\n4. Continue heating to 60-65°C.\n5. Wipe the steam wand.\n6. Pour milk from 15-20cm height.\n7. Lower pitcher near the end for latte art.\n8. Gently shake pitcher while pouring.'},
+  baristaTips:{ar:['اللاتيه أرت يحتاج رغوة سائلة — لا تجعلها جافة','استخدم إبريق ذو فوهة حادة للرسم','حرك الحليب بحركة دائرية قبل الصب لتوحيد القوام'],en:['Latte art needs liquid foam — do not dry it out','Use a pitcher with a sharp spout for pouring','Swirl milk before pouring to unify texture']},
+  commonMistakes:{ar:['حليب ساخن جداً >70°C يفسد الطعم والرغوة','رغوة سميكة جداً — تشبه الكابتشينو','نسبة قهوة:حليب غير صحيحة'],en:['Milk too hot >70°C ruins taste and foam','Foam too thick — like a cappuccino','Wrong coffee-to-milk ratio']},
+  fixes:{ar:['راقب حرارة الحليب ولا تتجاوز 65°C','بخر لمدة أقصر للهواء','استخدم 18g إسبريسو لكل 200ml حليب'],en:['Watch milk temperature, do not exceed 65°C','Steam-air for less time','Use 18g espresso per 200ml milk']},
+  recommendedBeans:{origin:{ar:'برازيل أو غواتيمالا أو بلند إسبريسو ناعم',en:'Brazil or Guatemala or smooth espresso blend'},process:{ar:'طبيعية أو مغسولة',en:'Natural or Washed'},roast:{ar:'متوسطة',en:'Medium'}},
+  foodPairing:{ar:'الفطائر، الوافل، الجرانولا، الفواكه الطازجة — يناسب الإفطار.',en:'Pancakes, waffles, granola, fresh fruit — a breakfast favourite.'},
+  variations:{ar:'• Iced Latte: إسبريسو فوق ثلج + حليب بارد.\n• Chai Latte: شاي تشاي + حليب مبخر.\n• Matcha Latte: ماتشا + حليب مبخر.',en:'• Iced Latte: Espresso over ice + cold milk.\n• Chai Latte: Chai tea + steamed milk.\n• Matcha Latte: Matcha + steamed milk.'},
+  funFacts:{ar:['اللاتيه هو المشروب الأكثر طلباً في مقاهي العالم','أكبر لاتيه أرت بالعالم كان 12 متراً في بكين','ستاربكس تبيع 4 مليارات كوب لاتيه سنوياً'],en:['Latte is the most ordered drink in coffee shops worldwide','Largest latte art was 12 meters in Beijing','Starbucks sells 4 billion lattes annually']},
+  questions:[
+    {q:{ar:'الفرق الرئيسي بين اللاتيه والكابتشينو؟',en:'Main difference between latte and cappuccino?'},options:{ar:['اللاتيه رغوة أكثر','اللاتيه حليب أكثر ورغوة أقل','الكابتشينو حليب أكثر','لا فرق'],en:['Latte has more foam','Latte has more milk and less foam','Cappuccino has more milk','No difference']},answer:1},
+    {q:{ar:'أين بدأت اللاتيه أرت؟',en:'Where did latte art originate?'},options:{ar:['إيطاليا','فرنسا','سياتل','اليابان'],en:['Italy','France','Seattle','Japan']},answer:2}
+  ],
+  references:[
+    'Hoffmann, J. (2018). The World Atlas of Coffee. 2nd ed. London: Mitchell Beazley.',
+    'Rao, S. (2017). The Professional Barista\'s Handbook. 2nd ed. Scott Rao.',
+    'Schomer, D. (2004). Espresso Coffee: Professional Techniques. Seattle: Espresso Vivace.'
+  ]
+});
+
+defDrink('flat-white',{
+  id:'flat-white',name:{ar:'فلات وايت',en:'Flat White'},
+  classification:{category:__({ar:'مشروبات إسبريسو بالحليب',en:'Espresso Milk Drinks'}),temp:__({ar:'ساخن',en:'Hot'}),milk:true,base:__({ar:'إسبريسو',en:'Espresso'})},
+  history:{ar:'الفلات وايت — نقاش أسترالي-نيوزيلندي دائم على من اخترعه. نيوزيلندا تدّعي أن ديريك تاونسند (Derek Townsend) في مقهى "Coffee Bar" بمدينة ويلينغتون عام 1984. أستراليا تدّعي آلان بريستون (Alan Preston) في مقهى "Moors Espresso Bar" بسيدني عام 1985. انتشر عالمياً في 2010 بفضل ستاربكس بعد ضغط من المستهلكين الأستراليين.',en:'Flat white — an ongoing Australia-New Zealand debate on who invented it. New Zealand claims Derek Townsend at "Coffee Bar" in Wellington, 1984. Australia claims Alan Preston at "Moors Espresso Bar" in Sydney, 1985. It spread globally in 2010 thanks to Starbucks after pressure from Australian consumers.'},
+  description:{ar:'إسبريسو مزدوج (ريستريتو غالباً) + حليب مبخر بميكروفوم ناعم جداً — رغوة أقل وأكثر كريمية من الكابتشينو واللاتيه. سطحه "مسطح" (Flat) — لا رغوة جافة بارزة. يُقدّم في كوب 160-200ml. قوة القهوة أكثر وضوحاً.',en:'Double espresso (often ristretto) + steamed milk with very fine microfoam — less foam and more velvety than cappuccino and latte. Its surface is "flat" — no protruding dry foam. Served in a 160-200ml cup. Coffee flavour is more pronounced.'},
+  flavorProfile:{sweetness:{ar:'عالية',en:'High'},acidity:{ar:'منخفضة-متوسطة',en:'Low-Medium'},bitterness:{ar:'منخفضة',en:'Low'},body:{ar:'حريري',en:'Silky'},aroma:{ar:'قهوة وحليب بمزيج ناعم',en:'Coffee-milk harmony'},aftertaste:{ar:'نظيف',en:'Clean'}},
+  recipe:{dose:'18-20g إسبريسو (مزدوج ريستريتو)',yield:'20-22g إسبريسو + 120-140ml حليب',ratio:'1:7',waterTemp:'93°C',pressure:'9 bar',time:'25-30 ثانية إسبريسو',grind:__({ar:'ناعم جداً (للريستريتو)',en:'Very Fine (for ristretto)'}),servingTemp:'58-62°C',cupSize:'160-200ml',milkTemp:'58-62°C',foamTexture:__({ar:'ميكروفوم سائل ناعم جداً — لا رغوة جافة',en:'Very fine liquid microfoam — no dry foam'})},
+  procedure:{ar:'1. حضّر شوت ريستريتو (20-22g من 18-20g) في كوب.\n2. بخر الحليب — أدر الهواء لـ 2-3 ثوانٍ فقط.\n3. سخن الحليب إلى 58-62°C (أبرد من الكابتشينو).\n4. أمسك الإبريق وحركه بحركة دائرية لتلميع الرغوة.\n5. صب الحليب من ارتفاع منخفض — اختراق الرغوة بالسائل.\n6. لا تستخدم ملعقة لحجز الرغوة.\n7. أنهِ بصبعة واحدة على السطح.\n8. قدّم فوراً.',en:'1. Pull a ristretto shot (20-22g from 18-20g) into a cup.\n2. Steam milk — aerate for only 2-3 seconds.\n3. Heat milk to 58-62°C (cooler than cappuccino).\n4. Swirl pitcher in circular motion to polish foam.\n5. Pour milk from low height — penetrate foam with liquid.\n6. Do not use a spoon to hold back foam.\n7. Finish with a single dot on the surface.\n8. Serve immediately.'},
+  baristaTips:{ar:['استخدم ريستريتو بدل إسبريسو عادي — حلاوة أعلى ومرارة أقل','الحليب يجب أن يكون "مطلياً" (Glossy) — كالطلاء','حرارة التقديم أقل من اللاتيه — 58-62°C'],en:['Use ristretto instead of normale — more sweetness, less bitterness','Milk should be glossy — like paint','Serving temperature lower than latte — 58-62°C']},
+  commonMistakes:{ar:['رغوة سميكة — الفلات وايت مسطح','حرارة عالية جداً >65°C','حليب قليل الدسم — رغوة خشنة'],en:['Thick foam — flat white should be flat','Temperature too high >65°C','Low-fat milk — rough foam']},
+  fixes:{ar:['أدر هواء أقل أثناء التبخير','ابخر لـ 58-62°C فقط','استخدم حليب كامل الدسم'],en:['Aerate less','Steam to only 58-62°C','Use whole milk']},
+  recommendedBeans:{origin:{ar:'إثيوبيا + برازيل — مزيج ناعم مع حلاوة',en:'Ethiopia + Brazil — sweet, smooth blend'},process:{ar:'مغسولة',en:'Washed'},roast:{ar:'متوسطة',en:'Medium'}},
+  foodPairing:{ar:'يناسب الحلويات غير الحلوة جداً — تيراميسو، كريم بروليه، كعكة الجبن.',en:'Pairs well with not-too-sweet desserts — tiramisu, crème brûlée, cheesecake.'},
+  variations:{ar:'• Flat White مزدوج: 40-44g إسبريسو مع 200ml حليب.\n• Iced Flat White: إسبريسو + حليب بارد فوق ثلج.\n• Honey Flat White: عسل في القاع قبل الإسبريسو.',en:'• Double Flat White: 40-44g espresso with 200ml milk.\n• Iced Flat White: Espresso + cold milk over ice.\n• Honey Flat White: Honey at the bottom before espresso.'},
+  funFacts:{ar:['ستاربكس أضافت الفلات وايت عالمياً 2015 بعد عريضة إلكترونية','الاسم يأتي من سطحه المسطح — لا رغوة جافة','في أستراليا، الفلات وايت هو المشروب الوطني للقهوة'],en:['Starbucks added flat white globally in 2015 after an online petition','The name comes from its flat surface — no dry foam','In Australia, flat white is the national coffee drink']},
+  questions:[
+    {q:{ar:'ما الفرق بين الفلات وايت واللاتيه؟',en:'Difference between flat white and latte?'},options:{ar:['فلات وايت حليب أكثر','فلات وايت رغوة أقل وأكثر كريمية','لاتيه قهوة أكثر','لا فرق'],en:['Flat white has more milk','Flat white has less foam, more velvety','Latte has more coffee','No difference']},answer:1},
+    {q:{ar:'ما نوع الإسبريسو المثالي للفلات وايت؟',en:'Ideal espresso type for flat white?'},options:{ar:['لونجو','ريستريتو','نورمال','دوبيو'],en:['Lungo','Ristretto','Normale','Doppio']},answer:1}
+  ],
+  references:[
+    'Hoffmann, J. (2018). The World Atlas of Coffee. 2nd ed. London: Mitchell Beazley.',
+    'Rao, S. (2017). The Professional Barista\'s Handbook. 2nd ed. Scott Rao.',
+    'Perfect Daily Grind. (2020). The History of the Flat White: Australia vs New Zealand.'
+  ]
+});
+
+defDrink('americano',{
+  id:'americano',name:{ar:'أمريكانو',en:'Americano'},
+  classification:{category:__({ar:'قهوة سوداء',en:'Black Coffee'}),temp:__({ar:'ساخن',en:'Hot'}),milk:false,base:__({ar:'إسبريسو',en:'Espresso'})},
+  history:{ar:'خلال الحرب العالمية الثانية، الجنود الأمريكيون في إيطاليا وجدوا الإسبريسو قوياً جداً. كانوا يضيفون الماء الساخن لتخفيفه — فولد "كافيه أمريكانو". الإيطاليون أطلقوا عليه اسماً ساخراً: "قهوة الأمريكان". في اليابان، يُعرف بمسمى مختلف.',en:'During WWII, American soldiers in Italy found espresso too strong. They added hot water to dilute it — thus "Caffè Americano" was born. Italians called it mockingly: "American coffee". In Japan, it is known by a different name.'},
+  description:{ar:'إسبريسو يُخفف بالماء الساخن. يحافظ على نكهة الإسبريسو لكن بقوام أخف — يشبه قهوة الفلتر في القوة. نسبة التخفيف: 1:2 إلى 1:4 (إسبريسو:ماء). Long Black (أسترالاسيا): يُضاف الإسبريسو فوق الماء — يحافظ على الكريما.',en:'Espresso diluted with hot water. Retains espresso flavour but in a lighter body — similar to filter coffee strength. Dilution ratio: 1:2 to 1:4 (espresso:water). Long Black (Australasia): espresso poured over water — preserves crema.'},
+  flavorProfile:{sweetness:{ar:'منخفضة-متوسطة',en:'Low-Medium'},acidity:{ar:'متوسطة',en:'Medium'},bitterness:{ar:'متوسطة',en:'Medium'},body:{ar:'خفيف',en:'Light'},aroma:{ar:'مشابه للإسبريسو لكن أخف',en:'Espresso-like but lighter'},aftertaste:{ar:'قصير-متوسط',en:'Short-Medium'}},
+  recipe:{dose:'18g',yield:'36g إسبريسو + 120-150ml ماء ساخن',ratio:'1:4-1:6',waterTemp:'93°C',pressure:'9 bar',time:'25-30 ثانية إسبريسو',grind:__({ar:'ناعم',en:'Fine'}),servingTemp:'65-75°C',cupSize:'180-240ml'},
+  procedure:{ar:'للأمريكانو:\n1. سخن الكوب بماء ساخن.\n2. أضف 120-150ml ماء ساخن (75-80°C) في الكوب.\n3. حضّر شوت إسبريسو مزدوج (36g).\n4. اسكب الإسبريسو في الماء.\n\nللـ Long Black:\n1. حضّر شوت إسبريسو في فنجان.\n2. سخن 120-150ml ماء.\n3. اسكب الماء فوق الإسبريسو ببطء.',en:'For Americano:\n1. Warm the cup with hot water.\n2. Add 120-150ml hot water (75-80°C) to the cup.\n3. Pull a double espresso shot (36g).\n4. Pour espresso into the water.\n\nFor Long Black:\n1. Pull espresso into a cup.\n2. Heat 120-150ml water.\n3. Pour water over espresso slowly.'},
+  baristaTips:{ar:['اسكب الإسبريسو على الماء وليس العكس لتحافظ على الكريما','استخدم ماء بدرجة 75-80°C لا تغلي','Long Black: الإسبريسو أولاً ثم الماء يحافظ على الكريما أطول'],en:['Pour espresso over water not vice-versa to preserve crema','Use water at 75-80°C, not boiling','Long Black: espresso first then water keeps crema longer']},
+  commonMistakes:{ar:['ماء مغلي يحرق الإسبريسو','نسبة تخفيف خاطئة','عدم تسخين الكوب'],en:['Boiling water burns the espresso','Wrong dilution ratio','Not warming the cup']},
+  fixes:{ar:['استخدم ماء 75-80°C','التزم بنسبة 1:3','سخن الكوب دائماً'],en:['Use 75-80°C water','Stick to 1:3 ratio','Always warm the cup']},
+  recommendedBeans:{origin:{ar:'أي بلند إسبريسو متوازن',en:'Any balanced espresso blend'},process:{ar:'مغسولة أو طبيعية',en:'Washed or Natural'},roast:{ar:'متوسطة',en:'Medium'}},
+  foodPairing:{ar:'يُشرب طوال اليوم — يناسب الفطور الخفيف والغداء.',en:'An all-day drink — suits light breakfast and lunch.'},
+  variations:{ar:'• Long Black: أسترالاسيا — ماء فوق إسبريسو.\n• Iced Americano: إسبريسو فوق ثلج + ماء بارد.\n• Red Eye: قهوة فلتر + شوت إسبريسو.',en:'• Long Black: Australia/NZ — water over espresso.\n• Iced Americano: Espresso over ice + cold water.\n• Red Eye: Filter coffee + espresso shot.'},
+  funFacts:{ar:['الأمريكانو هو المشروب المفضل لجيمس بوند في رواية "From Russia with Love"','في إيطاليا، لا يُطلب أمريكانو — يُطلب "إسبريسو مع ماء ساخن على الجانب"','Long Black هو نفسه أمريكانو لكن بترتيب صب مختلف'],en:['Americano is James Bond\'s preferred drink in "From Russia with Love"','In Italy, Americano is not ordered — ask for "espresso with hot water on the side"','Long Black is the same but with different pour order']},
+  questions:[
+    {q:{ar:'الفرق بين Americano و Long Black؟',en:'Difference between Americano and Long Black?'},options:{ar:['Long Black إسبريسو أقل','Long Black: ماء يُسكب فوق إسبريسو','أمريكانو حليب','لا فرق'],en:['Long Black has less espresso','Long Black: water poured over espresso','Americano has milk','No difference']},answer:1},
+    {q:{ar:'لماذا أضاف الجنود ماء للإسبريسو؟',en:'Why did soldiers add water to espresso?'},options:{ar:['لتبريده','لتخفيفه','للنكهة','لزيادة الكافيين'],en:['To cool it','To dilute it','For flavor','For more caffeine']},answer:1}
+  ],
+  references:[
+    'Hoffmann, J. (2018). The World Atlas of Coffee. 2nd ed. London: Mitchell Beazley.',
+    'Pendergrast, M. (2010). Uncommon Grounds: The History of Coffee and How It Transformed Our World. New York: Basic Books.'
+  ]
+});
+
+defDrink('mocha',{
+  id:'mocha',name:{ar:'موكا',en:'Mocha'},
+  classification:{category:{ar:'مشروبات إسبريسو بالحليب',en:'Espresso Milk Drinks'},temp:{ar:'ساخن',en:'Hot'},milk:true,base:{ar:'إسبريسو',en:'Espresso'}},
+  history:{ar:'نشأت "كافيه موكا" في إيطاليا مستوحاة من ميناء المخا (Mocha) اليمني — الميناء التاريخي لتصدير البن. حوالي القرن السابع عشر، حوّل الأوروبيون اسم "موكا" ليعني القهوة بالشوكولاتة. الكابتشينو بالشوكولاتة أصبح "موكا". المقهى "كافيه موكا" في فيينا (1683) كان أول من جمع الشوكولاتة مع القهوة.',en:'"Caffè Mocha" originated in Italy, inspired by the Yemeni port of Mocha — the historic coffee export harbor. Around the 17th century, Europeans transformed "Mocha" to mean coffee with chocolate. A cappuccino with chocolate became "Mocha". The "Caffè Mocha" in Vienna (1683) was the first to combine chocolate with coffee.'},
+  description:{ar:'لاتيه مع شوكولاتة — إسبريسو + حليب مبخر + صوص شوكولاتة أو كاكاو. يُزيّن بالكريما المخفوقة ورشة كاكاو. حلاوته أعلى من اللاتيه.',en:'Latte with chocolate — espresso + steamed milk + chocolate sauce or cocoa. Topped with whipped cream and cocoa powder. Sweeter than a latte.'},
+  flavorProfile:{sweetness:{ar:'عالية جداً',en:'Very High'},acidity:{ar:'منخفضة',en:'Low'},bitterness:{ar:'منخفضة',en:'Low'},body:{ar:'كامل',en:'Full'},aroma:{ar:'شوكولاتة وقهوة',en:'Chocolate and Coffee'},aftertaste:{ar:'حلو',en:'Sweet'}},
+  recipe:{dose:'18g إسبريسو + 2 ملعقة صوص شوكولاتة',yield:'36g إسبريسو + 150ml حليب',ratio:'1:4',waterTemp:'93°C',pressure:'9 bar',time:'25-30 ثانية',grind:{ar:'ناعم',en:'Fine'},servingTemp:'60-65°C',cupSize:'200-280ml',milkTemp:'60-65°C',foamTexture:{ar:'رغوة ناعمة',en:'Soft microfoam'}},
+  procedure:{ar:'1. ضع صوص الشوكولاتة في قاع الكوب.\n2. حضّر شوت إسبريسو مزدوج واسكبه.\n3. قلّب الشوكولاتة مع الإسبريسو.\n4. بخر الحليب إلى 60-65°C.\n5. اسكب الحليب على الخليط.\n6. زيّن بالكريما المخفوقة ورشة كاكاو.',en:'1. Place chocolate sauce at the bottom of the cup.\n2. Pull a double espresso and pour.\n3. Stir chocolate with espresso.\n4. Steam milk to 60-65°C.\n5. Pour milk over the mixture.\n6. Top with whipped cream and cocoa powder.'},
+  baristaTips:{ar:['استخدم صوص شوكولاتة عالي الجودة','قلّب جيداً قبل إضافة الحليب','جرب شوكولاتة داكنة 70% لتوازن الحلاوة'],en:['Use high-quality chocolate sauce','Stir well before adding milk','Try 70% dark chocolate for balanced sweetness']},
+  commonMistakes:{ar:['شوكولاتة رخيصة — طعم صناعي','عدم تقليب الشوكولاتة جيداً','أكثر من اللازم من الكريما'],en:['Cheap chocolate — artificial taste','Not stirring chocolate well','Too much whipped cream']},
+  fixes:{ar:['استخدم بودرة كاكاو عالية الجودة','قلّب مع الإسبريسو حتى تذوب','استخدم كريما طازجة'],en:['Use high-quality cocoa powder','Stir with espresso until dissolved','Use fresh cream']},
+  recommendedBeans:{origin:{ar:'برازيل أو كولومبيا',en:'Brazil or Colombia'},process:{ar:'طبيعية',en:'Natural'},roast:{ar:'متوسطة-غامقة',en:'Medium-Dark'}},
+  foodPairing:{ar:'الحلويات بالشوكولاتة — براونيز، تيراميسو، كعكة الشوكولاتة.',en:'Chocolate desserts — brownies, tiramisu, chocolate cake.'},
+  variations:{ar:'• Mocha Bianca: شوكولاتة بيضاء.\n• Iced Mocha: بارد مع ثلج.\n• Mocha Mint: يضاف نعناع.',en:'• Mocha Bianca: White chocolate.\n• Iced Mocha: Cold with ice.\n• Mocha Mint: With mint.'},
+  funFacts:{ar:['ميناء المخا اليمني أعطى اسمه للمشروب','الشوكولاتة تحتوي على ثيوبرومين — منبه مثل الكافيين','أكبر كوب موكا بالعالم كان 1,000 لتر'],en:['Yemen\'s Mocha port gave the drink its name','Chocolate contains theobromine — a stimulant like caffeine','Largest mocha cup was 1,000 liters']},
+  questions:[
+    {q:{ar:'ماذا تُضاف للموكا بالإضافة للإسبريسو والحليب؟',en:'What is added to mocha besides espresso and milk?'},options:{ar:['سكر','شوكولاتة','فانيليا','عسل'],en:['Sugar','Chocolate','Vanilla','Honey']},answer:1}
+  ],
+  references:['Hoffmann, J. (2018). The World Atlas of Coffee. London: Mitchell Beazley.','Pendergrast, M. (2010). Uncommon Grounds. New York: Basic Books.']
+});
+
+defDrink('macchiato',{
+  id:'macchiato',name:{ar:'ماكياتو',en:'Macchiato'},
+  classification:{category:{ar:'مشروبات إسبريسو',en:'Espresso Drinks'},temp:{ar:'ساخن',en:'Hot'},milk:true,base:{ar:'إسبريسو',en:'Espresso'}},
+  history:{ar:'"ماكياتو" إيطالية تعني "ملطّخ" أو "ملوّن". في إيطاليا، طلب الباريستا إسبريسو مع "بقعة" حليب — لتمييزه عن الإسبريسو العادي. ستاربكس شوّهت المعنى بلفنتي ماكياتو — حليب ساخن مع رشة إسبريسو (المشروب المعكوس).',en:'"Macchiato" is Italian for "stained" or "marked". In Italy, baristas would serve espresso with a "stain" of milk to differentiate it from straight espresso. Starbucks reversed it with the Latte Macchiato — steamed milk with a splash of espresso.'},
+  description:{ar:'إسبريسو مع قليل جداً من الحليب — "ملطّخ" بالحليب فقط. يُقدّم في كوب إسبريسو صغير (60ml). رغوة خفيفة فوق الإسبريسو. قهوة قوية مع لمسة حليب.',en:'Espresso with a very small amount of milk — just "stained" with milk. Served in a small espresso cup (60ml). Light foam on top. Strong coffee with a touch of milk.'},
+  flavorProfile:{sweetness:{ar:'منخفضة',en:'Low'},acidity:{ar:'منخفضة-متوسطة',en:'Low-Medium'},bitterness:{ar:'متوسطة',en:'Medium'},body:{ar:'كامل',en:'Full'},aroma:{ar:'قهوة قوية',en:'Strong coffee'},aftertaste:{ar:'طويل',en:'Long'}},
+  recipe:{dose:'18g',yield:'36g إسبريسو + 1 ملعقة صغيرة رغوة',ratio:'1:2',waterTemp:'93°C',pressure:'9 bar',time:'25-30 ثانية',grind:{ar:'ناعم',en:'Fine'},servingTemp:'65-70°C',cupSize:'60ml'},
+  procedure:{ar:'1. حضّر شوت إسبريسو.\n2. بخر كمية صغيرة حليب.\n3. خذ ملعقة صغيرة من الرغوة.\n4. ضع الرغوة فوق الإسبريسو.',en:'1. Pull an espresso shot.\n2. Steam a small amount of milk.\n3. Take a teaspoon of foam.\n4. Place the foam on top of the espresso.'},
+  baristaTips:{ar:['استخدم إسبريسو قوي عالي الجودة','كمية الحليب ضئيلة جداً — لا تغرق الإسبريسو','قدّم في كوب إسبريسو'],en:['Use high-quality strong espresso','Minimal milk — do not drown the espresso','Serve in an espresso cup']},
+  commonMistakes:{ar:['حليب أكثر من اللازم — يصبح لاتيه صغير','رغوة جافة','عدم تمييزه عن الإسبريسو'],en:['Too much milk — becomes a small latte','Dry foam','Not differentiating from espresso']},
+  fixes:{ar:['نصف ملعقة رغوة فقط','استخدم حليب طازج','قدّمه في كوب إسبريسو مع صحن'],en:['Just half a spoon of foam','Use fresh milk','Serve in an espresso cup with saucer']},
+  recommendedBeans:{origin:{ar:'إثيوبيا أو أي بن عالي الجودة',en:'Ethiopia or any high-quality coffee'},process:{ar:'مغسولة',en:'Washed'},roast:{ar:'خفيفة-متوسطة',en:'Light-Medium'}},
+  foodPairing:{ar:'يُشرب بعد العشاء — يناسب الحلويات الداكنة.',en:'An after-dinner drink — pairs with dark desserts.'},
+  variations:{ar:'• Latte Macchiato: حليب ساخن مع إسبريسو يُسكب أخيراً.\n• Caramel Macchiato: ستاربكس — فانيليا + حليب + إسبريسو + كراميل.',en:'• Latte Macchiato: Steamed milk with espresso poured last.\n• Caramel Macchiato: Starbucks style — vanilla + milk + espresso + caramel.'},
+  funFacts:{ar:['الماكياتو يعني "ملطّخ" — الإسبريسو ملطّخ بالحليب','ستاربكس غيرت معنى الكلمة تماماً','في إيطاليا، هو مشروب بعد الظهيرة'],en:['Macchiato means "stained" — espresso stained with milk','Starbucks completely flipped the meaning','In Italy, it is an afternoon drink']},
+  questions:[
+    {q:{ar:'ماذا تعني كلمة Macchiato بالإيطالية؟',en:'What does Macchiato mean in Italian?'},options:{ar:['كبير','ملطّخ','مثلج','حلو'],en:['Large','Stained','Iced','Sweet']},answer:1}
+  ],
+  references:['Hoffmann, J. (2018). The World Atlas of Coffee. London: Mitchell Beazley.']
+});
+
+defDrink('affogato',{
+  id:'affogato',name:{ar:'أفوجاتو',en:'Affogato'},
+  classification:{category:{ar:'حلويات القهوة',en:'Coffee Desserts'},temp:{ar:'بارد',en:'Cold'},milk:true,base:{ar:'إسبريسو',en:'Espresso'}},
+  history:{ar:'أفوجاتو إيطالية تعني "مغرق" — الإسبريسو يُغرق فيه آيس كريم الفانيليا. ظهر في إيطاليا في الخمسينيات كحلوى بسيطة وأنيقة. أصبح مشهوراً كمشروب-حلوى بعد العشاء.',en:'Affogato is Italian for "drowned" — espresso is poured over vanilla ice cream. Originated in Italy in the 1950s as a simple yet elegant dessert. Became popular as an after-dinner coffee-dessert.'},
+  description:{ar:'ملعقة آيس كريم فانيليا تُغمر بشوت إسبريسو ساخن. التباين بين البارد والحار، الحلو والمر — تجربة حسية فريدة.',en:'A scoop of vanilla ice cream drowned in hot espresso. The contrast of cold and hot, sweet and bitter — a unique sensory experience.'},
+  flavorProfile:{sweetness:{ar:'عالية',en:'High'},acidity:{ar:'منخفضة',en:'Low'},bitterness:{ar:'متوسطة',en:'Medium'},body:{ar:'كريمي',en:'Creamy'},aroma:{ar:'فانيليا وقهوة',en:'Vanilla and coffee'},aftertaste:{ar:'حلو-مر',en:'Bittersweet'}},
+  recipe:{dose:'18g',yield:'36g إسبريسو + 1 مغرفة آيس كريم',ratio:'-',waterTemp:'93°C',pressure:'9 bar',time:'25-30 ثانية إسبريسو',grind:{ar:'ناعم',en:'Fine'},servingTemp:'-',cupSize:'120ml'},
+  procedure:{ar:'1. ضع مغرفة آيس كريم فانيليا في كوب.\n2. حضّر شوت إسبريسو ساخن.\n3. اسكب الإسبريسو الساخن فوق الآيس كريم.\n4. قدم فوراً.',en:'1. Place a scoop of vanilla ice cream in a glass.\n2. Pull a hot espresso shot.\n3. Pour hot espresso over the ice cream.\n4. Serve immediately.'},
+  baristaTips:{ar:['استخدم آيس كريم فانيليا عالي الجودة','قدّم فوراً — الآيس كريم يذوب بسرعة','التباين بين الحار والبارد أساسي'],en:['Use high-quality vanilla ice cream','Serve immediately — ice cream melts fast','The hot-cold contrast is essential']},
+  commonMistakes:{ar:['إسبريسو بارد','آيس كريم رديء','آيس كريم مثلج جداً من الفريزر'],en:['Espresso not hot enough','Low-quality ice cream','Ice cream too frozen']},
+  fixes:{ar:['استخدم إسبريسو ساخن جداً','اختر آيس كريم فانيليا 100%','أخرجه من الفريزر قبل 3 دقائق'],en:['Use very hot espresso','Choose 100% vanilla ice cream','Let it sit 3 minutes out of freezer']},
+  recommendedBeans:{origin:{ar:'برازيل',en:'Brazil'},process:{ar:'طبيعية',en:'Natural'},roast:{ar:'متوسطة-غامقة',en:'Medium-Dark'}},
+  foodPairing:{ar:'بمفرده — حلوى مثالية بعد العشاء.',en:'On its own — perfect after-dinner dessert.'},
+  variations:{ar:'• Affogato al Caffè Corretto: مع ليكيور.\n• Vegan Affogato: آيس كريم نباتي.\n• Affogato with Chocolate: كاكاو أو شوكولاتة.',en:'• Affogato al Caffè Corretto: With liqueur.\n• Vegan Affogato: Plant-based ice cream.\n• Chocolate Affogato: With cocoa or chocolate.'},
+  funFacts:{ar:['الأفوجاتو ليس مشروباً — هو حلوى','في إيطاليا، لا يُطلب بعد الساعة 11 صباحاً','أفضل آيس كريم للأفوجاتو: جيلاتو إيطالي'],en:['Affogato is not a drink — it is a dessert','In Italy, not ordered after 11 AM','Best ice cream for affogato: Italian gelato']},
+  questions:[
+    {q:{ar:'ماذا تعني Affogato بالإيطالية؟',en:'What does Affogato mean in Italian?'},options:{ar:['مجمّد','مغرق','حلو','ساخن'],en:['Frozen','Drowned','Sweet','Hot']},answer:1}
+  ],
+  references:['Hoffmann, J. (2018). The World Atlas of Coffee. London: Mitchell Beazley.']
+});
+
+// ----- B3: Advanced Brewing Drinks -----
+defDrink('iced-latte',{
+  id:'iced-latte',name:{ar:'アイスラテ (آيس لاتيه)',en:'Iced Latte'},
+  classification:{category:{ar:'مشروبات باردة',en:'Cold Drinks'},temp:{ar:'بارد',en:'Cold'},milk:true,base:{ar:'إسبريسو',en:'Espresso'}},
+  history:{ar:'الآيس لاتيه بدأ في اليابان في الستينيات — حيث أضاف الباريستا إسبريسو فوق ثلج مع حليب بارد. انتشر عالمياً في الثمانينيات والتسعينيات مع توسع المقاهي.',en:'Iced latte started in Japan in the 1960s — baristas poured espresso over ice with cold milk. It spread globally in the 1980s-90s with cafe culture expansion.'},
+  description:{ar:'إسبريسو مزدوج يُسكب فوق ثلج + حليب بارد. لا تخفيف — الإسبريسو يبرد فوراً بفضل الثلج.',en:'Double espresso poured over ice + cold milk. No dilution — espresso cools instantly from the ice.'},
+  flavorProfile:{sweetness:{ar:'متوسطة',en:'Medium'},acidity:{ar:'متوسطة',en:'Medium'},bitterness:{ar:'منخفضة',en:'Low'},body:{ar:'خفيف',en:'Light'},aroma:{ar:'منعش',en:'Refreshing'},aftertaste:{ar:'نظيف',en:'Clean'}},
+  recipe:{dose:'18g',yield:'36g إسبريسو + 150ml حليب بارد + ثلج',ratio:'1:4',waterTemp:'93°C',pressure:'9 bar',time:'25-30 ثانية',grind:{ar:'ناعم',en:'Fine'},servingTemp:'4-8°C',cupSize:'300-400ml'},
+  procedure:{ar:'1. املأ الكوب بالثلج حتى أعلاه.\n2. أضف الحليب البارد حتى ¾ الكوب.\n3. حضّر شوت إسبريسو مزدوج.\n4. اسكب الإسبريسو فوق الثلج ببطء.',en:'1. Fill a glass with ice to the top.\n2. Add cold milk to ¾ full.\n3. Pull a double espresso.\n4. Pour espresso over ice slowly.'},
+  baristaTips:{ar:['اطحن أدق قليلاً — التبريد يقلل الإحساس بالحلاوة','استخدم مكعبات ثلج كبيرة — تذوب ببطء','قدّم في كوب زجاجي شفاف'],en:['Grind slightly finer — cold reduces perceived sweetness','Use large ice cubes — melt slower','Serve in a clear glass cup']},
+  commonMistakes:{ar:['ثلج يذوب ويخفف القهوة','نسبة حليب خاطئة','إسبريسو ساخن جداً يذيب الثلج'],en:['Ice melts and dilutes coffee','Wrong milk ratio','Espresso too hot melts ice too fast']},
+  fixes:{ar:['استخدم ثلج كبير','التزم بنسبة 1:4','بادر بالشرب سريعاً'],en:['Use large ice','Stick to 1:4 ratio','Drink quickly']},
+  recommendedBeans:{origin:{ar:'أي بلند إسبريسو',en:'Any espresso blend'},process:{ar:'مغسولة',en:'Washed'},roast:{ar:'متوسطة',en:'Medium'}},
+  foodPairing:{ar:'يناسب الصيف — الحلويات الخفيفة والسلطات.',en:'Perfect for summer — light desserts and salads.'},
+  variations:{ar:'• Iced vanilla latte: مع فانيليا.\n• Iced caramel latte: مع كراميل.\n• Iced matcha latte: بديل بدون قهوة.',en:'• Iced vanilla latte: With vanilla syrup.\n• Iced caramel latte: With caramel.\n• Iced matcha latte: Non-coffee alternative.'},
+  funFacts:{ar:['الآيس لاتيه هو أكثر مشروب بارد مبيعاً في العالم','في كوريا، شعبية الآيس لاتيه في الشتاء أيضاً!'],en:['Iced latte is the best-selling cold drink worldwide','In Korea, iced latte is popular even in winter!']},
+  questions:[
+    {q:{ar:'الفرق بين Iced Latte وIced Americano؟',en:'Difference between Iced Latte and Iced Americano?'},options:{ar:['أمريكانو بدون حليب','لاتيه بدون إسبريسو','نفس الشيء','أمريكانو حليب أكثر'],en:['Americano has no milk','Latte has no espresso','Same thing','Americano has more milk']},answer:0}
+  ],
+  references:['Hoffmann, J. (2018). The World Atlas of Coffee. London: Mitchell Beazley.']
+});
+
+defDrink('cortado',{
+  id:'cortado',name:{ar:'كورتادو',en:'Cortado'},
+  classification:{category:{ar:'مشروبات إسبريسو بالحليب',en:'Espresso Milk Drinks'},temp:{ar:'ساخن',en:'Hot'},milk:true,base:{ar:'إسبريسو',en:'Espresso'}},
+  history:{ar:'الكورتادو إسباني الأصل — من كلمة "Cortar" = يقطع. الحليب يقطع حموضة الإسبريسو. في إسبانيا والبرتغال وأمريكا اللاتينية — المشروب الأكثر شعبية بعد الظهر. نشأ في منطقة الباسك (Basque) شمال إسبانيا.',en:'Cortado is Spanish — from "Cortar" = to cut. The milk cuts the espresso\'s acidity. In Spain, Portugal, and Latin America — the most popular afternoon drink. Originated in the Basque region of Northern Spain.'},
+  description:{ar:'إسبريسو + حليب مبخر ساخن بنسبة 1:1 تقريباً. يُقدّم في كوب صغير زجاجي (150-200ml). لا رغوة — فقط حليب مبخر ناعم.',en:'Espresso + steamed hot milk in approximately 1:1 ratio. Served in a small glass cup (150-200ml). No foam — just steamed milk.'},
+  recipe:{dose:'18g',yield:'36g إسبريسو + 40-50ml حليب مبخر',ratio:'1:1.2',waterTemp:'93°C',pressure:'9 bar',time:'25-30 ثانية',grind:{ar:'ناعم',en:'Fine'},servingTemp:'60-65°C',cupSize:'150-200ml'},
+  procedure:{ar:'1. حضّر شوت إسبريسو مزدوج في كوب زجاجي صغير.\n2. بخر الحليب — تسخين فقط، لا رغوة.\n3. اسكب الحليب على الإسبريسو.\n4. يُشرب بدون سكر — الحليب يقطع الحموضة.',en:'1. Pull a double espresso in a small glass cup.\n2. Steam milk — heat only, no foaming.\n3. Pour milk over espresso.\n4. Drunk without sugar — milk cuts the acidity.'},
+  baristaTips:{ar:['لا رغوة — سخن الحليب فقط','استخدم حليب كامل الدسم','نسبة 1:1 — متساوية'],en:['No foam — just heat the milk','Use whole milk','1:1 ratio — equal parts']},
+  commonMistakes:{ar:['رغوة — الكورتادو بدون رغوة','حليب أكثر من اللازم','حرارة عالية جداً'],en:['Foam — cortado has no foam','Too much milk','Temperature too high']},
+  fixes:{ar:['سخن الحليب بدون إدخال هواء','التزم بنسبة 1:1','60-65°C'],en:['Heat milk without aeration','Stick to 1:1 ratio','60-65°C']},
+  recommendedBeans:{origin:{ar:'برازيل أو كوستاريكا',en:'Brazil or Costa Rica'},process:{ar:'مغسولة',en:'Washed'},roast:{ar:'متوسطة',en:'Medium'}},
+  foodPairing:{ar:'يناسب التاباس، الجبن الإسباني، التشوروز.',en:'Pairs with tapas, Spanish cheese, churros.'},
+  variations:{ar:'• Cortadito: كوباني — مع سكر.\n• Gibraltar: أمريكي — في كوب زجاجي ثقيل الجدار (Gibraltar).\n• Pingado: برتغالي — رشة حليب.',en:'• Cortadito: Cuban style — with sugar.\n• Gibraltar: American style — in a heavy glass (Gibraltar).\n• Pingado: Portuguese — a splash of milk.'},
+  funFacts:{ar:['الكورتادو هو المشروب القياسي لتحليل جودة الإسبريسو','جبل طارق (Gibraltar) هو اسم الكوب الزجاجي','في كوبا، يُحلى بالقهوة البنية (Sugar)'],en:['Cortado is the standard drink for espresso quality analysis','Gibraltar is the name of the glass','In Cuba, sweetened with raw sugar']},
+  questions:[
+    {q:{ar:'من أي لغة أتى اسم Cortado؟',en:'Which language does Cortado come from?'},options:{ar:['فرنسية','إسبانية','إيطالية','برتغالية'],en:['French','Spanish','Italian','Portuguese']},answer:1}
+  ],
+  references:['Hoffmann, J. (2018). The World Atlas of Coffee. London: Mitchell Beazley.']
+});
+
+defDrink('batch-brew',{
+  id:'batch-brew',name:{ar:'Batch Brew',en:'Batch Brew'},
+  classification:{category:{ar:'قهوة فلتر أمريكية',en:'American Filter Coffee'},temp:{ar:'ساخن',en:'Hot'},milk:false,base:{ar:'فلتر',en:'Filter'}},
+  history:{ar:'آلات الـ Batch Brewer (Fetco, Bunn, Curtis) ظهرت في أمريكا الخمسينيات للمقاصف والمطاعم. اليوم، تُستخدم في 90% من مقاهي الموجة الثالثة للإنتاج الكمي دون خسارة الجودة. SCA تمنح شهادة Golden Cup لآلات الـ Batch Brew الممتازة.',en:'Batch brewers (Fetco, Bunn, Curtis) appeared in 1950s America for canteens and restaurants. Today, 90% of Third Wave cafes use them for high-volume production without quality loss. SCA awards Golden Cup certification to excellent batch brewers.'},
+  description:{ar:'تحضير آلي لكمية كبيرة من قهوة الفلتر — 2-10 لترات. آلات حديثة تتحكم بدرجة الحرارة، وقت التخمير، ورش الماء.',en:'Automatic preparation of large-volume filter coffee — 2-10 litres. Modern machines control temperature, brew time, and water spray patterns.'},
+  flavorProfile:{sweetness:{ar:'متوسطة',en:'Medium'},acidity:{ar:'متوسطة',en:'Medium'},bitterness:{ar:'منخفضة-متوسطة',en:'Low-Medium'},body:{ar:'متوسط',en:'Medium'},aroma:{ar:'نظيف',en:'Clean'},aftertaste:{ar:'معتدل',en:'Moderate'}},
+  recipe:{dose:'510g لكل 8 لتر',yield:'8 لتر',ratio:'1:15.7',waterTemp:'92-96°C',time:'4-6 دقائق',grind:{ar:'متوسط (أخشن من V60 قليلاً)',en:'Medium (slightly coarser than V60)'},tds:'1.3-1.4%',extractionYield:'19-21%',servingTemp:'75-80°C',cupSize:'300ml'},
+  procedure:{ar:'1. ضع فلتر ورق في السلة.\n2. اوزن القهوة.\n3. اطحن متوسط-خشن.\n4. شغّل دورة الشطف.\n5. ضع القهوة في السلة.\n6. اختر الحجم واستخدم الرش المبرمج.\n7. قدّم فور انتهاء التحضير.',en:'1. Place paper filter in the basket.\n2. Weigh coffee.\n3. Grind medium-coarse.\n4. Run rinse cycle.\n5. Place coffee in basket.\n6. Select volume and start programmed spray.\n7. Serve immediately after brew cycle.'},
+  baristaTips:{ar:['استخدم ميزان لضبط الجرعة','اضبط الطحن حسب وقت التخمير — 4-6 دقائق','نظف الآلة يومياً'],en:['Use a scale for dose accuracy','Adjust grind for 4-6 minute brew time','Clean machine daily']},
+  commonMistakes:{ar:['طحن خشن — استخلاص سريع جداً','عدم تنظيف الآلة','إبقاء القهوة على السخان أكثر من 30 دقيقة'],en:['Grind too coarse — extraction too fast','Not cleaning the machine','Keeping coffee on hot plate >30 min']},
+  fixes:{ar:['اضبط الطحن لوقت 4-6 دقائق','نظف يومياً بمحلول مخصوص','انقل القهوة لترمس'],en:['Adjust grind for 4-6 minute brew','Clean daily with special solution','Transfer to a thermos']},
+  recommendedBeans:{origin:{ar:'برازيل, كولومبيا, أمريكا الوسطى',en:'Brazil, Colombia, Central America'},process:{ar:'مغسولة',en:'Washed'},roast:{ar:'متوسطة',en:'Medium'}},
+  foodPairing:{ar:'قهوة الفطور المثالية — البيض، البان كيك، الفواكه.',en:'The perfect breakfast coffee — eggs, pancakes, fruit.'},
+  variations:{ar:'• Cold Batch Brew: تحضير بارد بكميات كبيرة.\n• Dual Batch: آلة بكوبين مختلفين.',en:'• Cold Batch Brew: Large volume cold brew.\n• Dual Batch: Machine with two different batches.'},
+  funFacts:{ar:['آلات Fetco تُستخدم في 70% من مقاهي أمريكا','أكبر Batch Brewer يصنع 50 لتراً','شهادة Golden Cup SCA صارمة جداً'],en:['Fetco machines used in 70% of American cafes','Largest batch brewer makes 50 litres','SCA Golden Cup certification is very strict']},
+  questions:[
+    {q:{ar:'كم متوسط وقت تحضير Batch Brew؟',en:'Average Batch Brew time?'},options:{ar:['2-3 دقائق','4-6 دقائق','8-10 دقائق','10-15 دقائق'],en:['2-3 min','4-6 min','8-10 min','10-15 min']},answer:1}
+  ],
+  references:['SCA. (2022). Golden Cup Standard for Batch Brewers. Specialty Coffee Association.']
+});
+
+defDrink('espresso-martini',{
+  id:'espresso-martini',name:{ar:'إسبريسو مارتيني',en:'Espresso Martini'},
+  classification:{category:{ar:'كوكتيلات القهوة',en:'Coffee Cocktails'},temp:{ar:'بارد',en:'Cold'},milk:false,base:{ar:'إسبريسو',en:'Espresso'}},
+  history:{ar:'اخترعه ديك برادسيل (Dick Bradsell) في لندن 1983 في مقهى "The Pharmacy". طلبت منه عارضة أزياء: "خلّيني صاحية وأسكرني". مزج الفودكا مع الإسبريسو الطازج والقهوة ليكيور — وُلد الإسبريسو مارتيني.',en:'Invented by Dick Bradsell in London 1983 at "The Pharmacy" bar. A model asked him: "Wake me up and make me drunk." He mixed vodka with fresh espresso and coffee liqueur — the espresso martini was born.'},
+  description:{ar:'شوت إسبريسو طازج + فودكا + قهوة ليكيور (Kahlúa) + ثلج. يُرج بقوة (Shake) لتكوين رغوة كريمية.',en:'Fresh espresso shot + vodka + coffee liqueur (Kahlúa) + ice. Shaken vigorously to create creamy foam.'},
+  flavorProfile:{sweetness:{ar:'عالية',en:'High'},acidity:{ar:'منخفضة',en:'Low'},bitterness:{ar:'متوسطة',en:'Medium'},body:{ar:'ناعم',en:'Smooth'},aroma:{ar:'قهوة وكحول',en:'Coffee and Alcohol'},aftertaste:{ar:'معتدل',en:'Moderate'}},
+  recipe:{dose:'شوت إسبريسو مزدوج (36g)',yield:'120ml',ratio:'2:1:1 (إسبريسو:فودكا:ليكيور)',waterTemp:'93°C',pressure:'9 bar',time:'25-30 ثانية',grind:{ar:'ناعم',en:'Fine'},servingTemp:'4-8°C',cupSize:'160ml'},
+  procedure:{ar:'1. حضّر شوت إسبريسو مزدوج.\n2. برد الكوب (مارتيني).\n3. في شاكر: ثلج + إسبريسو + 40ml فودكا + 20ml قهوة ليكيور.\n4. رج بقوة لمدة 15-20 ثانية.\n5. صفّ في كوب المارتيني.\n6. زيّن بحبات القهوة.',en:'1. Pull a double espresso.\n2. Chill a martini glass.\n3. In a shaker: ice + espresso + 40ml vodka + 20ml coffee liqueur.\n4. Shake vigorously for 15-20 seconds.\n5. Strain into martini glass.\n6. Garnish with coffee beans.'},
+  baristaTips:{ar:['استخدم إسبريسو قوي طازج جداً','الرج القوي ينتج الرغوة','قدّم فوراً — الرغوة تختفي'],en:['Use very fresh strong espresso','Vigorous shaking creates the foam','Serve immediately — foam disappears']},
+  commonMistakes:{ar:['إسبريسو بارد','رج ضعيف — لا رغوة','نسبة كحول غير صحيحة'],en:['Espresso too cold','Weak shake — no foam','Wrong alcohol ratio']},
+  fixes:{ar:['استخدم إسبريسو ساخن','رج بقوة 15-20 ثانية','2:1:1 إسبريسو:فودكا:ليكيور'],en:['Use hot espresso','Shake hard 15-20 seconds','2:1:1 espresso:vodka:liqueur']},
+  recommendedBeans:{origin:{ar:'برازيل',en:'Brazil'},process:{ar:'طبيعية',en:'Natural'},roast:{ar:'غامقة',en:'Dark'}},
+  foodPairing:{ar:'حلوى بعد العشاء — شوكولاتة داكنة، تيراميسو.',en:'After-dinner dessert — dark chocolate, tiramisu.'},
+  variations:{ar:'• White Espresso Martini: فودكا فانيليا.\n• Espresso Martini with Baileys: بدلاً من الليكيور.',en:'• White Espresso Martini: Vanilla vodka.\n• Espresso Martini with Baileys: Instead of liqueur.'},
+  funFacts:{ar:['أشهر كوكتيل قهوة في العالم','Dick Bradsell لم يسجل المشروب — أصبح عاماً','يُشرب في 60% من حفلات الزفاف البريطانية'],en:['Most famous coffee cocktail worldwide','Dick Bradsell never patented it — became public domain','Drunk at 60% of British weddings']},
+  questions:[
+    {q:{ar:'من اخترع الإسبريسو مارتيني؟',en:'Who invented the Espresso Martini?'},options:{ar:['جيمس هوفمان','ديك برادسيل','لويجي بزيرا','أكيلي جاجيا'],en:['James Hoffmann','Dick Bradsell','Luigi Bezzera','Achille Gaggia']},answer:1}
+  ],
+  references:['Bradsell, D. (1983). Espresso Martini Recipe. The Pharmacy Bar, London.']
+});
+
+// ----- C3: Cafe Management Drinks -----
+defDrink('frappe',{
+  id:'frappe',name:{ar:'فرابيه',en:'Frappé'},
+  classification:{category:{ar:'مشروبات باردة',en:'Cold Drinks'},temp:{ar:'بارد',en:'Cold'},milk:true,base:{ar:'نسكافيه',en:'Instant Coffee'}},
+  history:{ar:'اخترع بالصدفة عام 1957 في معرض تسالونيكي الدولي باليونان. موظف نسبرسو كان يحضر قهوة سريعة للأطفال — لم يجد ماء ساخناً فاستخدم ماء بارد وثلج في شاكر. ولدت أسطورة القهوة اليونانية.',en:'Invented by accident in 1957 at the Thessaloniki International Fair in Greece. A Nestlé employee was preparing instant coffee for children — no hot water available, so he used cold water and ice in a shaker. The Greek coffee legend was born.'},
+  description:{ar:'قهوة سريعة (نسكافيه) + سكر + ماء + ثلج + حليب. يُرج أو يُخلط بالخلاط حتى يصبح رغوة كثيفة. أشهر مشروب بارد في اليونان وقبرص.',en:'Instant coffee + sugar + water + ice + milk. Shaken or blended until thick foam forms. Most popular cold drink in Greece and Cyprus.'},
+  flavorProfile:{sweetness:{ar:'عالية جداً',en:'Very High'},acidity:{ar:'منخفضة',en:'Low'},bitterness:{ar:'منخفضة',en:'Low'},body:{ar:'رغوة كثيفة',en:'Thick Foam'},aroma:{ar:'قهوة سريعة',en:'Instant coffee'},aftertaste:{ar:'حلو',en:'Sweet'}},
+  recipe:{dose:'2 ملعقة صغيرة نسكافيه + 2 ملعقة سكر',yield:'300ml',ratio:'-',waterTemp:{ar:'بارد',en:'Cold'},time:'30 ثانية رج',grind:{ar:'قابل للذوبان',en:'Instant'},servingTemp:'4-8°C',cupSize:'300ml'},
+  procedure:{ar:'1. في شاكر: نسكافيه + سكر + 50ml ماء.\n2. رج بقوة لمدة 30 ثانية.\n3. املأ كوب طويل بالثلج.\n4. اسكب الخليط.\n5. أضف ماء بارد حتى ¾ الكوب.\n6. أضف حليب حسب الرغبة.\n7. قدم مع قشة.',en:'1. In a shaker: instant coffee + sugar + 50ml water.\n2. Shake vigorously for 30 seconds.\n3. Fill tall glass with ice.\n4. Pour the mixture.\n5. Add cold water to ¾ full.\n6. Add milk to taste.\n7. Serve with a straw.'},
+  baristaTips:{ar:['استخدم نسكافيه كلاسيك — الأفضل للفرابيه','السكر ضروري للرغوة','الرج بقوة ينتج رغوة كثيفة'],en:['Use classic Nescafé — best for frappé','Sugar is essential for foam','Vigorous shaking creates thick foam']},
+  commonMistakes:{ar:['نسكافيه قليل — لا رغوة','رج ضعيف','ماء ساخن'],en:['Too little coffee — no foam','Weak shaking','Hot water']},
+  fixes:{ar:['2 ملعقة صغيرة + 2 سكر','رج لمدة 30 ثانية','استخدم ماء بارد فقط'],en:['2 tsp coffee + 2 tsp sugar','Shake for 30 seconds','Use only cold water']},
+  recommendedBeans:{origin:{ar:'غير قابل للتطبيق — قهوة سريعة',en:'N/A — instant coffee'},process:{ar:'قابلة للذوبان',en:'Soluble'},roast:{ar:'متوسطة',en:'Medium'}},
+  foodPairing:{ar:'يناسب الصيف — مع الكعك اليوناني والبوظة.',en:'Perfect for summer — with Greek pastries and ice cream.'},
+  variations:{ar:'• Frappé with milk: يضاف حليب.\n• Frappé without milk: أسود.\n• Alcoholic Frappé: مع ليكيور.',en:'• Frappé with milk: With added milk.\n• Frappé without milk: Black.\n• Alcoholic Frappé: With liqueur.'},
+  funFacts:{ar:['اليونان تستهلك 40% من إنتاج نسكافيه العالمي','اخترع بالصدفة في معرض تجاري','يونانيون يشربونه حتى في الشتاء'],en:['Greece consumes 40% of global Nescafé production','Invented by accident at a trade fair','Greeks drink it even in winter']},
+  questions:[
+    {q:{ar:'في أي عام اخترع الفرابيه؟',en:'When was Frappé invented?'},options:{ar:['1947','1957','1967','1977'],en:['1947','1957','1967','1977']},answer:1}
+  ],
+  references:['Nestlé S.A. (1957). Frappé Coffee: History and Origins. Nestlé Archives.']
+});
 
 function rT(tab){
   curTab = tab || 'home';
@@ -1933,12 +2559,15 @@ function sModule(level, mi, li){
   li = li || 0;
   let mods = CM.filter(x => x.level === level);
   let m = mods[mi];
-  let l = m.lessons[li];
   let lv = LV[level];
+  let total = m.lessons.length;
+  let hasD = m.recipes && m.recipes.length;
+  // Drinks page
+  if(hasD && li >= total) return renderDrinksPage(level, mi);
+  let l = m.lessons[li];
   let body = getLessonBody(CM.indexOf(m), li);
   let story = (li === 0 && STORIES[m.id]) ? (STORIES[m.id][lang] || STORIES[m.id].en) : '';
   let hero = l.img.replace('w=600&q=80','w=1400&q=90');
-  let total = m.lessons.length;
   // Sidebar
   let u2 = getCurUser();
   let doneCount = u2 ? m.lessons.filter((_,i)=>isLessonDone(u2,level,mi,i)).length : 0;
@@ -1954,6 +2583,7 @@ function sModule(level, mi, li){
       let done=isLessonDone(u2,level,mi,i);
       return '<div class="ls-item'+(i===li?' act':'')+(done?' ls-done':'')+'" data-nav="sModule" data-level="'+level+'" data-mi="'+mi+'" data-li="'+i+'"><div class="ls-node"><div class="ls-dot'+(done?' done':'')+'"></div>'+(i<total-1?'<div class="ls-line'+(done?' done':'')+'"></div>':'')+'</div><div class="ls-tit">'+(i+1)+'. '+__(l2.title)+'</div><div class="ls-done-badge">✓</div></div>';
     }).join('') +
+    (hasD ? '<div class="ls-item" data-nav="sModule" data-level="'+level+'" data-mi="'+mi+'" data-li="'+total+'"><div class="ls-node"><div class="ls-dot"></div></div><div class="ls-tit">🍹 ' + __({ar:'المشروبات',en:'Drinks'}) + '</div></div>' : '') +
     '</div></div>';
   // Main content
   let main = '<div class="ls-main"><div class="ls-hero" style="background-image:url('+hero+')"><div class="ls-hero-ov"></div><div class="ls-hero-inner"><div class="ls-badge">' + lv.ic + ' ' + __(lv.name) + ' / ' + __(m.title) + '</div><h2>' + __(l.title) + '</h2></div></div>' +
@@ -1962,12 +2592,13 @@ function sModule(level, mi, li){
     (li>0?'<button class="btn btn-sm" data-nav="sModule" data-level="'+level+'" data-mi="'+mi+'" data-li="'+(li-1)+'">⬅ ' + __({ar:'السابق',en:'Prev'}) + '</button>':'<div></div>') +
     '<span class="ls-pg">' + __({ar:'الدرس',en:'Les'}) + ' ' + (li+1) + '/' + total + '</span>' +
 '<button class="projector-toggle" onclick="toggleProjector()">📽️ ' + __({ar:'بروجيكتور',en:'Projector'}) + '</button>' +
-     (li<total-1?'<button class="btn btn-sm btn-accent" data-nav="continue" data-level="'+level+'" data-mi="'+mi+'" data-li="'+li+'">' + __({ar:'أكمل الرحلة',en:'Continue'}) + ' ➡</button>':'<div style="display:flex;gap:8px"><button class="btn btn-sm btn-success" data-nav="finish" data-level="'+level+'" data-mi="'+mi+'" data-li="'+li+'">✓ ' + __({ar:'تم',en:'Done'}) + '</button><button class="btn btn-sm btn-accent" onclick="showCertificate(\''+level+'\','+mi+')">🎓 ' + __({ar:'الشهادة',en:'Certificate'}) + '</button></div>') +
+     (li<total-1 ? '<button class="btn btn-sm btn-accent" data-nav="continue" data-level="'+level+'" data-mi="'+mi+'" data-li="'+li+'">' + __({ar:'أكمل الرحلة',en:'Continue'}) + ' ➡</button>' :
+      hasD ? '<button class="btn btn-sm btn-accent" data-nav="continue" data-level="'+level+'" data-mi="'+mi+'" data-li="'+li+'">🍹 ' + __({ar:'المشروبات',en:'Drinks'}) + ' ➡</button>' :
+      '<div style="display:flex;gap:8px"><button class="btn btn-sm btn-success" data-nav="finish" data-level="'+level+'" data-mi="'+mi+'" data-li="'+li+'">✓ ' + __({ar:'تم',en:'Done'}) + '</button><button class="btn btn-sm btn-accent" onclick="showCertificate(\''+level+'\','+mi+')">🎓 ' + __({ar:'الشهادة',en:'Certificate'}) + '</button></div>') +
     '</div></div></div>';
   $('root').innerHTML = '<div class="lesson-split">' + side + main + '</div>';
   window.scrollTo(0,0);
   setTimeout(initUI,100);
-  // Restore projector mode state
   if(localStorage.getItem('wha_projector')==='1') document.body.classList.add('projector-mode');
 }
 /* === Magazine layout helpers === */
