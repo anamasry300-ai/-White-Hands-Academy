@@ -39,10 +39,15 @@ function initFirebase(){
           saveCurUser(u);
           let ov=document.getElementById('authOverlay');
           if(ov) ov.remove();
+          updateHeaderUser();
+          let ct = document.getElementById('root')?.innerHTML ? curTab : '';
+          if(ct) rT(ct); else rT('home');
+        } else {
+          // No Firestore doc → force logout (Firestore not set up or user missing)
+          await firebase.auth().signOut();
+          curUser = null;
+          updateHeaderUser();
         }
-        updateHeaderUser();
-        let ct = document.getElementById('root')?.innerHTML ? curTab : '';
-        if(ct) rT(ct); else rT('home');
       } else {
         curUser = null;
         updateHeaderUser();
@@ -248,8 +253,8 @@ function yesterday(){
   return d.toISOString().slice(0,10);
 }
 async function saveUserToFirestore(uid, data){
-  if(!db) return;
-  try { await db.collection('users').doc(uid).set(data, {merge:true}) } catch(e){console.error('Firestore write err',e)}
+  if(!db) throw new Error('Firestore not initialized');
+  await db.collection('users').doc(uid).set(data, {merge:true});
 }
 async function getUserFromFirestore(uid){
   if(!db||!uid) return null;
@@ -331,7 +336,11 @@ async function registerUser(name,email,pass){
       badges:[], perfectScores:[], joinDate:todayStr(),
       lessonTimestamps:{}
     };
-    await saveUserToFirestore(uid, userData);
+    try { await saveUserToFirestore(uid, userData) } catch(fsErr){
+      // Firestore may not be set up
+      await firebase.auth().currentUser?.delete().catch(()=>{});
+      return {err:__({ar:'🔥 قاعدة البيانات غير مفعلة. تأكد من إنشاء Firestore Database في Firebase Console.',en:'🔥 Database not activated. Please create Firestore Database in Firebase Console.'})};
+    }
     await firebase.auth().signOut();
     curUser = null;
     return {ok:true, pending:true, msg:__({ar:'📋 تم التسجيل! في انتظار موافقة المشرف.',en:'📋 Registered! Waiting for admin approval.'})};
