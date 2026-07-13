@@ -28,10 +28,21 @@ function initFirebase(){
     firebase.auth().onAuthStateChanged(async (user) => {
       if(user){
         let u = await getUserFromFirestore(user.uid);
-        if(u) saveCurUser(u);
+        if(u){
+          if(u.role==='pending' || u.role==='banned'){
+            if(u.role==='banned') localStorage.removeItem('wha_curUser');
+            await firebase.auth().signOut();
+            curUser = null;
+            updateHeaderUser();
+            return;
+          }
+          saveCurUser(u);
+          let ov=document.getElementById('authOverlay');
+          if(ov) ov.remove();
+        }
         updateHeaderUser();
         let ct = document.getElementById('root')?.innerHTML ? curTab : '';
-        if(ct) rT(ct);
+        if(ct) rT(ct); else rT('home');
       } else {
         curUser = null;
         updateHeaderUser();
@@ -308,26 +319,19 @@ async function registerUser(name,email,pass){
     if(isFirst) return {ok:true, u, msg:__({ar:'🎉 تم إنشاء حساب المسؤول!',en:'🎉 Admin account created!'})};
     return {pending:true, msg:__({ar:'📋 تم التسجيل! في انتظار موافقة المشرف.',en:'📋 Registered! Waiting for admin approval.'})};
   }
+  if(email.trim().toLowerCase()===ADMIN_USER.toLowerCase()) return {err:__({ar:'هذا البريد محجوز للمسؤول',en:'This email is reserved for admin'})};
   try {
     let cred = await firebase.auth().createUserWithEmailAndPassword(email.trim().toLowerCase(), pass);
     let uid = cred.user.uid;
-    // Check if first user
-    let all = await getAllUsersFromFirestore();
-    let isFirst = all.length === 0;
     let userData = {
       name: name.trim(), email: email.trim().toLowerCase(),
-      role: isFirst ? 'admin' : 'pending',
+      role: 'pending',
       xp:0, streak:0, lastLogin:'', levelIdx:0,
       completedLessons:[], completedModules:[], passedExams:[],
       badges:[], perfectScores:[], joinDate:todayStr(),
       lessonTimestamps:{}
     };
     await saveUserToFirestore(uid, userData);
-    let newU = {id:uid, ...userData};
-    if(isFirst){
-      saveCurUser(newU);
-      return {ok:true, u:newU, msg:__({ar:'🎉 تم إنشاء حساب المسؤول! أنت أول مستخدم.',en:'🎉 Admin account created! You are the first user.'})};
-    }
     await firebase.auth().signOut();
     curUser = null;
     return {ok:true, pending:true, msg:__({ar:'📋 تم التسجيل! في انتظار موافقة المشرف.',en:'📋 Registered! Waiting for admin approval.'})};
@@ -2620,12 +2624,11 @@ document.addEventListener('keydown',function(e){
     }
     rT('home');
   } else {
-    // Firebase handles auth state; show auth overlay immediately if no user
-    setTimeout(() => {
-      if(!curUser){ showAuth(); return }
-      updateHeaderUser();
-      rT('home');
-    }, 200);
+    // Firebase: clear localStorage sessions, rely ONLY on Firebase auth
+    clearOldSessions();
+    curUser = null;
+    // Show auth overlay; onAuthStateChanged will auto-close it if user is logged in
+    showAuth();
   }
   initUI();
   setTimeout(()=>{AI.init()},400);
