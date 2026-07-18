@@ -4,80 +4,9 @@ let lang = 'ar';
 let curTab = '';
 let ambientAudio = null;
 
-/* ===== Firebase Configuration ===== */
-/* 🔥 IMPORTANT: Create a Firebase project at https://console.firebase.google.com
-   1. Go to Project Settings > General > Your apps > Add app > Web
-   2. Copy the config values below
-   3. Enable Authentication > Sign-in method > Email/Password
-   4. Create Firestore Database (start in test mode, then apply rules below)
-   ⚠️ Without this, auth works in read-only offline mode */
-const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyBNxNCkZGkw1vgrCXgefBwF5-PRDCcB7yc",
-  authDomain: "academy-3baf9.firebaseapp.com",
-  projectId: "academy-3baf9",
-  storageBucket: "academy-3baf9.firebasestorage.app",
-  messagingSenderId: "605432595967",
-  appId: "1:605432595967:web:b5a1986ac06dfda88013ca"
-};
+/* ===== Auth (local‑storage only) ===== */
 let firebaseReady = false;
-function initFirebase(){
-  if(typeof firebase==='undefined'||FIREBASE_CONFIG.apiKey==='YOUR_API_KEY') return;
-  try {
-    firebase.initializeApp(FIREBASE_CONFIG);
-    db = firebase.firestore();
-    firebase.auth().onAuthStateChanged(async (user) => {
-      if(user){
-        let u = await getUserFromFirestore(user.uid);
-        if(u){
-          if(u.role==='pending' || u.role==='banned'){
-            if(u.role==='banned') localStorage.removeItem('wha_curUser');
-            await firebase.auth().signOut();
-            curUser = null;
-            updateHeaderUser();
-            return;
-          }
-          saveCurUser(u);
-          let ov=document.getElementById('authOverlay');
-          if(ov) ov.remove();
-          updateHeaderUser();
-          let ct = document.getElementById('root')?.innerHTML ? curTab : '';
-          if(ct) rT(ct); else rT('home');
-        } else {
-          // No Firestore doc — check localStorage (Firestore not set up or user missing)
-          let localUsers = JSON.parse(localStorage.getItem('wha_users')||'[]');
-          let localMatch = localUsers.find(x=>x.email === (user.email||'').toLowerCase());
-          if(localMatch){
-            if(localMatch.role!=='pending' && localMatch.role!=='banned'){
-              saveCurUser(localMatch);
-              let ov=document.getElementById('authOverlay');
-              if(ov) ov.remove();
-            } else {
-              if(!isAdmin()){ await firebase.auth().signOut(); curUser = null; updateHeaderUser(); }
-            }
-          } else {
-            // User has Firebase Auth but no record anywhere — recover by creating localStorage entry
-            let recovery = {
-              id: user.uid, name: user.displayName || user.email?.split('@')[0] || 'User',
-              email: (user.email||'').toLowerCase(), role: 'pending',
-              xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[],
-              passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:{}
-            };
-            localUsers.push(recovery);
-            localStorage.setItem('wha_users', JSON.stringify(localUsers));
-            await firebase.auth().signOut();
-            curUser = null;
-            updateHeaderUser();
-          }
-        }
-      } else {
-        curUser = null;
-        updateHeaderUser();
-      }
-    });
-    firebaseReady = true;
-    console.log('🔥 Firebase ready');
-  } catch(e){ console.warn('Firebase init failed:', e); }
-}
+function initFirebase(){ firebaseReady = false; }
 
 /* ===== Loading Screen ===== */
 function initLoading(){
@@ -263,50 +192,14 @@ const BADGE_DEFS = [
   {id:'true_master',ic:'👑',name:{ar:'المعلم الحقيقي',en:'True Master'},desc:{ar:'اجتاز كل الاختبارات بـ 10/10',en:'Pass all exams with 10/10'}}
 ];
 
-/* --- User Data Management (Firebase) --- */
+/* --- User Data Management (localStorage) --- */
 let curUser = null;
 const ADMIN_USER = 'A7m3d';
 const ADMIN_PASS = 'A7m3d3wad';
-let db = null;
 function todayStr(){return new Date().toISOString().slice(0,10)}
 function yesterday(){
   let d=new Date();d.setDate(d.getDate()-1);
   return d.toISOString().slice(0,10);
-}
-async function saveUserToFirestore(uid, data){
-  if(!db) throw new Error('Firestore not initialized');
-  await db.collection('users').doc(uid).set(data, {merge:true});
-}
-async function getUserFromFirestore(uid){
-  if(!db||!uid) return null;
-  try {
-    let doc = await db.collection('users').doc(uid).get();
-    return doc.exists ? {id:uid, ...doc.data()} : null;
-  } catch(e){console.error('Firestore read err',e); return null}
-}
-async function getAllUsersFromFirestore(){
-  if(!db) return getLocalUsers().filter(u=>u.role!=='admin');
-  try {
-    let snap = await db.collection('users').get();
-    let arr=[];
-    snap.forEach(d=>{let d2=d.data(); if(d2.role!=='admin') arr.push({id:d.id,...d2})});
-    // Merge with local users
-    let local = getLocalUsers().filter(u=>u.role!=='admin');
-    local.forEach(lu=>{if(!arr.find(a=>a.email===lu.email)) arr.push(lu)});
-    return arr;
-  } catch(e){console.error('Firestore get all err (fallback to local)',e); return getLocalUsers().filter(u=>u.role!=='admin')}
-}
-async function getPendingUsersFromFirestore(){
-  if(!db) return getLocalUsers().filter(u=>u.role==='pending');
-  try {
-    let snap = await db.collection('users').where('role','==','pending').get();
-    let arr=[];
-    snap.forEach(d=>arr.push({id:d.id,...d.data()}));
-    // Merge with local pending users
-    let local = getLocalUsers().filter(u=>u.role==='pending');
-    local.forEach(lu=>{if(!arr.find(a=>a.email===lu.email)) arr.push(lu)});
-    return arr;
-  } catch(e){console.error('Firestore get pending err (fallback to local)',e); return getLocalUsers().filter(u=>u.role==='pending')}
 }
 function getLocalUsers(){
   try { return JSON.parse(localStorage.getItem('wha_users')||'[]') } catch(e){return []}
@@ -327,117 +220,40 @@ function saveCurUser(u){
   if(!u) return;
   curUser = u;
   try { localStorage.setItem('wha_curUser', JSON.stringify(u)) } catch(e){}
-  if(db && u.id) saveUserToFirestore(u.id, u);
 }
 function isAdmin(){ return curUser && curUser.role==='admin' }
 async function registerUser(name,email,pass){
   if(!name||!email||!pass) return {err:__({ar:'جميع الحقول مطلوبة',en:'All fields required'})};
-  // Offline mode (no Firebase)
-  if(!firebaseReady){
-    let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
-    if(users.find(u=>u.email===email.trim().toLowerCase())) return {err:__({ar:'البريد مسجل بالفعل',en:'Email already registered'})};
-    if(pass.length<3) return {err:__({ar:'كلمة المرور قصيرة جداً',en:'Password too short'})};
-    let e=email.trim().toLowerCase();
-    if(e===ADMIN_USER.toLowerCase()) return {err:__({ar:'هذا البريد محجوز للمسؤول',en:'This email is reserved for admin'})};
-    let isFirst = users.length===0;
-    let u = {
-      id:'u_'+Date.now(), name:name.trim(), email:e, role:isFirst?'admin':'pending',
-      xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[],
-      passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:[]
-    };
-    if(isFirst){ saveCurUser(u); }
-    users.push(u);
-    localStorage.setItem('wha_users', JSON.stringify(users));
-    if(isFirst) return {ok:true, u, msg:__({ar:'🎉 تم إنشاء حساب المسؤول!',en:'🎉 Admin account created!'})};
-    return {pending:true, msg:__({ar:'📋 تم التسجيل! في انتظار موافقة المشرف.',en:'📋 Registered! Waiting for admin approval.'})};
-  }
-  if(email.trim().toLowerCase()===ADMIN_USER.toLowerCase()) return {err:__({ar:'هذا البريد محجوز للمسؤول',en:'This email is reserved for admin'})};
-  try {
-    let cred = await firebase.auth().createUserWithEmailAndPassword(email.trim().toLowerCase(), pass);
-    let uid = cred.user.uid;
-    let userData = {
-      name: name.trim(), email: email.trim().toLowerCase(),
-      role: 'pending',
-      xp:0, streak:0, lastLogin:'', levelIdx:0,
-      completedLessons:[], completedModules:[], passedExams:[],
-      badges:[], perfectScores:[], joinDate:todayStr(),
-      lessonTimestamps:{}
-    };
-    try { await saveUserToFirestore(uid, userData) } catch(fsErr){
-      // Firestore not set up — save locally instead
-      userData.id = uid;
-      let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
-      users.push(userData);
-      localStorage.setItem('wha_users', JSON.stringify(users));
-    }
-    await firebase.auth().signOut();
-    curUser = null;
-    return {ok:true, pending:true, msg:__({ar:'📋 تم التسجيل! في انتظار موافقة المشرف.',en:'📋 Registered! Waiting for admin approval.'})};
-  } catch(e){
-    let msg = e.code === 'auth/email-already-in-use' ? __('@:البريد مسجل بالفعل','Email already registered') :
-              e.code === 'auth/weak-password' ? __('@:كلمة المرور ضعيفة (6 أحرف على الأقل)','Password too weak (6+ chars)') :
-              __('@:خطأ في التسجيل','Registration failed');
-    return {err: msg};
-  }
+  let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
+  if(users.find(u=>u.email===email.trim().toLowerCase())) return {err:__({ar:'البريد مسجل بالفعل',en:'Email already registered'})};
+  if(pass.length<3) return {err:__({ar:'كلمة المرور قصيرة جداً',en:'Password too short'})};
+  let e=email.trim().toLowerCase();
+  if(e===ADMIN_USER.toLowerCase()) return {err:__({ar:'هذا البريد محجوز للمسؤول',en:'This email is reserved for admin'})};
+  let isFirst = users.length===0;
+  let u = {
+    id:'u_'+Date.now(), name:name.trim(), email:e, pass:pass, role:isFirst?'admin':'pending',
+    xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[],
+    passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:[]
+  };
+  if(isFirst){ saveCurUser(u); }
+  users.push(u);
+  localStorage.setItem('wha_users', JSON.stringify(users));
+  if(isFirst) return {ok:true, u, msg:__({ar:'🎉 تم إنشاء حساب المسؤول!',en:'🎉 Admin account created!'})};
+  return {pending:true, msg:__({ar:'📋 تم التسجيل! في انتظار موافقة المشرف.',en:'📋 Registered! Waiting for admin approval.'})};
 }
 async function loginUser(email,pass){
-  // Offline mode (no Firebase)
-  if(!firebaseReady){
-    if(!email||!pass) return {err:__({ar:'البريد وكلمة المرور مطلوبان',en:'Email and password required'})};
-    // Admin login via username A7m3d
-    if(email.trim().toLowerCase()===ADMIN_USER.toLowerCase()){
-      if(pass!==ADMIN_PASS) return {err:__({ar:'كلمة مرور المسؤول غير صحيحة',en:'Invalid admin password'})};
-      let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
-      let u = users.find(x=>x.email===ADMIN_USER);
-      if(!u){
-        u = {id:'u_admin', name:'Admin', email:ADMIN_USER, role:'admin', xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[], passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:[]};
-        users.push(u);
-        localStorage.setItem('wha_users',JSON.stringify(users));
-      }
-      if(u.role!=='admin'){u.role='admin';localStorage.setItem('wha_users',JSON.stringify(users.map(x=>x.id===u.id?u:x)))}
-      saveCurUser(u);
-      let today=todayStr(), addedXP=false;
-      if(u.lastLogin!==today){
-        if(u.lastLogin===yesterday()){ u.streak=(u.streak||0)+1; u.xp=(u.xp||0)+XP_REWARDS.streak; addedXP=true; }
-        else u.streak=1;
-        u.lastLogin=today;
-        let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
-        let idx=all.findIndex(x=>x.id===u.id);
-        if(idx>=0){all[idx]=u;localStorage.setItem('wha_users',JSON.stringify(all))}
-        saveCurUser(u);
-      }
-      return {ok:true, u, streakBonus:addedXP};
-    }
-    // Normal user login
-    let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
-    let u = users.find(x=>x.email===email.trim().toLowerCase());
-    if(!u) return {err:__({ar:'البريد غير مسجل',en:'Email not found'})};
-    if(u.role==='banned') return {err:__({ar:'🚫 تم حظر حسابك.',en:'🚫 Your account has been banned.'})};
-    if(u.role==='pending') return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})};
-    saveCurUser(u);
-    let today=todayStr(), addedXP=false;
-    if(u.lastLogin!==today){
-      if(u.lastLogin===yesterday()){ u.streak=(u.streak||0)+1; u.xp=(u.xp||0)+XP_REWARDS.streak; addedXP=true; }
-      else u.streak=1;
-      u.lastLogin=today;
-      let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
-      let idx=all.findIndex(x=>x.id===u.id);
-      if(idx>=0){all[idx]=u;localStorage.setItem('wha_users',JSON.stringify(all))}
-      saveCurUser(u);
-    }
-    return {ok:true, u, streakBonus:addedXP};
-  }
-  // Admin login via username A7m3d (also works with Firebase)
+  if(!email||!pass) return {err:__({ar:'البريد وكلمة المرور مطلوبان',en:'Email and password required'})};
+  // Admin login via username A7m3d
   if(email.trim().toLowerCase()===ADMIN_USER.toLowerCase()){
     if(pass!==ADMIN_PASS) return {err:__({ar:'كلمة مرور المسؤول غير صحيحة',en:'Invalid admin password'})};
-    let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
-    let u = users.find(x=>x.email===ADMIN_USER);
+    let admins = JSON.parse(localStorage.getItem('wha_users')||'[]');
+    let u = admins.find(x=>x.email===ADMIN_USER);
     if(!u){
       u = {id:'u_admin', name:'Admin', email:ADMIN_USER, role:'admin', xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[], passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:[]};
-      users.push(u);
-      localStorage.setItem('wha_users',JSON.stringify(users));
+      admins.push(u);
+      localStorage.setItem('wha_users',JSON.stringify(admins));
     }
-    if(u.role!=='admin'){u.role='admin';localStorage.setItem('wha_users',JSON.stringify(users.map(x=>x.id===u.id?u:x)))}
+    if(u.role!=='admin'){u.role='admin';localStorage.setItem('wha_users',JSON.stringify(admins.map(x=>x.id===u.id?u:x)))}
     saveCurUser(u);
     let today=todayStr(), addedXP=false;
     if(u.lastLogin!==today){
@@ -451,92 +267,41 @@ async function loginUser(email,pass){
     }
     return {ok:true, u, streakBonus:addedXP};
   }
-  try {
-    let cred = await firebase.auth().signInWithEmailAndPassword(email.trim().toLowerCase(), pass);
-    let u = await getUserFromFirestore(cred.user.uid);
-    if(!u){
-      // No Firestore doc — check localStorage (Firestore not set up or user missing)
-      let localUsers = JSON.parse(localStorage.getItem('wha_users')||'[]');
-      let localMatch = localUsers.find(x=>x.email === email.trim().toLowerCase());
-      if(localMatch){
-        u = localMatch;
-      } else {
-        // User has Firebase Auth but no record anywhere — create recovery entry
-        // Re-read to avoid race with onAuthStateChanged
-        localUsers = JSON.parse(localStorage.getItem('wha_users')||'[]');
-        let found = localUsers.find(x=>x.email === email.trim().toLowerCase());
-        if(found){
-          if(found.role==='pending' || found.role==='banned'){
-            await firebase.auth().signOut(); curUser = null;
-            return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})};
-          }
-          u = found; // active user recovered by onAuthStateChanged race
-        } else {
-          let recovery = {
-            id: cred.user.uid, name: cred.user.displayName || email.trim().toLowerCase().split('@')[0] || 'User',
-            email: email.trim().toLowerCase(), role: 'pending',
-            xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[],
-            passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:{}
-          };
-          localUsers.push(recovery);
-          localStorage.setItem('wha_users', JSON.stringify(localUsers));
-          await firebase.auth().signOut(); curUser = null;
-          return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})};
-        }
-      }
-    }
-    if(u.role==='banned'){ await firebase.auth().signOut(); curUser=null; return {err:__({ar:'🚫 تم حظر حسابك.',en:'🚫 Your account has been banned.'})}; }
-    if(u.role==='pending'){ await firebase.auth().signOut(); curUser=null; return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})}; }
+  // Normal user login
+  let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
+  let u = users.find(x=>x.email===email.trim().toLowerCase());
+  if(!u) return {err:__({ar:'البريد غير مسجل',en:'Email not found'})};
+  if(u.pass!==pass) return {err:__({ar:'بريد أو كلمة مرور غير صحيحة',en:'Invalid email or password'})};
+  if(u.role==='banned') return {err:__({ar:'🚫 تم حظر حسابك.',en:'🚫 Your account has been banned.'})};
+  if(u.role==='pending') return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})};
+  saveCurUser(u);
+  let today=todayStr(), addedXP=false;
+  if(u.lastLogin!==today){
+    if(u.lastLogin===yesterday()){ u.streak=(u.streak||0)+1; u.xp=(u.xp||0)+XP_REWARDS.streak; addedXP=true; }
+    else u.streak=1;
+    u.lastLogin=today;
+    let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
+    let idx=all.findIndex(x=>x.id===u.id);
+    if(idx>=0){all[idx]=u;localStorage.setItem('wha_users',JSON.stringify(all))}
     saveCurUser(u);
-    let today=todayStr(), addedXP=false;
-    if(u.lastLogin!==today){
-      if(u.lastLogin===yesterday()){ u.streak=(u.streak||0)+1; u.xp=(u.xp||0)+XP_REWARDS.streak; addedXP=true; }
-      else u.streak=1;
-      u.lastLogin=today;
-      if(db && u.id && u.id.length > 20) try { await saveUserToFirestore(u.id, {streak:u.streak, xp:u.xp, lastLogin:today}) } catch(e){}
-    }
-    return {ok:true, u, streakBonus:addedXP};
-  } catch(e){
-    let msg = e.code === 'auth/user-not-found'||e.code==='auth/wrong-password'||e.code==='auth/invalid-credential' ?
-              __('@:بريد أو كلمة مرور غير صحيحة','Invalid email or password') :
-              __('@:خطأ في تسجيل الدخول','Login failed');
-    return {err: msg};
   }
+  return {ok:true, u, streakBonus:addedXP};
 }
 async function logoutUser(){
-  try { await firebase.auth().signOut() } catch(e){}
-  if(!firebaseReady) localStorage.removeItem('wha_curUser');
+  localStorage.removeItem('wha_curUser');
   curUser = null;
 }
 async function approveUser(id, emailHint){
-  if(!id) return false;
-  if(!db) return localUpdateUser(id,{role:'active'}, emailHint);
-  try { await db.collection('users').doc(id).update({role:'active'}); return true } catch(e){
-    console.warn('Firestore approve failed, fallback local', e);
-    return localUpdateUser(id,{role:'active'}, emailHint);
-  }
+  return localUpdateUser(id,{role:'active'}, emailHint);
 }
 async function rejectUser(id, emailHint){
-  if(!id) return false;
-  if(!db) return localDeleteUser(id, emailHint);
-  try { await db.collection('users').doc(id).delete(); return true } catch(e){
-    console.warn('Firestore reject failed, fallback local', e);
-    return localUpdateUser(id,{role:'banned'}, emailHint);
-  }
+  return localUpdateUser(id,{role:'banned'}, emailHint);
 }
 async function banUser(id, emailHint){
-  if(!id) return false;
-  if(!db) return localUpdateUser(id,{role:'banned'}, emailHint);
-  try { await db.collection('users').doc(id).update({role:'banned'}); return true } catch(e){
-    return localUpdateUser(id,{role:'banned'}, emailHint);
-  }
+  return localUpdateUser(id,{role:'banned'}, emailHint);
 }
 async function unbanUser(id, emailHint){
-  if(!id) return false;
-  if(!db) return localUpdateUser(id,{role:'active'}, emailHint);
-  try { await db.collection('users').doc(id).update({role:'active'}); return true } catch(e){
-    return localUpdateUser(id,{role:'active'}, emailHint);
-  }
+  return localUpdateUser(id,{role:'active'}, emailHint);
 }
 function localUpdateUser(id,data,emailHint){
   try {
@@ -3046,8 +2811,8 @@ function sJourney(){
 let _pendingUsersCache = [];
 let _allUsersCache = [];
 async function loadAdminData(){
-  _pendingUsersCache = await getPendingUsersFromFirestore();
-  _allUsersCache = await getAllUsersFromFirestore();
+  _pendingUsersCache = getLocalUsers().filter(u=>u.role==='pending');
+  _allUsersCache = getLocalUsers().filter(u=>u.role!=='admin');
   let el = document.getElementById('adminPanel');
   if(el) el.innerHTML = renderAdminHTML();
 }
@@ -3310,33 +3075,25 @@ document.addEventListener('keydown',function(e){
   initFirebase();
   let ua = navigator.language || navigator.userLanguage || 'en';
   setLang(ua.startsWith('ar') ? 'ar' : 'en');
-    // If Firebase is not configured, use offline localStorage mode
-  if(!firebaseReady){
-    // Force re-login for all users (new approval system)
-    let ver=localStorage.getItem('wha_auth_v');
-    if(ver!=='4'){
-      clearOldSessions();
-      // Reset old active users to pending
-      try {
-        let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
-        all.forEach(u=>{if(u.role!=='admin' && u.email!==ADMIN_USER)u.role='pending'});
-        localStorage.setItem('wha_users',JSON.stringify(all));
-      } catch(e){}
-      localStorage.setItem('wha_auth_v','4');
-    }
-    let u=getCurUser();
-    updateHeaderUser();
-    if(!u||u.role==='pending'||u.role==='banned'){
-      if(u&&u.role==='banned') localStorage.removeItem('wha_curUser');
-      showAuth(); return;
-    }
-    rT('home');
-  } else {
-    // Firebase: clear localStorage sessions, rely ONLY on Firebase auth
+  // Force re-login for all users (new approval system)
+  let ver=localStorage.getItem('wha_auth_v');
+  if(ver!=='4'){
     clearOldSessions();
-    curUser = null;
-    // Show auth overlay; onAuthStateChanged will auto-close it if user is logged in
+    // Reset old active users to pending
+    try {
+      let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
+      all.forEach(u=>{if(u.role!=='admin' && u.email!==ADMIN_USER)u.role='pending'});
+      localStorage.setItem('wha_users',JSON.stringify(all));
+    } catch(e){}
+    localStorage.setItem('wha_auth_v','4');
+  }
+  let u=getCurUser();
+  updateHeaderUser();
+  if(!u||u.role==='pending'||u.role==='banned'){
+    if(u&&u.role==='banned') localStorage.removeItem('wha_curUser');
     showAuth();
+  } else {
+    rT('home');
   }
   initUI();
   setTimeout(()=>{AI.init()},400);
