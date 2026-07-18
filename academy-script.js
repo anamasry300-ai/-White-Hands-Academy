@@ -43,10 +43,31 @@ function initFirebase(){
           let ct = document.getElementById('root')?.innerHTML ? curTab : '';
           if(ct) rT(ct); else rT('home');
         } else {
-          // No Firestore doc → force logout (Firestore not set up or user missing)
-          await firebase.auth().signOut();
-          curUser = null;
-          updateHeaderUser();
+          // No Firestore doc — check localStorage (Firestore not set up or user missing)
+          let localUsers = JSON.parse(localStorage.getItem('wha_users')||'[]');
+          let localMatch = localUsers.find(x=>x.email === (user.email||'').toLowerCase());
+          if(localMatch){
+            if(localMatch.role!=='pending' && localMatch.role!=='banned'){
+              saveCurUser(localMatch);
+              let ov=document.getElementById('authOverlay');
+              if(ov) ov.remove();
+            } else {
+              if(!isAdmin()){ await firebase.auth().signOut(); curUser = null; updateHeaderUser(); }
+            }
+          } else {
+            // User has Firebase Auth but no record anywhere — recover by creating localStorage entry
+            let recovery = {
+              id: user.uid, name: user.displayName || user.email?.split('@')[0] || 'User',
+              email: (user.email||'').toLowerCase(), role: 'pending',
+              xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[],
+              passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:{}
+            };
+            localUsers.push(recovery);
+            localStorage.setItem('wha_users', JSON.stringify(localUsers));
+            await firebase.auth().signOut();
+            curUser = null;
+            updateHeaderUser();
+          }
         }
       } else {
         curUser = null;
@@ -269,8 +290,11 @@ async function getAllUsersFromFirestore(){
     let snap = await db.collection('users').get();
     let arr=[];
     snap.forEach(d=>{let d2=d.data(); if(d2.role!=='admin') arr.push({id:d.id,...d2})});
+    // Merge with local users
+    let local = getLocalUsers().filter(u=>u.role!=='admin');
+    local.forEach(lu=>{if(!arr.find(a=>a.email===lu.email)) arr.push(lu)});
     return arr;
-  } catch(e){console.error('Firestore get all err',e); return []}
+  } catch(e){console.error('Firestore get all err (fallback to local)',e); return getLocalUsers().filter(u=>u.role!=='admin')}
 }
 async function getPendingUsersFromFirestore(){
   if(!db) return getLocalUsers().filter(u=>u.role==='pending');
@@ -278,8 +302,11 @@ async function getPendingUsersFromFirestore(){
     let snap = await db.collection('users').where('role','==','pending').get();
     let arr=[];
     snap.forEach(d=>arr.push({id:d.id,...d.data()}));
+    // Merge with local pending users
+    let local = getLocalUsers().filter(u=>u.role==='pending');
+    local.forEach(lu=>{if(!arr.find(a=>a.email===lu.email)) arr.push(lu)});
     return arr;
-  } catch(e){console.error('Firestore get pending err',e); return []}
+  } catch(e){console.error('Firestore get pending err (fallback to local)',e); return getLocalUsers().filter(u=>u.role==='pending')}
 }
 function getLocalUsers(){
   try { return JSON.parse(localStorage.getItem('wha_users')||'[]') } catch(e){return []}
@@ -337,9 +364,11 @@ async function registerUser(name,email,pass){
       lessonTimestamps:{}
     };
     try { await saveUserToFirestore(uid, userData) } catch(fsErr){
-      // Firestore may not be set up
-      await firebase.auth().currentUser?.delete().catch(()=>{});
-      return {err:__({ar:'🔥 قاعدة البيانات غير مفعلة. تأكد من إنشاء Firestore Database في Firebase Console.',en:'🔥 Database not activated. Please create Firestore Database in Firebase Console.'})};
+      // Firestore not set up — save locally instead
+      userData.id = uid;
+      let users = JSON.parse(localStorage.getItem('wha_users')||'[]');
+      users.push(userData);
+      localStorage.setItem('wha_users', JSON.stringify(users));
     }
     await firebase.auth().signOut();
     curUser = null;
@@ -425,7 +454,37 @@ async function loginUser(email,pass){
   try {
     let cred = await firebase.auth().signInWithEmailAndPassword(email.trim().toLowerCase(), pass);
     let u = await getUserFromFirestore(cred.user.uid);
-    if(!u) return {err:__({ar:'خطأ في تحميل البيانات',en:'Error loading profile'})};
+    if(!u){
+      // No Firestore doc — check localStorage (Firestore not set up or user missing)
+      let localUsers = JSON.parse(localStorage.getItem('wha_users')||'[]');
+      let localMatch = localUsers.find(x=>x.email === email.trim().toLowerCase());
+      if(localMatch){
+        u = localMatch;
+      } else {
+        // User has Firebase Auth but no record anywhere — create recovery entry
+        // Re-read to avoid race with onAuthStateChanged
+        localUsers = JSON.parse(localStorage.getItem('wha_users')||'[]');
+        let found = localUsers.find(x=>x.email === email.trim().toLowerCase());
+        if(found){
+          if(found.role==='pending' || found.role==='banned'){
+            await firebase.auth().signOut(); curUser = null;
+            return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})};
+          }
+          u = found; // active user recovered by onAuthStateChanged race
+        } else {
+          let recovery = {
+            id: cred.user.uid, name: cred.user.displayName || email.trim().toLowerCase().split('@')[0] || 'User',
+            email: email.trim().toLowerCase(), role: 'pending',
+            xp:0, streak:0, lastLogin:'', levelIdx:0, completedLessons:[], completedModules:[],
+            passedExams:[], badges:[], perfectScores:[], joinDate:todayStr(), lessonTimestamps:{}
+          };
+          localUsers.push(recovery);
+          localStorage.setItem('wha_users', JSON.stringify(localUsers));
+          await firebase.auth().signOut(); curUser = null;
+          return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})};
+        }
+      }
+    }
     if(u.role==='banned'){ await firebase.auth().signOut(); curUser=null; return {err:__({ar:'🚫 تم حظر حسابك.',en:'🚫 Your account has been banned.'})}; }
     if(u.role==='pending'){ await firebase.auth().signOut(); curUser=null; return {err:__({ar:'⏳ حسابك قيد المراجعة.',en:'⏳ Account pending review.'})}; }
     saveCurUser(u);
@@ -434,7 +493,7 @@ async function loginUser(email,pass){
       if(u.lastLogin===yesterday()){ u.streak=(u.streak||0)+1; u.xp=(u.xp||0)+XP_REWARDS.streak; addedXP=true; }
       else u.streak=1;
       u.lastLogin=today;
-      await saveUserToFirestore(u.id, {streak:u.streak, xp:u.xp, lastLogin:today});
+      if(db && u.id && u.id.length > 20) try { await saveUserToFirestore(u.id, {streak:u.streak, xp:u.xp, lastLogin:today}) } catch(e){}
     }
     return {ok:true, u, streakBonus:addedXP};
   } catch(e){
@@ -449,40 +508,50 @@ async function logoutUser(){
   if(!firebaseReady) localStorage.removeItem('wha_curUser');
   curUser = null;
 }
-async function approveUser(id){
+async function approveUser(id, emailHint){
   if(!id) return false;
-  if(!db) return localUpdateUser(id,{role:'active'});
-  try { await db.collection('users').doc(id).update({role:'active'}); return true } catch(e){return false}
+  if(!db) return localUpdateUser(id,{role:'active'}, emailHint);
+  try { await db.collection('users').doc(id).update({role:'active'}); return true } catch(e){
+    console.warn('Firestore approve failed, fallback local', e);
+    return localUpdateUser(id,{role:'active'}, emailHint);
+  }
 }
-async function rejectUser(id){
+async function rejectUser(id, emailHint){
   if(!id) return false;
-  if(!db) return localDeleteUser(id);
-  try { await db.collection('users').doc(id).delete(); return true } catch(e){return false}
+  if(!db) return localDeleteUser(id, emailHint);
+  try { await db.collection('users').doc(id).delete(); return true } catch(e){
+    console.warn('Firestore reject failed, fallback local', e);
+    return localUpdateUser(id,{role:'banned'}, emailHint);
+  }
 }
-async function banUser(id){
+async function banUser(id, emailHint){
   if(!id) return false;
-  if(!db) return localUpdateUser(id,{role:'banned'});
-  try { await db.collection('users').doc(id).update({role:'banned'}); return true } catch(e){return false}
+  if(!db) return localUpdateUser(id,{role:'banned'}, emailHint);
+  try { await db.collection('users').doc(id).update({role:'banned'}); return true } catch(e){
+    return localUpdateUser(id,{role:'banned'}, emailHint);
+  }
 }
-async function unbanUser(id){
+async function unbanUser(id, emailHint){
   if(!id) return false;
-  if(!db) return localUpdateUser(id,{role:'active'});
-  try { await db.collection('users').doc(id).update({role:'active'}); return true } catch(e){return false}
+  if(!db) return localUpdateUser(id,{role:'active'}, emailHint);
+  try { await db.collection('users').doc(id).update({role:'active'}); return true } catch(e){
+    return localUpdateUser(id,{role:'active'}, emailHint);
+  }
 }
-function localUpdateUser(id,data){
+function localUpdateUser(id,data,emailHint){
   try {
     let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
-    let idx=all.findIndex(x=>x.id===id);
+    let idx=all.findIndex(x=>x.id===id || (emailHint && x.email===emailHint.toLowerCase()));
     if(idx<0) return false;
     Object.assign(all[idx],data);
     localStorage.setItem('wha_users',JSON.stringify(all));
     return true;
   } catch(e){return false}
 }
-function localDeleteUser(id){
+function localDeleteUser(id,emailHint){
   try {
     let all=JSON.parse(localStorage.getItem('wha_users')||'[]');
-    let idx=all.findIndex(x=>x.id===id);
+    let idx=all.findIndex(x=>x.id===id || (emailHint && x.email===emailHint.toLowerCase()));
     if(idx<0) return false;
     all.splice(idx,1);
     localStorage.setItem('wha_users',JSON.stringify(all));
@@ -2996,8 +3065,8 @@ function renderAdminHTML(){
         '<div class="admin-user-ava">'+p.name[0].toUpperCase()+'</div>'+
         '<div class="admin-user-info"><div class="admin-user-name">'+p.name+'</div><div class="admin-user-email">'+p.email+'</div><div class="admin-user-date">'+__({ar:'تاريخ التسجيل:',en:'Joined:'})+' '+p.joinDate+'</div></div>'+
         '<div class="admin-user-actions">'+
-        '<button class="btn btn-sm btn-success" onclick="approveUser(\''+p.id+'\').then(()=>loadAdminData())">✓ '+__({ar:'موافقة',en:'Approve'})+'</button>'+
-        '<button class="btn btn-sm btn-ghost" style="color:#e74c3c" onclick="rejectUser(\''+p.id+'\').then(()=>loadAdminData())">✕ '+__({ar:'رفض',en:'Reject'})+'</button></div></div>';
+        '<button class="btn btn-sm btn-success" onclick="approveUser(\''+p.id+'\',\''+esc(p.email)+'\').then(()=>loadAdminData())">✓ '+__({ar:'موافقة',en:'Approve'})+'</button>'+
+        '<button class="btn btn-sm btn-ghost" style="color:#e74c3c" onclick="rejectUser(\''+p.id+'\',\''+esc(p.email)+'\').then(()=>loadAdminData())">✕ '+__({ar:'رفض',en:'Reject'})+'</button></div></div>';
     });
     h+='</div>';
   }
@@ -3023,10 +3092,10 @@ function renderAdminHTML(){
         '</div><div class="admin-user-last">'+__({ar:'آخر دخول:',en:'Last login:'})+' '+lastSeen+'</div></div>'+
         '<div class="admin-user-status '+statusCls+'">'+statusTxt+'</div>'+
         '<div class="admin-user-actions" onclick="event.stopPropagation()">'+
-        (p.role==='active'?'<button class="btn btn-sm btn-ghost" style="color:#e74c3c" onclick="banUser(\''+p.id+'\').then(()=>loadAdminData())">🚫 '+__({ar:'حظر',en:'Ban'})+'</button>':'')+
-        (p.role==='banned'?'<button class="btn btn-sm btn-success" onclick="unbanUser(\''+p.id+'\').then(()=>loadAdminData())">✓ '+__({ar:'إلغاء الحظر',en:'Unban'})+'</button>':'')+
-        (p.role==='pending'?'<button class="btn btn-sm btn-success" onclick="approveUser(\''+p.id+'\').then(()=>loadAdminData())">✓ '+__({ar:'موافقة',en:'Approve'})+'</button>':'')+
-        ' <button class="btn btn-sm btn-ghost" style="color:#e74c3c" onclick="rejectUser(\''+p.id+'\').then(()=>loadAdminData())">✕</button></div></div>'+
+        (p.role==='active'?'<button class="btn btn-sm btn-ghost" style="color:#e74c3c" onclick="banUser(\''+p.id+'\',\''+esc(p.email)+'\').then(()=>loadAdminData())">🚫 '+__({ar:'حظر',en:'Ban'})+'</button>':'')+
+        (p.role==='banned'?'<button class="btn btn-sm btn-success" onclick="unbanUser(\''+p.id+'\',\''+esc(p.email)+'\').then(()=>loadAdminData())">✓ '+__({ar:'إلغاء الحظر',en:'Unban'})+'</button>':'')+
+        (p.role==='pending'?'<button class="btn btn-sm btn-success" onclick="approveUser(\''+p.id+'\',\''+esc(p.email)+'\').then(()=>loadAdminData())">✓ '+__({ar:'موافقة',en:'Approve'})+'</button>':'')+
+        ' <button class="btn btn-sm btn-ghost" style="color:#e74c3c" onclick="rejectUser(\''+p.id+'\',\''+esc(p.email)+'\').then(()=>loadAdminData())">✕</button></div></div>'+
         '<div class="admin-user-detail" id="detail_'+p.id+'" style="display:none;padding:12px 16px;background:rgba(255,255,255,.03);border-radius:8px;margin-top:-8px;margin-bottom:8px;font-size:.82rem;color:var(--text-muted)"></div>';
     });
     h+='</div>';

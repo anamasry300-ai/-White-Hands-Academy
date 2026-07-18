@@ -1,4 +1,4 @@
-const CACHE = 'wha-v6';
+const CACHE = 'wha-v7';
 const FILES = [
   '.',
   'index.html',
